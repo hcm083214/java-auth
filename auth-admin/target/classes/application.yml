@@ -1,0 +1,43 @@
+server:
+  port: 60000
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://localhost:3306/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+      username: root
+      password: 123456
+  redis:
+    # 地址
+    host: localhost
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password:
+    # 连接超时时间
+    timeout: 10s
+    lettuce:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池的最大数据库连接数
+        max-active: 8
+        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+
+# mybatis配置
+mybatis:
+  # mapper映射文件位置
+  mapper-locations: classpath:mapper/*Mapper.xml
+
+# token配置
+jwt:
+  # 令牌密钥
+  secretKey: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALMcMs+3nbfJvmb6B2avCpYjC/AGKrFJPDGTLnmdi7+LuZpV+YNbijpzQF1hD6X8FuRzLf7vJfZRA8d7tRNBQOWBUmL4bz5L24oS3bU3B7ptbaQZc4iCVfeimpBh2fDoPXBXjBnxHusCHmKSliv+2R6YKihfA9B0C9l3m5yLwgp5AgMBAAECgYEAsRJErZRyyVsa8MVpAbw1dB6r05zVIjYr2zsN7E+z9CdX09wBdDrQml6MmIS3qrphi3LPW0Tku/J2EQYdCy8sztBxfQRYWGMAyWp0F7IuH71hczD0zLbCA049qd4RgzQTiCUAgncx/mSKPP6gjixHklKdRgg9dCMXr5/avVVoT+0CQQDjiPvFE8thCvapK11135q4jNkF1Px1uJohCxoYUO8vTFyeQshT2RXumeinYt8C9azvpoXwBr8wFkH5BoLlEP0/AkEAyYRc0lGwyYSAm7tyGIqbY0428Bs1KTLSYnDuVCR+8seo+RdYuD7eOJjAY2mWKgTyjnEqCRkQXMkEDfgDUIqyRwJBANUk7TSgZlRxwL6YMOTKolVfG62q5xQf6cIqdDdzGZxlHB3k0WQ6Z6Er7BVhOSe8nFOi2rUOnOqe7w4oW1XZpGECQHDvvnmckMCPguhEaBA69hT0i7OK/AMn2WKUOe1sOr1jil53aCByE2aSrRfJ3/+SoEGWSGGq61Gk0qHlgi4MXRcCQAGsaJXFK2sGZ4FDy08MrV9/dPcItGP3GBEHPNVukjYJJAz4Wb53vhwOH2V5S5YxJCfV4z6RyYKXSS3sUDID25A=
+  # 令牌有效期（默认2h）
+  expiration: 7200

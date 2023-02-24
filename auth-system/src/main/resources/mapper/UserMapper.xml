@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hcm.system.mapper.UserMapper">
+    <sql id="userInfo">
+        user_id
+        userId,
+        nick_name nickName,
+        user_name userName
+    </sql>
+    <select id="getNameAndPasswordByName" resultType="com.hcm.common.core.entity.SysUser">
+        select
+        <include refid="userInfo"/>,
+        password
+        from sys_user where user_name = #{username}
+    </select>
+
+    <select id="getUserInfoByName" resultType="com.hcm.common.core.entity.SysUser">
+        select
+        <include refid="userInfo"/>
+        from sys_user where user_name = #{username}
+    </select>
+
+    <insert id="insertUser">
+        insert into sys_user (user_name,password) values (#{sysUser.userName},#{sysUser.password})
+    </insert>
+</mapper>

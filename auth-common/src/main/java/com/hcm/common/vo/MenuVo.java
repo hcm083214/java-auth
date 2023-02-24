@@ -1,0 +1,69 @@
+package com.hcm.common.vo;
+
+import com.hcm.common.core.entity.SysMenu;
+import lombok.Data;
+
+import java.util.List;
+
+/**
+ * @author pc
+ */
+@Data
+public class MenuVo {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 菜单ID
+     */
+    private Long menuId;
+
+    /**
+     * 菜单名称
+     */
+    private String menuName;
+
+
+
+    /**
+     * 显示顺序
+     */
+    private String orderNum;
+
+    /**
+     * 菜单URL
+     */
+    private String component;
+
+    private String path;
+
+
+    /**
+     * 类型（M目录 C菜单 F按钮）
+     */
+    private String menuType;
+
+    /**
+     * 菜单状态（0显示 1隐藏）
+     */
+    private String visible;
+
+    /**
+     * 是否刷新（0刷新 1不刷新）
+     */
+    private String isRefresh;
+
+    /**
+     * 权限字符串
+     */
+    private String perms;
+
+    /**
+     * 菜单图标
+     */
+    private String icon;
+
+    /**
+     * 子菜单
+     */
+    private List<MenuVo> children;
+}

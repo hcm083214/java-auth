@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hcm.system.mapper.ConfigMapper">
+    <sql id="configInfoWithS">
+        s.config_id configId,
+        s.config_name configName,
+        s.config_key configKey,
+        s.config_value configValue,
+        s.config_type configType,
+        s.create_by createBy,
+        s.create_time createTime,
+        s.update_by updateBy,
+        s.update_time updateTime,
+        s.remark remark
+    </sql>
+    <!-- 查询条件 -->
+    <sql id="sqlwhereSearch">
+        <where>
+            <if test="configId !=null">
+                and config_id = #{configId}
+            </if>
+            <if test="configKey !=null and configKey != ''">
+                and config_key = #{configKey}
+            </if>
+        </where>
+    </sql>
+    <select id="getSysConfigByKey" resultType="com.hcm.common.core.entity.SysConfig">
+        select <include refid="configInfoWithS" /> from sys_config s where s.config_key = #{configKey}
+    </select>
+</mapper>
