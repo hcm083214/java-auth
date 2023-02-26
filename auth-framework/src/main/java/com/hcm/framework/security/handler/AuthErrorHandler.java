@@ -22,7 +22,7 @@ import java.io.IOException;
 public class AuthErrorHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws AuthException, ServletException, IOException {
-        log.error("验证失败:{}", authException.getMessage());
+        log.error("AuthErrorHandler ---> commence,验证失败:{}", authException.getMessage());
         ResponseHandler.handler(response,ResultCodeEnum.UNAUTHORIZED);
     }
 }

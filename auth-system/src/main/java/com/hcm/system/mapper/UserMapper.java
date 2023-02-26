@@ -4,6 +4,8 @@ import com.hcm.common.core.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 
 /**
  * @author pc
@@ -25,6 +27,14 @@ public interface UserMapper {
      * @return {@link SysUser}
      */
     SysUser getUserInfoByName(@Param("username") String username);
+
+    /**
+     * 通过id获取用户角色
+     *
+     * @param userId 用户id
+     * @return {@link List}<{@link Long}>
+     */
+    List<Long> getUserRolesById(@Param("userId") Long userId);
 
     /**
      * 插入用户

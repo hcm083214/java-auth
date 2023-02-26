@@ -5,6 +5,7 @@ import com.hcm.common.core.domain.BaseEntity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -83,7 +84,7 @@ public class SysRole extends BaseEntity {
     /**
      * 角色菜单权限
      */
-    private Set<String> permissions;
+    private List<Long> permissions;
 
 
 }

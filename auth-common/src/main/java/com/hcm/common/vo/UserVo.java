@@ -3,6 +3,7 @@ package com.hcm.common.vo;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author pc
@@ -28,7 +29,7 @@ public class UserVo {
     /**
      * 登录名称
      */
-    private String loginName;
+    private String nickName;
 
     /**
      * 用户名称
@@ -63,9 +64,14 @@ public class UserVo {
 
 
     /**
-     * 角色组
+     * 用户拥有的角色集合
      */
-    private Long[] roleIds;
+    private List<Long> roles;
+
+    /**
+     * 用户拥有的权限集合
+     */
+    private List<Long> permissions;
 
     /**
      * 岗位组

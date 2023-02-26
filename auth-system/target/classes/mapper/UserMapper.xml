@@ -5,7 +5,9 @@
         user_id
         userId,
         nick_name nickName,
-        user_name userName
+        user_name userName,
+        dept_id deptId,
+        avatar
     </sql>
     <select id="getNameAndPasswordByName" resultType="com.hcm.common.core.entity.SysUser">
         select
@@ -18,6 +20,10 @@
         select
         <include refid="userInfo"/>
         from sys_user where user_name = #{username}
+    </select>
+
+    <select id="getUserRolesById" resultType="Long">
+        select role_id from sys_user_role where user_id  = #{userId}
     </select>
 
     <insert id="insertUser">

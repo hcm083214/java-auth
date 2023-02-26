@@ -2,6 +2,8 @@ package com.hcm.system.service;
 
 import com.hcm.common.core.entity.SysUser;
 
+import java.util.List;
+
 /**
  * @author pc
  */
@@ -23,6 +25,14 @@ public interface UserService {
      * @return {@link SysUser}
      */
     SysUser getUserInfoByName(String name);
+
+    /**
+     * 通过id获取用户角色
+     *
+     * @param userId 用户id
+     * @return {@link List}<{@link Long}>
+     */
+    List<Long> getUserRolesById(Long userId);
 
     /**
      * 插入用户

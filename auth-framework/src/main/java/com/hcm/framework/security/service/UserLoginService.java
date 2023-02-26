@@ -9,6 +9,7 @@ import com.hcm.common.utils.ConvertUtils;
 import com.hcm.common.vo.LoginVo;
 import com.hcm.framework.security.context.AuthenticationContextHolder;
 import com.hcm.system.service.ConfigService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
  * @author pc
  * @date 2023/02/22
  */
+@Slf4j
 @Service
 public class UserLoginService {
     @Autowired
@@ -46,6 +48,7 @@ public class UserLoginService {
             // 放入到自定义的上下文的作用是为了限制同一账号多次登陆
             AuthenticationContextHolder.setContext(authentication);
         } catch (Exception e) {
+            log.error("UserLoginService ---> login:{}",e.getMessage());
             if (e instanceof BadCredentialsException) {
                 throw new AuthException("用户名或者账号错误");
             } else {

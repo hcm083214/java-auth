@@ -6,6 +6,7 @@ import com.hcm.system.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author pc
@@ -28,6 +29,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public SysUser getUserInfoByName(String name) {
         return userMapper.getUserInfoByName(name);
+    }
+
+    /**
+     * 通过id获取用户角色
+     *
+     * @param userId 用户id
+     * @return {@link List}<{@link Long}>
+     */
+    @Override
+    public List<Long> getUserRolesById(Long userId) {
+        return userMapper.getUserRolesById(userId);
     }
 
     @Override
