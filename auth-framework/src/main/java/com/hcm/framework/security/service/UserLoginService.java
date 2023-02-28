@@ -67,7 +67,7 @@ public class UserLoginService {
      * @param uuid 验证码的uuid
      * @throws BadRequestException 错误请求异常
      */
-    private void checkCaptcha(String code, String uuid) throws BadRequestException {
+    public void checkCaptcha(String code, String uuid) throws BadRequestException {
         boolean captchaEnabled = configService.getCaptchaEnabled();
         if (captchaEnabled) {
             String captchaCode = redisCache.getCacheObject(CacheConstants.CACHE_CAPTCHA_CODE + uuid);

@@ -27,6 +27,6 @@
     </select>
 
     <insert id="insertUser">
-        insert into sys_user (user_name,password) values (#{sysUser.userName},#{sysUser.password})
+        insert into sys_user (user_name,password,nick_name) values (#{sysUser.userName},#{sysUser.password},#{sysUser.userName})
     </insert>
 </mapper>

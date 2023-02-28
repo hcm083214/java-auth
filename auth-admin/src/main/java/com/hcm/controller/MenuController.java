@@ -1,5 +1,6 @@
 package com.hcm.controller;
 
+import com.hcm.common.core.domain.ResultVO;
 import com.hcm.common.core.entity.SysMenu;
 import com.hcm.common.vo.MenuVo;
 import com.hcm.system.mapper.MenuMapper;
@@ -32,7 +33,7 @@ public class MenuController {
      * @return {@link List}<{@link MenuVo}>
      */
     @GetMapping("")
-    public List<MenuVo> getMenuList() {
+    public ResultVO<List<MenuVo>> getMenuList() {
         List<SysMenu> sysMenuList = menuService.getMenuList();
         List<MenuVo> menuVoList = new ArrayList<>();
         sysMenuList.forEach(sysMenu -> {
@@ -49,7 +50,7 @@ public class MenuController {
             menu.setChildren(childrens);
             menuVoList.add(menu);
         });
-        return menuVoList;
+        return ResultVO.success(menuVoList);
     }
 
 }

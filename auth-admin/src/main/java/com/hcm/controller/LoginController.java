@@ -78,6 +78,7 @@ public class LoginController {
         try {
             user = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (Exception e) {
+            log.error("LoginController ---> getUserInfo,获取用户信息异常:${}",e.getMessage());
             throw new BadRequestException("获取用户信息异常");
         }
         UserVo userVo = new UserVo();
@@ -96,17 +97,13 @@ public class LoginController {
      * 注册
      *
      * @param loginVo 登录
-     * @param request 请求
      * @return {@link ResultVO}<{@link UserVo}>
      * @throws BadRequestException 错误请求异常
      */
     @PostMapping("/register")
-    public ResultVO<UserVo> register(@RequestBody LoginVo loginVo, HttpServletRequest request) throws BadRequestException {
+    public ResultVO<UserVo> register(@RequestBody LoginVo loginVo) throws BadRequestException {
         LoginValidation.loginParamsValid(loginVo);
-        String captchaCode = (String) request.getSession().getAttribute(CacheConstants.CACHE_CAPTCHA_CODE);
-        if (!loginVo.getCode().equals(captchaCode)) {
-            throw new BadRequestException("验证码错误");
-        }
+        userLoginService.checkCaptcha(loginVo.getCode(), loginVo.getUuid());
         SysUser sysUser = userService.getUserInfoByName(loginVo.getUserName());
         if (sysUser != null) {
             throw new BadRequestException("用户已经存在");
