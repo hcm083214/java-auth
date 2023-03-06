@@ -8,45 +8,44 @@ database redis
 control springSecurity as ss
 autonumber
 
-'user -> client :登陆
-'activate ss
-'client -> ss :账号/密码/验证码
-'ss --> s : 放行
-'activate s
-'s -> redis :uuid(redis key)
-'redis --> s :验证码
-'s -> s :验证码校验
-'s -> ss :待验证账号密码
-'ss --> db: loadUserByUsername
-'db -> ss:用户账号密码
-'ss -> ss: 账号密码校验
-'db -> ss: 用户权限
-'ss --> s :authentication
-'s -> s :token生成
-'s -> redis :token/账号密码权限/有效期
-'redis -> redis :账号密码权限保存
-'s --> client :token
-'deactivate ss
-'deactivate s
-
-user -> client :请求
-activate s
+user -> client :登陆
 activate ss
-client -> ss :token
-ss --> s : token
-s -> s :token解析
-s -> redis :uuid
-alt redis数据没过期
-redis --> s :用户账号密码权限
-s -> ss : 用户账号密码权限
-ss -> ss: 权限校验
-ss --> s : success
-s --> client : data
-else redis数据过期
-redis --> s :null
-s -> ss : null
-ss --> ss : throw error
-ss --> client : error
-end
+client -> ss :账号/密码/验证码
+ss --> s : 放行
+activate s
+s -> redis :uuid(redis key)
+redis --> s :验证码
+s -> s :验证码校验
+s -> ss :待验证账号密码
+ss --> db: loadUserByUsername
+db -> ss:用户账号密码
+ss -> ss: 账号密码校验
+db -> ss: 用户权限
+ss --> s :authentication
+s -> s :token生成
+s -> redis :token/账号密码权限/有效期
+redis -> redis :账号密码权限保存
+s --> client :token
+
+
+'user -> client :请求
+'activate s
+'activate ss
+'client -> ss :token
+'ss --> s : token
+'s -> s :token解析
+'s -> redis :uuid
+'alt redis数据没过期
+'redis --> s :用户账号密码权限
+'s -> ss : 用户账号密码权限
+'ss -> ss: 权限校验
+'ss --> s : success
+'s --> client : data
+'else redis数据过期
+'redis --> s :null
+'s -> ss : null
+'ss --> ss : throw error
+'ss --> client : error
+'end
 @enduml
 
