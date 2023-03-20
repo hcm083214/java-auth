@@ -1,5 +1,6 @@
 package com.hcm.system.service;
 
+import com.hcm.common.core.entity.SysRole;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +19,11 @@ public interface RoleService {
      * @return {@link List}<{@link Long}>
      */
     List<Long> getPermissionsByRoleIds(List<Long> roleIds);
+
+    /**
+     * 得到角色
+     *
+     * @return {@link List}<{@link SysRole}>
+     */
+    List<SysRole> getRoles();
 }

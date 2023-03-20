@@ -12,7 +12,9 @@ public enum ResultCodeEnum {
     // 没有权限
     UNAUTHORIZED(401,"没有权限"),
     // token过期
-    TOKENEXPIRATION(401,"token过期");
+    TOKENEXPIRATION(401,"token过期"),
+    // 接口未授权
+    UNACCESS(403,"接口未授权");
 
     private final int code;
     private final String message;

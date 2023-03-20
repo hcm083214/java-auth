@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -42,4 +43,12 @@ public interface UserMapper {
      * @param sysUser 用户信息
      */
     void insertUser(@Param("sysUser")SysUser sysUser);
+
+    /**
+     * 获取用户权限id
+     *
+     * @param userId 用户id
+     * @return {@link Set}<{@link String}>
+     */
+    Set<String> getUserPermissionById(@Param("userId") Long userId);
 }

@@ -1,5 +1,6 @@
 package com.hcm.system.mapper;
 
+import com.hcm.common.core.entity.SysRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,5 +22,17 @@ public interface RoleMapper {
      */
     List<Long> getPermissionsByRoleIds(@Param("roleIds") List<Long> roleId);
 
+    /**
+     * 得到所有权限
+     *
+     * @return {@link List}<{@link Long}>
+     */
     List<Long> getAllPermissions();
+
+    /**
+     * 得到角色
+     *
+     * @return {@link List}<{@link SysRole}>
+     */
+    List<SysRole> getRoles();
 }

@@ -36,20 +36,7 @@ public class MenuController {
     public ResultVO<List<MenuVo>> getMenuList() {
         List<SysMenu> sysMenuList = menuService.getMenuList();
         List<MenuVo> menuVoList = new ArrayList<>();
-        sysMenuList.forEach(sysMenu -> {
-            MenuVo menu = new MenuVo();
-            BeanUtils.copyProperties(sysMenu, menu);
-            List<MenuVo> childrens = new ArrayList<>();
-            if (sysMenu.getChildren() != null) {
-                sysMenu.getChildren().forEach(children -> {
-                    MenuVo child = new MenuVo();
-                    BeanUtils.copyProperties(children, child);
-                    childrens.add(child);
-                });
-            }
-            menu.setChildren(childrens);
-            menuVoList.add(menu);
-        });
+        SysMenu.pos2vos(sysMenuList,menuVoList);
         return ResultVO.success(menuVoList);
     }
 

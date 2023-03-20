@@ -1,5 +1,6 @@
 package com.hcm.common.core.entity;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +11,7 @@ import java.util.Set;
  * @author pc
  * @description 自定义的用户对象
  */
+@Data
 public class UserDetail implements UserDetails {
 
     /**
@@ -42,8 +44,9 @@ public class UserDetail implements UserDetails {
      */
     private SysUser sysUser;
 
-    public UserDetail(SysUser sysUser, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetail(SysUser sysUser, Set<String> permissions) {
         this.sysUser = sysUser;
+        this.permissions = permissions;
     }
 
 

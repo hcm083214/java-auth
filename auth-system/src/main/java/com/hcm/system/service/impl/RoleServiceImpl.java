@@ -1,5 +1,6 @@
 package com.hcm.system.service.impl;
 
+import com.hcm.common.core.entity.SysRole;
 import com.hcm.system.mapper.RoleMapper;
 import com.hcm.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,17 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleMapper roleMapper;
+
+    /**
+     * 得到角色
+     *
+     * @return {@link List}<{@link SysRole}>
+     */
+    @Override
+    public List<SysRole> getRoles() {
+        return roleMapper.getRoles();
+    }
+
     /**
      * 通过id获取权限
      *

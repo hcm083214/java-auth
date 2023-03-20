@@ -34,7 +34,10 @@ spring:
 mybatis:
   # mapper映射文件位置
   mapper-locations: classpath:mapper/*Mapper.xml
-
+  configuration-properties:
+    offsetAsPageNum: true
+    rowBoundsWithCount: true
+    reasonable: true
 # token配置
 jwt:
   # 令牌密钥

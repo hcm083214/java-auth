@@ -1,6 +1,7 @@
 package com.hcm.common.core.entity;
 
 import com.hcm.common.core.domain.BaseEntity;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import java.util.Set;
  *
  * @author ruoyi
  */
+@Data
 public class SysRole extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

@@ -26,6 +26,14 @@
         select role_id from sys_user_role where user_id  = #{userId}
     </select>
 
+    <select id="getUserPermissionById" resultType="String">
+        select perms from sys_user u
+            left join  sys_user_role s on u.user_id = s.user_id
+            left join sys_role_menu ss on s.role_id = ss.role_id
+            left join sys_menu m on ss.menu_id = m.menu_id
+        where u.user_id = #{userId}
+    </select>
+
     <insert id="insertUser">
         insert into sys_user (user_name,password,nick_name) values (#{sysUser.userName},#{sysUser.password},#{sysUser.userName})
     </insert>

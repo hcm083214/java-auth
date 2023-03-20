@@ -41,6 +41,8 @@
             <version>${auth.version}</version>
         </dependency>
 
+
+
         <dependency>
             <groupId>com.hcm</groupId>
             <artifactId>auth-system</artifactId>

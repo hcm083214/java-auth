@@ -13,4 +13,16 @@
         select distinct menu_id from sys_role_menu
     </select>
 
+    <sql id="roleInfo">
+        role_id roleId,
+        role_name roleName,
+        role_key roleKey,
+        role_sort roleSort,
+        create_time createTime,
+        status
+    </sql>
+
+    <select id="getRoles" resultType="com.hcm.common.core.entity.SysRole">
+        select <include refid="roleInfo"></include> from sys_role
+    </select>
 </mapper>

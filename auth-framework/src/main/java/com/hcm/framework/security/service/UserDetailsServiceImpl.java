@@ -5,6 +5,7 @@ import com.hcm.common.core.entity.UserDetail;
 import com.hcm.common.utils.StringUtils;
 import com.hcm.system.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
     private UserMapper userMapper;
 
+    @Autowired
+    private PermissionService permissionService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser user = userMapper.getNameAndPasswordByName(username);
@@ -33,9 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("没有找到该用户");
         }
 
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("admin"));
-        // 走到这代表查询到了实体对象，返回我们自定义的UserDetail对象（这里权限暂时放个空集合，后面我会讲解）
-        return new UserDetail(user, authorities);
+        // 走到这代表查询到了实体对象，返回我们自定义的UserDetail对象
+        return new UserDetail(user, permissionService.getUserPermissionById(user.getUserId()));
     }
 }

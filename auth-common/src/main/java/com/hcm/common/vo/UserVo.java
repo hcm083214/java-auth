@@ -10,6 +10,7 @@ import java.util.List;
  */
 @Data
 public class UserVo {
+    private static final long serialVersionUID = 1L;
     /**
      * 用户ID
      */

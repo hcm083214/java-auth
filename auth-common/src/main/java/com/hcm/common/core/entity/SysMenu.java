@@ -1,8 +1,11 @@
 package com.hcm.common.core.entity;
 
 import com.hcm.common.core.domain.BaseEntity;
+import com.hcm.common.vo.MenuVo;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,5 +84,16 @@ public class SysMenu extends BaseEntity {
      */
     private List<SysMenu> children;
 
-
+    public static void pos2vos(List<SysMenu> pos,List<MenuVo> vos){
+        pos.forEach(sysMenu -> {
+            MenuVo menu = new MenuVo();
+            BeanUtils.copyProperties(sysMenu, menu);
+            List<MenuVo> childrens = new ArrayList<>();
+            if (sysMenu.getChildren() != null) {
+                pos2vos(sysMenu.getChildren(),childrens);
+            }
+            menu.setChildren(childrens);
+            vos.add(menu);
+        });
+    }
 }
