@@ -1,6 +1,7 @@
 package com.hcm.system.service;
 
 import com.hcm.common.core.entity.SysRole;
+import com.hcm.common.vo.RoleVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,4 +27,11 @@ public interface RoleService {
      * @return {@link List}<{@link SysRole}>
      */
     List<SysRole> getRoles();
+
+    /**
+     * 插入角色
+     *
+     * @param roleVos 角色vos
+     */
+    void insertRole(List<RoleVo> roleVos);
 }

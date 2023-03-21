@@ -1,6 +1,7 @@
 package com.hcm.system.service.impl;
 
 import com.hcm.common.core.entity.SysRole;
+import com.hcm.common.vo.RoleVo;
 import com.hcm.system.mapper.RoleMapper;
 import com.hcm.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,16 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<SysRole> getRoles() {
         return roleMapper.getRoles();
+    }
+
+    /**
+     * 插入角色
+     *
+     * @param roleVos 角色vos
+     */
+    @Override
+    public void insertRole(List<RoleVo> roleVos) {
+        roleMapper.insertRole(roleVos);
     }
 
     /**

@@ -7,8 +7,11 @@ import com.hcm.common.vo.LoginVo;
 import org.springframework.util.CollectionUtils;
 
 /**
+ * 登录接口入参校验
+ *
  * @author pc
  * @description 登录接口入参校验
+ * @date 2023/03/21
  */
 public class LoginValidation {
     public static void loginParamsValid(LoginVo loginVo) {

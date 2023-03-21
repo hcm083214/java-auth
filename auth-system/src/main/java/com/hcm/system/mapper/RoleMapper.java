@@ -1,6 +1,7 @@
 package com.hcm.system.mapper;
 
 import com.hcm.common.core.entity.SysRole;
+import com.hcm.common.vo.RoleVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,4 +36,12 @@ public interface RoleMapper {
      * @return {@link List}<{@link SysRole}>
      */
     List<SysRole> getRoles();
+
+    /**
+     * 插入作用
+     * 插入角色
+     *
+     * @param roleVos 角色vos
+     */
+    void insertRole(@Param("roles") List<RoleVo> roleVos);
 }

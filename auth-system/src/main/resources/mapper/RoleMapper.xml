@@ -25,4 +25,24 @@
     <select id="getRoles" resultType="com.hcm.common.core.entity.SysRole">
         select <include refid="roleInfo"></include> from sys_role
     </select>
+
+    <insert id="insertRole">
+        insert into sys_role (role_name,role_key,role_sort,status,create_time,update_time) values
+        <foreach collection="roles"  item="role" separator=",">
+            (#{role.roleName},#{role.roleKey},#{role.roleSort},#{role.status},now(),now())
+        </foreach>
+        on duplicate key update
+        <trim prefix="" suffixOverrides=",">
+            <foreach collection="roles" separator="," item="role">
+                <if test="role.roleKey != null and role.roleKey != ''">
+                    role_key = #{role.roleKey},
+                </if>
+                <if test="role.status != null and role.status != ''">
+                    status = #{role.status},
+                </if>
+                create_time = now(),
+                update_time = now()
+            </foreach>
+        </trim>
+    </insert>
 </mapper>
