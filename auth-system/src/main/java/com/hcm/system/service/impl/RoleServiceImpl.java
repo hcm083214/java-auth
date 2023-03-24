@@ -1,13 +1,16 @@
 package com.hcm.system.service.impl;
 
 import com.hcm.common.core.entity.SysRole;
+import com.hcm.common.enums.RoleSearchTypeEnum;
 import com.hcm.common.vo.RoleVo;
 import com.hcm.system.mapper.RoleMapper;
 import com.hcm.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 角色服务impl
@@ -26,8 +29,23 @@ public class RoleServiceImpl implements RoleService {
      * @return {@link List}<{@link SysRole}>
      */
     @Override
-    public List<SysRole> getRoles() {
-        return roleMapper.getRoles();
+    public List<SysRole> getRoles(RoleVo roleVo) {
+        return roleMapper.getRoles(roleVo);
+    }
+
+    /**
+     * 得到参数列表
+     *
+     * @param roleVo roleVo
+     * @return {@link List}<{@link String}>
+     */
+    @Override
+    public List<String> getParamsList(RoleVo roleVo) {
+        List<String> result = new ArrayList<>();
+        if (roleVo.getSearchParams() != null) {
+            result = roleMapper.getParamsList(roleVo,roleVo.getSearchParams().toLowerCase());
+        }
+        return result;
     }
 
     /**
@@ -48,9 +66,9 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public List<Long> getPermissionsByRoleIds(List<Long> roleIds) {
-        if(roleIds.contains(1L)){
-           return roleMapper.getAllPermissions();
-        }else{
+        if (roleIds.contains(1L)) {
+            return roleMapper.getAllPermissions();
+        } else {
             return roleMapper.getPermissionsByRoleIds(roleIds);
         }
     }

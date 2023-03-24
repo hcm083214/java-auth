@@ -39,6 +39,14 @@ public class ExcelUtils {
         response.setCharacterEncoding("UTF-8");
     }
 
+    /**
+     * excel2列表
+     *
+     * @param file 文件
+     * @param head 头
+     * @return {@link List}<{@link T}>
+     * @throws IOException ioexception
+     */
     public static <T> List<T> excel2List(MultipartFile file, Class<T> head)throws IOException{
         return EasyExcel.read(file.getInputStream(),head,null)
                 // 不要自动关闭，交给 Servlet 自己处理

@@ -2,10 +2,13 @@ package com.hcm.common.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.hcm.common.annotations.EnumValue;
+import com.hcm.common.enums.RoleSearchTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
 
@@ -25,14 +28,23 @@ public class RoleVo {
     private Long roleId;
 
     /**
-     * 角色名称
+     * 角色中文名称
      */
-    @ExcelProperty("角色名称")
-    private String roleName;
+    @Length(max = 20,message = "角色中文名称长度必须位于2到20以内")
+    @ExcelProperty("角色中文名称")
+    private String roleNameCn;
+
+    /**
+     * 角色英文名称
+     */
+    @Length(max = 20,message = "角色英文名称长度必须位于2到20以内")
+    @ExcelProperty("角色英文名称")
+    private String roleNameEn;
 
     /**
      * 角色权限
      */
+    @Length(max = 20,message = "角色权限长度必须位于20以内")
     @ExcelProperty("角色权限")
     private String roleKey;
 
@@ -65,4 +77,11 @@ public class RoleVo {
      */
     @ExcelIgnore
     private Integer pageSize;
+
+    /**
+     * 搜索参数
+     */
+    @ExcelIgnore
+    @EnumValue(ignoreCase = true,enumClass = RoleSearchTypeEnum.class,message = "传入的参数不正确")
+    private String searchParams;
 }

@@ -22,12 +22,20 @@ public interface RoleService {
     List<Long> getPermissionsByRoleIds(List<Long> roleIds);
 
     /**
-     * 得到角色
+     * 得到角色列表
      *
+     * @param roleVo roleVo
      * @return {@link List}<{@link SysRole}>
      */
-    List<SysRole> getRoles();
+    List<SysRole> getRoles(RoleVo roleVo);
 
+    /**
+     * 得到参数列表
+     *
+     * @param roleVo roleVo
+     * @return {@link List}<{@link String}>
+     */
+    List<String> getParamsList(RoleVo roleVo);
     /**
      * 插入角色
      *

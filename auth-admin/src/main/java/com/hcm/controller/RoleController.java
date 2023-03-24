@@ -4,8 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hcm.common.core.domain.ResultVO;
 import com.hcm.common.core.entity.SysRole;
-import com.hcm.common.enums.ResultCodeEnum;
-import com.hcm.common.exception.BadRequestException;
 import com.hcm.common.utils.ExcelUtils;
 import com.hcm.common.vo.PageVo;
 import com.hcm.common.vo.RoleVo;
@@ -15,11 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,14 +37,21 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    /**
+     * 获取角色列表
+     *
+     * @param roleVo roleVo
+     * @return {@link ResultVO}<{@link PageVo}<{@link RoleVo}>>
+     */
     @GetMapping
     @PreAuthorize("@ss.hasPermission('system:role:list')")
-    public ResultVO<PageVo<RoleVo>> getRoleList(RoleVo roleVo) {
+    public ResultVO<PageVo<RoleVo>> getRoleList(@Validated RoleVo roleVo) {
         RoleValidation.rolesSearchParamsValid(roleVo);
         PageHelper.startPage(roleVo.getPageNum(), roleVo.getPageSize());
-        List<SysRole> roles = roleService.getRoles();
+        List<SysRole> roles = roleService.getRoles(roleVo);
         PageInfo<SysRole> pageList = new PageInfo<>(roles);
         PageVo<RoleVo> pageVo = new PageVo<>();
+        // 转 Vo
         BeanUtils.copyProperties(pageList, pageVo);
         if (pageList.getList().size() > 0) {
             List<RoleVo> roleVos = new ArrayList<>();
@@ -60,12 +65,34 @@ public class RoleController {
         return ResultVO.success(pageVo);
     }
 
+    /**
+     * 得到参数列表,供角色查询项目的联想搜索
+     *
+     * @param roleVo 签证官角色
+     * @return {@link List}<{@link String}>
+     */
+    @GetMapping("/params")
+    @PreAuthorize("@ss.hasPermission('system:role:list')")
+    public ResultVO<List<String>> getParamsList(RoleVo roleVo){
+        List<String> result = roleService.getParamsList(roleVo);
+        return ResultVO.success(result);
+    }
+
+    /**
+     * 角色列表导出到 excel
+     *
+     * @param response 响应
+     * @param roleVo   roleVo
+     * @throws IOException ioexception
+     */
     @GetMapping("/export")
     @PreAuthorize("@ss.hasPermission('system:role:export')")
-    public void export(HttpServletResponse response, RoleVo roleVo) throws IOException {
+    public void export(HttpServletResponse response,@Validated RoleVo roleVo) throws IOException {
+        // 入参校验
         RoleValidation.rolesSearchParamsValid(roleVo);
         PageHelper.startPage(roleVo.getPageNum(), roleVo.getPageSize());
-        List<SysRole> roles = roleService.getRoles();
+        List<SysRole> roles = roleService.getRoles(roleVo);
+        // 转 VO
         PageInfo<SysRole> pageList = new PageInfo<>(roles);
         List<RoleVo> roleVos = new ArrayList<>();
         if (pageList.getList().size() > 0) {
@@ -75,23 +102,36 @@ public class RoleController {
                 roleVos.add(role);
             });
         }
+        // excel导出
         ExcelUtils.export(response, "角色列表", "角色", RoleVo.class, roleVos);
     }
 
+    /**
+     * 导出角色列表模板
+     *
+     * @param response 响应
+     * @throws IOException ioexception
+     */
     @GetMapping("/import-template")
     @PreAuthorize("@ss.hasPermission('system:role:export')")
     public void exportTemplate(HttpServletResponse response) throws IOException {
         List<RoleVo> roleVos = Arrays.asList(
-                RoleVo.builder().roleId(1L).roleName("管理员").roleKey("admin").roleSort(1).build(),
-                RoleVo.builder().roleId(2L).roleName("普通用户").roleKey("custom").roleSort(2).build());
+                RoleVo.builder().roleId(1L).roleNameCn("管理员").roleNameEn("admin").roleKey("admin").roleSort(1).build(),
+                RoleVo.builder().roleId(2L).roleNameCn("普通用户").roleNameEn("custom").roleKey("custom").roleSort(2).build());
         ExcelUtils.export(response, "导入模板", "角色", RoleVo.class, roleVos);
     }
 
+    /**
+     * 导入excel
+     *
+     * @param file 文件
+     * @return {@link ResultVO}<{@link ?}>
+     * @throws IOException ioexception
+     */
     @PostMapping("/import")
     @PreAuthorize("@ss.hasPermission('system:role:import')")
     public ResultVO<?> importExcel(@RequestBody MultipartFile file)throws IOException{
         List<RoleVo> list = ExcelUtils.excel2List(file, RoleVo.class);
-        log.info(String.valueOf(list));
         roleService.insertRole(list);
         return ResultVO.success("上传成功");
     }

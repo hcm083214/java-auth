@@ -28,7 +28,12 @@ public class SysRole extends BaseEntity {
      */
     @NotBlank(message = "角色名称不能为空")
     @Size(min = 0, max = 30, message = "角色名称长度不能超过30个字符")
-    private String roleName;
+    private String roleNameCn;
+
+    /**
+     * 角色英文名称
+     */
+    private String roleNameEn;
 
     /**
      * 角色权限

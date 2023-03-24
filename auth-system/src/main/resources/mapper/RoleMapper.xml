@@ -10,39 +10,61 @@
     </select>
 
     <select id="getAllPermissions" resultType="Long">
-        select distinct menu_id from sys_role_menu
+        select distinct menu_id
+        from sys_role_menu
     </select>
 
     <sql id="roleInfo">
-        role_id roleId,
-        role_name roleName,
+        role_id
+        roleId,
+        role_name_cn roleNameCn,
+        role_name_en roleNameEn,
         role_key roleKey,
         role_sort roleSort,
         create_time createTime,
         status
     </sql>
+    <sql id="searchOption">
+        <if test="role.roleNameCn!= null and role.roleNameCn != ''">
+            and role_name_cn like concat('%', #{role.roleNameCn}, '%')
+        </if>
+        <if test="role.roleNameEn!= null and role.roleNameEn != ''">
+            and role_name_en like concat('%', #{role.roleNameEn}, '%')
+        </if>
+        <if test="role.roleKey != null and role.roleKey != ''">
+            and role_key like concat('%', #{role.roleKey}, '%')
+        </if>
+        <if test="role.status != null and role.status != ''">
+            and status = #{role.status}
+        </if>
+    </sql>
 
     <select id="getRoles" resultType="com.hcm.common.core.entity.SysRole">
-        select <include refid="roleInfo"></include> from sys_role
+        select <include refid="roleInfo"></include> from sys_role where 1=1
+        <include refid="searchOption"></include>
+    </select>
+
+    <select id="getParamsList" resultType="string">
+        <if test="type!= null and type == 'role_name_cn'">
+            select distinct role_name_cn from sys_role
+        </if>
+        <if test="type!= null and type == 'role_name_en'">
+            select distinct role_name_en from sys_role
+        </if>
+        <if test="type!= null and type == 'role_key'">
+            select distinct role_key from sys_role
+        </if>
+        where 1=1
+        <include refid="searchOption"></include>
+        limit 400
     </select>
 
     <insert id="insertRole">
-        insert into sys_role (role_name,role_key,role_sort,status,create_time,update_time) values
-        <foreach collection="roles"  item="role" separator=",">
-            (#{role.roleName},#{role.roleKey},#{role.roleSort},#{role.status},now(),now())
+        insert into sys_role (role_name_cn,role_name_en,role_key,role_sort,status,create_time,update_time) values
+        <foreach collection="roles" item="role" separator=",">
+            (#{role.roleNameCn},#{role.roleNameEn},#{role.roleKey},#{role.roleSort},#{role.status},now(),now())
         </foreach>
         on duplicate key update
-        <trim prefix="" suffixOverrides=",">
-            <foreach collection="roles" separator="," item="role">
-                <if test="role.roleKey != null and role.roleKey != ''">
-                    role_key = #{role.roleKey},
-                </if>
-                <if test="role.status != null and role.status != ''">
-                    status = #{role.status},
-                </if>
-                create_time = now(),
-                update_time = now()
-            </foreach>
-        </trim>
+        role_key =values(role_key),status = values(status),update_time = now()
     </insert>
 </mapper>
