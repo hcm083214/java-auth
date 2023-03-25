@@ -1,4 +1,4 @@
-package com.hcm.controller;
+package com.hcm.controller.deploy;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,7 +44,7 @@ public class RoleController {
      * @return {@link ResultVO}<{@link PageVo}<{@link RoleVo}>>
      */
     @GetMapping
-    @PreAuthorize("@ss.hasPermission('system:role:list')")
+    @PreAuthorize("@ss.hasPermission('permission:role:query')")
     public ResultVO<PageVo<RoleVo>> getRoleList(@Validated RoleVo roleVo) {
         RoleValidation.rolesSearchParamsValid(roleVo);
         PageHelper.startPage(roleVo.getPageNum(), roleVo.getPageSize());
@@ -72,7 +72,7 @@ public class RoleController {
      * @return {@link List}<{@link String}>
      */
     @GetMapping("/params")
-    @PreAuthorize("@ss.hasPermission('system:role:list')")
+    @PreAuthorize("@ss.hasPermission('permission:role:query')")
     public ResultVO<List<String>> getParamsList(RoleVo roleVo){
         List<String> result = roleService.getParamsList(roleVo);
         return ResultVO.success(result);
@@ -86,7 +86,7 @@ public class RoleController {
      * @throws IOException ioexception
      */
     @GetMapping("/export")
-    @PreAuthorize("@ss.hasPermission('system:role:export')")
+    @PreAuthorize("@ss.hasPermission('permission:role:export')")
     public void export(HttpServletResponse response,@Validated RoleVo roleVo) throws IOException {
         // 入参校验
         RoleValidation.rolesSearchParamsValid(roleVo);
@@ -113,11 +113,11 @@ public class RoleController {
      * @throws IOException ioexception
      */
     @GetMapping("/import-template")
-    @PreAuthorize("@ss.hasPermission('system:role:export')")
+    @PreAuthorize("@ss.hasPermission('permission:role:export')")
     public void exportTemplate(HttpServletResponse response) throws IOException {
         List<RoleVo> roleVos = Arrays.asList(
-                RoleVo.builder().roleId(1L).roleNameCn("管理员").roleNameEn("admin").roleKey("admin").roleSort(1).build(),
-                RoleVo.builder().roleId(2L).roleNameCn("普通用户").roleNameEn("custom").roleKey("custom").roleSort(2).build());
+                RoleVo.builder().roleId(1L).roleNameCn("管理员").roleNameEn("admin").functionKey("admin").roleSort(1).build(),
+                RoleVo.builder().roleId(2L).roleNameCn("普通用户").roleNameEn("custom").functionKey("custom").roleSort(2).build());
         ExcelUtils.export(response, "导入模板", "角色", RoleVo.class, roleVos);
     }
 
@@ -129,7 +129,7 @@ public class RoleController {
      * @throws IOException ioexception
      */
     @PostMapping("/import")
-    @PreAuthorize("@ss.hasPermission('system:role:import')")
+    @PreAuthorize("@ss.hasPermission('permission:role:import')")
     public ResultVO<?> importExcel(@RequestBody MultipartFile file)throws IOException{
         List<RoleVo> list = ExcelUtils.excel2List(file, RoleVo.class);
         roleService.insertRole(list);

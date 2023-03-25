@@ -19,7 +19,9 @@
         roleId,
         role_name_cn roleNameCn,
         role_name_en roleNameEn,
-        role_key roleKey,
+        role_description_cn roleDescriptionCn,
+        role_description_en roleDescriptionEn,
+        function_key functionKey,
         role_sort roleSort,
         create_time createTime,
         status
@@ -31,8 +33,8 @@
         <if test="role.roleNameEn!= null and role.roleNameEn != ''">
             and role_name_en like concat('%', #{role.roleNameEn}, '%')
         </if>
-        <if test="role.roleKey != null and role.roleKey != ''">
-            and role_key like concat('%', #{role.roleKey}, '%')
+        <if test="role.functionKey != null and role.functionKey != ''">
+            and function_key like concat('%', #{role.functionKey}, '%')
         </if>
         <if test="role.status != null and role.status != ''">
             and status = #{role.status}
@@ -51,8 +53,8 @@
         <if test="type!= null and type == 'role_name_en'">
             select distinct role_name_en from sys_role
         </if>
-        <if test="type!= null and type == 'role_key'">
-            select distinct role_key from sys_role
+        <if test="type!= null and type == 'function_key'">
+            select distinct function_key from sys_role
         </if>
         where 1=1
         <include refid="searchOption"></include>
@@ -60,11 +62,11 @@
     </select>
 
     <insert id="insertRole">
-        insert into sys_role (role_name_cn,role_name_en,role_key,role_sort,status,create_time,update_time) values
+        insert into sys_role (role_name_cn,role_name_en,function_key,role_sort,status,create_time,update_time) values
         <foreach collection="roles" item="role" separator=",">
-            (#{role.roleNameCn},#{role.roleNameEn},#{role.roleKey},#{role.roleSort},#{role.status},now(),now())
+            (#{role.roleNameCn},#{role.roleNameEn},#{role.functionKey},#{role.roleSort},#{role.status},now(),now())
         </foreach>
         on duplicate key update
-        role_key =values(role_key),status = values(status),update_time = now()
+        function_key =values(function_key),status = values(status),update_time = now()
     </insert>
 </mapper>

@@ -45,10 +45,9 @@ public class CaptchaController {
 
     /**
      * @param type    验证码的类型，string 和 math 两种
-     * @param session session
      */
     @GetMapping("/image")
-    public ResultVO<CaptchaVo> getCaptchaImg(@RequestParam("type") String type, HttpSession session) {
+    public ResultVO<CaptchaVo> getCaptchaImg(@RequestParam("type") String type) {
         if (BaseUtils.isEmptyString(type)) {
             throw new BadRequestException("type 未传");
         }

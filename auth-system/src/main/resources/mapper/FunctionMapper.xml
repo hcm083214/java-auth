@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hcm.system.mapper.FunctionMapper">
+    <sql id="functionInfo">
+        function_id
+        functionId,
+      function_name_cn functionNameCn,
+      function_name_en functionNameEn,
+      function_description_cn functionDescriptionCn,
+      function_description_en functionDescriptionEn,
+      function_key functionKey,
+      update_by updateBy,
+      update_time updateTime,
+      create_by createBy,
+      create_time createTime,
+      status
+    </sql>
+    <select id="getFunctionList" resultType="com.hcm.common.core.entity.SysFunction">
+        select <include refid="functionInfo"></include> from sys_function
+    </select>
+</mapper>

@@ -1,7 +1,9 @@
-package com.hcm.controller;
+package com.hcm.controller.deploy;
 
 import com.hcm.common.core.domain.ResultVO;
+import com.hcm.common.core.entity.SysFunction;
 import com.hcm.common.core.entity.SysMenu;
+import com.hcm.common.vo.FunctionVo;
 import com.hcm.common.vo.MenuVo;
 import com.hcm.system.mapper.MenuMapper;
 import com.hcm.system.service.MenuService;
@@ -39,5 +41,4 @@ public class MenuController {
         SysMenu.pos2vos(sysMenuList,menuVoList);
         return ResultVO.success(menuVoList);
     }
-
 }

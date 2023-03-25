@@ -12,7 +12,7 @@ public enum RoleSearchTypeEnum {
     // 角色英文名称
     ROLE_NAME_EN("角色英文名称"),
     // 权限字符
-    ROLE_KEY("权限字符");
+    FUNCTION_KEY("权限字符");
 
     private final String description;
     RoleSearchTypeEnum(String description){

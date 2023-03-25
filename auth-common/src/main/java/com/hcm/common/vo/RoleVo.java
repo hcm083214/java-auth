@@ -42,11 +42,23 @@ public class RoleVo {
     private String roleNameEn;
 
     /**
+     * 角色中文描述
+     */
+    private String roleDescriptionCn;
+
+    /**
+
+     /**
+     * 角色英文描述
+     */
+    private String roleDescriptionEn;
+
+    /**
      * 角色权限
      */
     @Length(max = 20,message = "角色权限长度必须位于20以内")
-    @ExcelProperty("角色权限")
-    private String roleKey;
+    @ExcelProperty("权限字符串")
+    private String functionKey;
 
     /**
      * 角色排序
@@ -58,7 +70,7 @@ public class RoleVo {
      * 角色状态（0正常 1停用）
      */
     @ExcelProperty("角色状态（0正常 1停用")
-    private String status;
+    private Integer status;
 
     /**
      * 创建时间
