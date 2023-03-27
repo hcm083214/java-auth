@@ -1,7 +1,10 @@
 package com.hcm.common.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 功能权限Vo
@@ -49,18 +52,25 @@ public class FunctionVo {
     /**
      * 状态(0:无效，1：有效，2：软删除)
      */
-    private Integer status;
+    private String status;
 
     /**
-     * 当前页
+     * 创建者
      */
-    @ExcelIgnore
-    private Integer pageNum;
+    private String createBy;
 
     /**
-     * 每页显示数量
+     * 创建时间
      */
-    @ExcelIgnore
-    private Integer pageSize;
+    private Date createTime;
 
+    /**
+     * 更新者
+     */
+    private String updateBy;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 }

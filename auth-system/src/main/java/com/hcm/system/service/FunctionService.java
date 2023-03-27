@@ -1,6 +1,7 @@
 package com.hcm.system.service;
 
 import com.hcm.common.core.entity.SysFunction;
+import com.hcm.common.core.entity.SysMenu;
 import com.hcm.common.vo.FunctionVo;
 
 import java.util.List;
@@ -20,4 +21,12 @@ public interface FunctionService {
      * @return {@link List}<{@link SysFunction}>
      */
     List<SysFunction> getFunctionList(FunctionVo functionVo);
+
+    /**
+     * 通过权限id查询功能权限
+     *
+     * @param functionId 函数id
+     * @return {@link List}<{@link SysMenu}>
+     */
+    List<Long> getPermIdListByFunId(Long functionId);
 }

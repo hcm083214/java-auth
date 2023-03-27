@@ -30,6 +30,27 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<SysMenu> getMenuList() {
         List<SysMenu> sysMenuList = menuMapper.getMenuList();
+        return getMenuTreeList(sysMenuList);
+    }
+
+    /**
+     * 得到所有菜单列表
+     *
+     * @return {@link List}<{@link SysMenu}>
+     */
+    @Override
+    public List<SysMenu> getMenuListAll() {
+        List<SysMenu> sysMenuList = menuMapper.getMenuListAll();
+        return getMenuTreeList(sysMenuList);
+    }
+
+    /**
+     * 将菜单列表转化为菜单树
+     *
+     * @param sysMenuList 系统菜单列表
+     * @return {@link List}<{@link SysMenu}>
+     */
+    private List<SysMenu> getMenuTreeList(List<SysMenu> sysMenuList){
         List<SysMenu> sysMenuResult = new ArrayList<>();
         if (sysMenuList != null) {
             // 获取 parentId = 0的根节点
@@ -40,15 +61,14 @@ public class MenuServiceImpl implements MenuService {
         }
         return sysMenuResult;
     }
-
     /**
      * 生成递归树
      *
-     * @param treeList 树列表
+     * @param menuList 树列表
      * @param map      目标
      */
-    private void recursionTree(List<SysMenu> treeList,Map<Long, List<SysMenu>> map){
-        treeList.forEach(tree->{
+    private void recursionTree(List<SysMenu> menuList,Map<Long, List<SysMenu>> map){
+        menuList.forEach(tree->{
             List<SysMenu> childList = map.get(tree.getMenuId());
             tree.setChildren(childList);
             if(tree.getChildren() != null && tree.getChildren().size()>0){

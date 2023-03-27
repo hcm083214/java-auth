@@ -30,7 +30,7 @@ public class MenuController {
     private MenuService menuService;
 
     /**
-     * 获取菜单列表
+     * 获取菜单列表,type = "M"和 "C"
      *
      * @return {@link List}<{@link MenuVo}>
      */
@@ -41,4 +41,18 @@ public class MenuController {
         SysMenu.pos2vos(sysMenuList,menuVoList);
         return ResultVO.success(menuVoList);
     }
+
+    /**
+     * 获得功能权限列表,type = "M"， "C" 和 "F"
+     *
+     * @return {@link ResultVO}<{@link List}<{@link MenuVo}>>
+     */
+    @GetMapping("/all")
+    public ResultVO<List<MenuVo>> getPermissionList(){
+        List<SysMenu> sysMenuList = menuService.getMenuListAll();
+        List<MenuVo> menuVoList = new ArrayList<>();
+        SysMenu.pos2vos(sysMenuList,menuVoList);
+        return ResultVO.success(menuVoList);
+    }
+
 }

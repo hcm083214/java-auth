@@ -70,7 +70,7 @@ public class RoleVo {
      * 角色状态（0正常 1停用）
      */
     @ExcelProperty("角色状态（0正常 1停用")
-    private Integer status;
+    private String status;
 
     /**
      * 创建时间
@@ -79,21 +79,9 @@ public class RoleVo {
     private Date createTime;
 
     /**
-     * 当前页
-     */
-    @ExcelIgnore
-    private Integer pageNum;
-
-    /**
-     * 每页显示数量
-     */
-    @ExcelIgnore
-    private Integer pageSize;
-
-    /**
      * 搜索参数
      */
     @ExcelIgnore
-    @EnumValue(ignoreCase = true,enumClass = RoleSearchTypeEnum.class,message = "传入的参数不正确")
+    @EnumValue(enumClass = RoleSearchTypeEnum.class,ignoreCase = true,message = "传入的参数不正确")
     private String searchParams;
 }

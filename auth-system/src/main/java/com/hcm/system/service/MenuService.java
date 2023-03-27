@@ -15,4 +15,11 @@ public interface MenuService {
      * * @return {@link List}<{@link SysMenu}>
      */
     List<SysMenu> getMenuList();
+
+    /**
+     * 得到所有菜单列表
+     *
+     * @return {@link List}<{@link SysMenu}>
+     */
+    List<SysMenu> getMenuListAll();
 }

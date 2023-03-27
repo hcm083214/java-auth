@@ -3,7 +3,6 @@ package com.hcm.common.annotations;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 

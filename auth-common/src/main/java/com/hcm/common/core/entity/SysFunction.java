@@ -47,6 +47,6 @@ public class SysFunction extends BaseEntity {
     /**
      * 状态(0:无效，1：有效，2：软删除)
      */
-    private Integer status;
+    private String status;
 
 }

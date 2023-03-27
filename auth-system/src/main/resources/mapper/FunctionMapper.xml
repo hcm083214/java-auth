@@ -18,4 +18,8 @@
     <select id="getFunctionList" resultType="com.hcm.common.core.entity.SysFunction">
         select <include refid="functionInfo"></include> from sys_function
     </select>
+
+    <select id="getPermIdListByFunId" resultType="Long">
+        select menu_id menuId from sys_function_menu where function_id = #{functionId}
+    </select>
 </mapper>

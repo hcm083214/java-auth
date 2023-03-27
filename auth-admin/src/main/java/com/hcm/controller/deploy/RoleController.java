@@ -8,6 +8,7 @@ import com.hcm.common.utils.ExcelUtils;
 import com.hcm.common.vo.PageVo;
 import com.hcm.common.vo.RoleVo;
 import com.hcm.system.service.RoleService;
+import com.hcm.validation.PageValidation;
 import com.hcm.validation.RoleValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -41,13 +42,14 @@ public class RoleController {
      * 获取角色列表
      *
      * @param roleVo roleVo
+     * @param page   pageVo
      * @return {@link ResultVO}<{@link PageVo}<{@link RoleVo}>>
      */
     @GetMapping
     @PreAuthorize("@ss.hasPermission('permission:role:query')")
-    public ResultVO<PageVo<RoleVo>> getRoleList(@Validated RoleVo roleVo) {
-        RoleValidation.rolesSearchParamsValid(roleVo);
-        PageHelper.startPage(roleVo.getPageNum(), roleVo.getPageSize());
+    public ResultVO<PageVo<RoleVo>> getRoleList(@Validated RoleVo roleVo,@Validated PageVo page) {
+        PageValidation.isPassPageSizeOrNum(page);
+        PageHelper.startPage(page.getPageNum(), page.getPageSize());
         List<SysRole> roles = roleService.getRoles(roleVo);
         PageInfo<SysRole> pageList = new PageInfo<>(roles);
         PageVo<RoleVo> pageVo = new PageVo<>();
@@ -73,7 +75,7 @@ public class RoleController {
      */
     @GetMapping("/params")
     @PreAuthorize("@ss.hasPermission('permission:role:query')")
-    public ResultVO<List<String>> getParamsList(RoleVo roleVo){
+    public ResultVO<List<String>> getParamsList(@Validated RoleVo roleVo){
         List<String> result = roleService.getParamsList(roleVo);
         return ResultVO.success(result);
     }
@@ -87,10 +89,10 @@ public class RoleController {
      */
     @GetMapping("/export")
     @PreAuthorize("@ss.hasPermission('permission:role:export')")
-    public void export(HttpServletResponse response,@Validated RoleVo roleVo) throws IOException {
+    public void export(HttpServletResponse response,@Validated RoleVo roleVo,@Validated PageVo pageVo) throws IOException {
         // 入参校验
-        RoleValidation.rolesSearchParamsValid(roleVo);
-        PageHelper.startPage(roleVo.getPageNum(), roleVo.getPageSize());
+        PageValidation.isPassPageSizeOrNum(pageVo);
+        PageHelper.startPage(pageVo.getPageNum(), pageVo.getPageSize());
         List<SysRole> roles = roleService.getRoles(roleVo);
         // 转 VO
         PageInfo<SysRole> pageList = new PageInfo<>(roles);
