@@ -44,13 +44,13 @@ public class RoleVo {
     /**
      * 角色中文描述
      */
+    @ExcelProperty("角色中文描述")
     private String roleDescriptionCn;
-
-    /**
 
      /**
      * 角色英文描述
      */
+    @ExcelProperty("角色英文描述")
     private String roleDescriptionEn;
 
     /**

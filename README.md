@@ -9,3 +9,5 @@
 [一文带你搞定前后端分离下的认证和授权|Spring Security + JWT](https://juejin.cn/post/6900721218207350791)
 
 [Spring Security 两种资源放行策略，千万别用错了！](https://www.imooc.com/article/305184)
+
+访问swagger页面：http://localhost:60000/swagger-ui/index.html

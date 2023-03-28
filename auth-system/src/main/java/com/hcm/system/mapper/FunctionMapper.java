@@ -25,5 +25,36 @@ public interface FunctionMapper {
      */
     List<SysFunction> getFunctionList(@Param("function") FunctionVo functionVo);
 
-    List<Long> getPermIdListByFunId(@Param("functionId")Long functionId);
+    /**
+     * 根据functionId 查找功能权限id列表（菜单和按钮）
+     *
+     * @param functionId functionId
+     * @return {@link List}<{@link Long}>
+     */
+    List<Long> getPermIdListByFunId(@Param("functionId") Long functionId);
+
+    /**
+     * 编辑功能权限信息
+     *
+     * @param functionVo functionVo
+     */
+    void editFunctionInfo(@Param("functionVo") FunctionVo functionVo);
+
+    /**
+     * 插入函数烫信息
+     * 插入功能权限相关连的菜单和按钮权限
+     *
+     * @param perms      perms
+     * @param functionId functionId
+     */
+    void insertFunctionPermInfo(@Param("functionId")Long functionId,@Param("perms") List<Long> perms);
+
+    /**
+     * 删除函数烫信息
+     * 删除功能权限相关连的菜单和按钮权限
+     *
+     * @param perms      perms
+     * @param functionId functionId
+     */
+    void deleteFunctionPermInfo(@Param("functionId")Long functionId,@Param("perms") List<Long> perms);
 }

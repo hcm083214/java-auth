@@ -3,8 +3,10 @@ package com.hcm.common.vo;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 功能权限Vo
@@ -24,13 +26,19 @@ public class FunctionVo {
     /**
      * 功能权限中文名称
      */
+    @Length(max = 40,message = "功能权限中文名称长度必须位于2到40以内")
     private String functionNameCn;
 
+    /**
+     * 功能权限英文名称
+     */
+    @Length(max = 40,message = "功能权限英文名称长度必须位于2到40以内")
     private String functionNameEn;
 
     /**
      * 功能权限字符串
      */
+    @Length(max = 20,message = "角色权限长度必须位于20以内")
     private String functionKey;
 
 
@@ -73,4 +81,9 @@ public class FunctionVo {
      * 更新时间
      */
     private Date updateTime;
+
+    /**
+     * 功能权限列表（菜单和按钮）
+     */
+    private List<Long> permissionIds;
 }

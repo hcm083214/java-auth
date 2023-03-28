@@ -27,6 +27,12 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- swagger3-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+        </dependency>
+
         <!-- 核心模块-->
         <dependency>
             <groupId>com.hcm</groupId>
@@ -40,8 +46,6 @@
             <artifactId>auth-common</artifactId>
             <version>${auth.version}</version>
         </dependency>
-
-
 
         <dependency>
             <groupId>com.hcm</groupId>

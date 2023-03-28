@@ -8,6 +8,8 @@ import com.hcm.system.service.FunctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,6 +23,7 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Autowired
     private FunctionMapper functionMapper;
+
     /**
      * 查询功能权限列表
      *
@@ -40,5 +43,36 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public List<Long> getPermIdListByFunId(Long functionId) {
         return functionMapper.getPermIdListByFunId(functionId);
+    }
+
+    /**
+     * 编辑功能权限信息
+     *
+     * @param functionVo functionVo
+     */
+    @Override
+    public void editFunctionInfo(FunctionVo functionVo) {
+        functionMapper.editFunctionInfo(functionVo);
+        if (functionVo.getPermissionIds() != null && functionVo.getPermissionIds().size() > 0) {
+            List<Long> perms = functionMapper.getPermIdListByFunId(functionVo.getFunctionId());
+            List<Long> insertPerms = new ArrayList<>();
+            List<Long> deletePerms = new ArrayList<>();
+            perms.forEach(menuId -> {
+                if (!functionVo.getPermissionIds().contains(menuId)) {
+                    deletePerms.add(menuId);
+                }
+            });
+            functionVo.getPermissionIds().forEach(menuId -> {
+                if (!perms.contains(menuId)) {
+                    insertPerms.add(menuId);
+                }
+            });
+            if(insertPerms.size()>0){
+                functionMapper.insertFunctionPermInfo(functionVo.getFunctionId(), insertPerms);
+            }
+            if(deletePerms.size()>0){
+                functionMapper.deleteFunctionPermInfo(functionVo.getFunctionId(), deletePerms);
+            }
+        }
     }
 }

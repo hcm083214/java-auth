@@ -6,16 +6,19 @@ import com.hcm.common.core.domain.ResultVO;
 import com.hcm.common.core.entity.SysFunction;
 import com.hcm.common.exception.BadRequestException;
 import com.hcm.common.vo.FunctionVo;
-import com.hcm.common.vo.MenuVo;
 import com.hcm.common.vo.PageVo;
 import com.hcm.system.service.FunctionService;
+import com.hcm.validation.FunctionValidation;
 import com.hcm.validation.PageValidation;
+import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +31,7 @@ import java.util.List;
  * @author pc
  * @date 2023/03/25
  */
+@Api(value = "/functions", tags = "功能权限管理")
 @RestController
 @RequestMapping("/functions")
 public class FunctionController {
@@ -66,12 +70,25 @@ public class FunctionController {
     }
 
 
+    /**
+     * 根据 functionId 得到功能权限（菜单和按钮）的id列表
+     *
+     * @param functionId 函数id
+     * @return {@link ResultVO}<{@link List}<{@link Long}>>
+     */
     @GetMapping("/function_id/{functionId}")
-    public ResultVO<List<Long>> getPermIdListByFunId(@PathVariable("functionId") Long functionId) {
-        if(functionId == null){
-            throw new BadRequestException("functionId不能为空");
-        }
+    public ResultVO<List<Long>> getPermIdListByFunId(@PathVariable("functionId") Long functionId) throws BadRequestException {
+        FunctionValidation.isPassFunctionId(functionId);
         List<Long> permissionId = functionService.getPermIdListByFunId(functionId);
         return ResultVO.success(permissionId);
+    }
+
+    @PostMapping("/function_id/{functionId}")
+    public ResultVO<String> editFunctionInfo(@Validated @RequestBody FunctionVo functionVo, @PathVariable("functionId") Long functionId) throws BadRequestException {
+        FunctionValidation.isPassFunctionId(functionId);
+        FunctionValidation.editValidation(functionVo);
+        functionVo.setFunctionId(functionId);
+        functionService.editFunctionInfo(functionVo);
+        return ResultVO.success("修改成功");
     }
 }

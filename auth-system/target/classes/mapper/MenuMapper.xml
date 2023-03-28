@@ -17,4 +17,9 @@
         <include refid="menuItem_m"/>
         from sys_menu m where m.menu_type in ("M","C")
     </select>
+    <select id="getMenuListAll" resultType="com.hcm.common.core.entity.SysMenu">
+        select
+        <include refid="menuItem_m"/>
+        from sys_menu m
+    </select>
 </mapper>

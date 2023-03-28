@@ -20,6 +20,36 @@
     </select>
 
     <select id="getPermIdListByFunId" resultType="Long">
-        select menu_id menuId from sys_function_menu where function_id = #{functionId}
+        select menu_id menuId
+        from sys_function_menu
+        where function_id = #{functionId}
     </select>
+
+    <update id="editFunctionInfo">
+        update sys_function
+        set function_name_cn        = #{functionVo.functionNameCn},
+            function_name_en        = #{functionVo.functionNameEn},
+            function_key            = #{functionVo.functionKey},
+            function_description_cn = #{functionVo.functionDescriptionCn},
+            function_description_en = #{functionVo.functionDescriptionEn},
+            update_time             = now()
+    </update>
+
+    <insert id="insertFunctionPermInfo">
+        insert into sys_function_menu (function_id,menu_id,create_time) values
+        <trim prefix="" suffixOverrides=",">
+            <foreach collection="perms" item="menuId">
+                (#{functionId},#{menuId},now()),
+            </foreach>
+        </trim>
+    </insert>
+
+    <delete id="deleteFunctionPermInfo">
+        delete from sys_function_menu where (function_id,menu_id) in
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <foreach collection="perms" item="menuId">
+                (#{functionId},#{menuId}),
+            </foreach>
+        </trim>
+    </delete>
 </mapper>

@@ -29,4 +29,11 @@ public interface FunctionService {
      * @return {@link List}<{@link SysMenu}>
      */
     List<Long> getPermIdListByFunId(Long functionId);
+
+    /**
+     * 编辑功能权限信息
+     *
+     * @param functionVo functionVo
+     */
+    void editFunctionInfo(FunctionVo functionVo);
 }
