@@ -11,3 +11,5 @@
 [Spring Security 两种资源放行策略，千万别用错了！](https://www.imooc.com/article/305184)
 
 访问swagger页面：http://localhost:60000/swagger-ui/index.html
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODAwMTQyNTgsImlhdCI6MTY4MDAwNzA1OCwianRpIjoiYzBiZjRmYmQtZmNjNC00MGU0LWJlZDMtZjM3Yjg5YjJkN2U5Iiwic3ViIjoiaGNtIn0.k3Yv6gMW6tO1WDlrPKCRESlAa9S9xVTzXQfSd1XyPC4

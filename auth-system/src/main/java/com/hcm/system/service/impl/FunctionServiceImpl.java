@@ -35,6 +35,44 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     /**
+     * 判断待新增functionName和functionKey是否已经存在
+     *
+     * @param functionVo 函数签证官
+     * @return boolean
+     */
+    @Override
+    public boolean isInsertExist(FunctionVo functionVo) {
+        List<String> functionNameList = functionMapper.getFunctionByNameOrKey(functionVo);
+        return functionNameList != null && functionNameList.size() > 0;
+    }
+
+    /**
+     * 插入功能权限
+     *
+     * @param functionVo functionVo
+     */
+    @Override
+    public void insertFunction(FunctionVo functionVo) {
+        functionMapper.insertFunction(functionVo);
+        Long functionId = functionVo.getFunctionId();
+        if(functionVo.getPermissionIds() != null && functionVo.getPermissionIds().size()>0){
+            functionMapper.insertFunctionPermInfo(functionId,functionVo.getPermissionIds());
+        }
+    }
+
+    /**
+     * 批量插入功能权限
+     *
+     * @param functionVos functionVos
+     */
+    @Override
+    public void insertFunctionList(List<FunctionVo> functionVos) {
+        if(functionVos.size()>0){
+            functionMapper.insertFunctionList(functionVos);
+        }
+    }
+
+    /**
      * 通过权限id查询功能权限
      *
      * @param functionId 函数id
@@ -43,6 +81,17 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public List<Long> getPermIdListByFunId(Long functionId) {
         return functionMapper.getPermIdListByFunId(functionId);
+    }
+
+    /**
+     * 得到联想查询的参数列表
+     *
+     * @param functionVo functionVo
+     * @return {@link List}<{@link String}>
+     */
+    @Override
+    public List<String> getParamsList(FunctionVo functionVo) {
+        return functionMapper.getParamsList(functionVo,functionVo.getSearchParams());
     }
 
     /**
@@ -67,10 +116,10 @@ public class FunctionServiceImpl implements FunctionService {
                     insertPerms.add(menuId);
                 }
             });
-            if(insertPerms.size()>0){
+            if (insertPerms.size() > 0) {
                 functionMapper.insertFunctionPermInfo(functionVo.getFunctionId(), insertPerms);
             }
-            if(deletePerms.size()>0){
+            if (deletePerms.size() > 0) {
                 functionMapper.deleteFunctionPermInfo(functionVo.getFunctionId(), deletePerms);
             }
         }

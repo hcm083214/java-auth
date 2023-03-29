@@ -3,6 +3,7 @@ package com.hcm.system.mapper;
 import com.hcm.common.core.entity.SysFunction;
 import com.hcm.common.vo.FunctionVo;
 import com.hcm.common.vo.MenuVo;
+import com.hcm.common.vo.RoleVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,6 +27,14 @@ public interface FunctionMapper {
     List<SysFunction> getFunctionList(@Param("function") FunctionVo functionVo);
 
     /**
+     * 确认是否存在同名
+     *
+     * @param functionVo 函数签证官
+     * @return {@link List}<{@link String}>
+     */
+    List<String> getFunctionByNameOrKey(@Param("function") FunctionVo functionVo);
+
+    /**
      * 根据functionId 查找功能权限id列表（菜单和按钮）
      *
      * @param functionId functionId
@@ -34,14 +43,35 @@ public interface FunctionMapper {
     List<Long> getPermIdListByFunId(@Param("functionId") Long functionId);
 
     /**
+     * 得到参数列表
+     *
+     * @param searchType   类型
+     * @param functionVo roleVo
+     * @return {@link List}<{@link String}>
+     */
+    List<String> getParamsList(@Param("function") FunctionVo functionVo, @Param("searchType") String searchType);
+
+    /**
      * 编辑功能权限信息
      *
      * @param functionVo functionVo
      */
-    void editFunctionInfo(@Param("functionVo") FunctionVo functionVo);
+    void editFunctionInfo(@Param("function") FunctionVo functionVo);
 
     /**
-     * 插入函数烫信息
+     * 插入功能权限信息
+     *
+     * @param functionVo functionVo
+     */
+    void insertFunction(@Param("function")FunctionVo functionVo);
+
+    /**
+     * 批量插入功能权限信息
+     *
+     * @param functionList functionList
+     */
+    void insertFunctionList(@Param("functionList") List<FunctionVo> functionList);
+    /**
      * 插入功能权限相关连的菜单和按钮权限
      *
      * @param perms      perms

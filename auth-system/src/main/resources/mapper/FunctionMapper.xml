@@ -15,8 +15,33 @@
       create_time createTime,
       status
     </sql>
+
+    <sql id="searchOption">
+        <if test="function.functionNameCn!= null and function.functionNameCn != ''">
+            and function_name_cn like concat('%', #{function.functionNameCn}, '%')
+        </if>
+        <if test="function.functionNameEn!= null and function.functionNameEn != ''">
+            and function_name_en like concat('%', #{function.functionNameEn}, '%')
+        </if>
+        <if test="function.functionKey != null and function.functionKey != ''">
+            and function_key like concat('%', #{function.functionKey}, '%')
+        </if>
+        <if test="function.status != null and function.status != ''">
+            and status = #{function.status}
+        </if>
+    </sql>
+
     <select id="getFunctionList" resultType="com.hcm.common.core.entity.SysFunction">
-        select <include refid="functionInfo"></include> from sys_function
+        select <include refid="functionInfo"></include> from sys_function where 1=1
+        <include refid="searchOption"></include>
+    </select>
+
+    <select id="getFunctionByNameOrKey" resultType="string">
+        select function_name_cn
+        from sys_function
+        where function_name_cn = #{function.functionNameCn}
+           or function_name_en = #{function.functionNameEn}
+           or function_key = #{function.functionKey}
     </select>
 
     <select id="getPermIdListByFunId" resultType="Long">
@@ -25,15 +50,58 @@
         where function_id = #{functionId}
     </select>
 
+    <select id="getParamsList" resultType="string">
+        <if test="searchType!= null and searchType == 'function_name_cn'">
+            select distinct function_name_cn from sys_function
+        </if>
+        <if test="searchType!= null and searchType == 'function_name_en'">
+            select distinct function_name_en from sys_function
+        </if>
+        <if test="searchType!= null and searchType == 'function_key'">
+            select distinct function_key from sys_function
+        </if>
+        where 1=1
+        <include refid="searchOption"></include>
+        limit 400
+    </select>
+
     <update id="editFunctionInfo">
         update sys_function
-        set function_name_cn        = #{functionVo.functionNameCn},
-            function_name_en        = #{functionVo.functionNameEn},
-            function_key            = #{functionVo.functionKey},
-            function_description_cn = #{functionVo.functionDescriptionCn},
-            function_description_en = #{functionVo.functionDescriptionEn},
-            update_time             = now()
+        set function_name_cn = #{function.functionNameCn},
+        function_name_en = #{function.functionNameEn},
+        function_key = #{function.functionKey},
+        function_description_cn = #{function.functionDescriptionCn},
+        function_description_en = #{function.functionDescriptionEn},
+        <if test="function.status != null and function.status != ''">
+           status = #{function.status},
+        </if>
+        update_time = now()
+        where function_id = #{function.functionId}
     </update>
+
+    <insert id="insertFunction" useGeneratedKeys="true" keyProperty="functionId">
+        insert into sys_function (function_name_cn, function_name_en, function_key, function_description_cn,
+                                  function_description_en, status, create_time)
+        values (#{function.functionNameCn,jdbcType=VARCHAR}, #{function.functionNameEn,jdbcType=VARCHAR},
+                #{function.functionKey,jdbcType=VARCHAR},
+                #{function.functionDescriptionCn,jdbcType=VARCHAR}, #{function.functionDescriptionEn,jdbcType=VARCHAR},
+                '1', now())
+    </insert>
+
+    <insert id="insertFunctionList">
+        insert into sys_function (function_name_cn, function_name_en, function_key, function_description_cn,
+        function_description_en, status, create_time) values
+        <foreach collection="functionList" item="function" separator=",">
+            (#{function.functionNameCn,jdbcType=VARCHAR}, #{function.functionNameEn,jdbcType=VARCHAR},
+            #{function.functionKey,jdbcType=VARCHAR},
+            #{function.functionDescriptionCn,jdbcType=VARCHAR}, #{function.functionDescriptionEn,jdbcType=VARCHAR},
+            '1', now())
+        </foreach>
+        on duplicate key update
+        function_name_en = values(function_name_en),function_description_cn = values(function_description_cn),
+        function_description_en = values(function_description_en),
+        function_key = values(function_key),status = values(status),update_time = now()
+    </insert>
 
     <insert id="insertFunctionPermInfo">
         insert into sys_function_menu (function_id,menu_id,create_time) values

@@ -1,7 +1,7 @@
 package com.hcm.common.enums;
 
 /**
- * 角色搜索类型枚举
+ * 角色联想搜索类型枚举
  *
  * @author pc
  * @date 2023/03/23

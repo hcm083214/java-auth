@@ -14,6 +14,8 @@ import com.hcm.framework.security.service.UserLoginService;
 import com.hcm.system.service.RoleService;
 import com.hcm.system.service.UserService;
 import com.hcm.validation.LoginValidation;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
+@Api(tags = "登陆注册服务")
 public class LoginController {
 
     @Autowired
@@ -59,6 +62,7 @@ public class LoginController {
      * @description
      */
     @PostMapping("/login")
+    @ApiOperation(value = "用户登录",notes = "用户登录")
     public ResultVO<LoginVo> login(@RequestBody() LoginVo loginVo) throws BadRequestException {
         LoginValidation.loginParamsValid(loginVo);
         UserDetail userDetail = userLoginService.login(loginVo);
@@ -73,6 +77,7 @@ public class LoginController {
      * @throws BadRequestException 错误请求异常
      */
     @GetMapping("/user")
+    @ApiOperation(value = "获取用户信息",notes = "获取用户信息")
     public ResultVO<UserVo> getUserInfo() throws BadRequestException {
         UserDetail user;
         try {
@@ -96,11 +101,12 @@ public class LoginController {
     /**
      * 注册
      *
-     * @param loginVo 登录
+     * @param loginVo loginVo
      * @return {@link ResultVO}<{@link UserVo}>
      * @throws BadRequestException 错误请求异常
      */
     @PostMapping("/register")
+    @ApiOperation(value = "用户注册",notes = "用户注册")
     public ResultVO<UserVo> register(@RequestBody LoginVo loginVo) throws BadRequestException {
         LoginValidation.loginParamsValid(loginVo);
         userLoginService.checkCaptcha(loginVo.getCode(), loginVo.getUuid());

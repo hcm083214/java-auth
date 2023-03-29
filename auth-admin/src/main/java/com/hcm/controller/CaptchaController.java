@@ -10,6 +10,8 @@ import com.hcm.common.exception.BadRequestException;
 import com.hcm.common.utils.BaseUtils;
 import com.hcm.common.utils.uuid.IdUtils;
 import com.hcm.common.vo.CaptchaVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RestController
 @RequestMapping("/captcha")
+@Api(tags = "二维码服务")
 public class CaptchaController {
 
 
@@ -47,6 +50,7 @@ public class CaptchaController {
      * @param type    验证码的类型，string 和 math 两种
      */
     @GetMapping("/image")
+    @ApiOperation(value = "获取二维码",notes = "获取二维码")
     public ResultVO<CaptchaVo> getCaptchaImg(@RequestParam("type") String type) {
         if (BaseUtils.isEmptyString(type)) {
             throw new BadRequestException("type 未传");
