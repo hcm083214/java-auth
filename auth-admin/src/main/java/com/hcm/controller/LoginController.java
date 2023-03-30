@@ -35,7 +35,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@Api(tags = "登陆注册服务")
+@Api(tags = "登陆注册管理")
 public class LoginController {
 
     @Autowired
@@ -77,7 +77,7 @@ public class LoginController {
      * @throws BadRequestException 错误请求异常
      */
     @GetMapping("/user")
-    @ApiOperation(value = "获取用户信息",notes = "获取用户信息")
+    @ApiOperation(value = "用户信息",notes = "获取用户信息")
     public ResultVO<UserVo> getUserInfo() throws BadRequestException {
         UserDetail user;
         try {

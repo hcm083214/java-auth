@@ -1,6 +1,5 @@
 package com.hcm.common.vo;
 
-import com.hcm.common.core.entity.SysMenu;
 import lombok.Data;
 
 import java.util.List;
@@ -9,20 +8,23 @@ import java.util.List;
  * @author pc
  */
 @Data
-public class MenuVo {
+public class ResourceVo {
     private static final long serialVersionUID = 1L;
 
     /**
      * 菜单ID
      */
-    private Long menuId;
+    private Long resourceId;
 
     /**
      * 菜单名称
      */
-    private String menuName;
+    private String resourceName;
 
-
+    /**
+     * 父菜单ID
+     */
+    private Long parentId;
 
     /**
      * 显示顺序
@@ -30,27 +32,34 @@ public class MenuVo {
     private String orderNum;
 
     /**
-     * 菜单URL
+     * 特指前端组件路径
      */
     private String component;
 
+    /**
+     * 前端为路由地址，后端为url
+     */
     private String path;
 
+    /**
+     * 控制器类
+     */
+    private String controllerClass;
 
     /**
-     * 类型（M目录 C菜单 F按钮）
+     * 控制器名称
      */
-    private String menuType;
+    private String controllerName;
 
     /**
-     * 菜单状态（0显示 1隐藏）
+     * 资源描述
      */
-    private String visible;
+    private String description;
 
     /**
-     * 是否刷新（0刷新 1不刷新）
+     * 资源类型（M目录 C菜单 F按钮）
      */
-    private String isRefresh;
+    private String resourceType;
 
     /**
      * 权限字符串
@@ -65,5 +74,5 @@ public class MenuVo {
     /**
      * 子菜单
      */
-    private List<MenuVo> children;
+    private List<ResourceVo> children;
 }

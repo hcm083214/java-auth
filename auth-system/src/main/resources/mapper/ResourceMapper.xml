@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hcm.system.mapper.ResourceMapper">
+    <sql id="menuItem">
+        resource_id
+        resourceId,
+        resource_type resourceType,
+        component component,
+        path path,
+        resource_name menuName,
+        parent_id parentId,
+        perms perms,
+        icon icon,
+        order_num orderNum,
+        description
+    </sql>
+
+    <select id="getMenuList" resultType="com.hcm.common.core.entity.SysResource">
+        select
+        <include refid="menuItem"/>
+        from sys_resource where resource_type in ("M","C")
+    </select>
+
+    <select id="geResourceList" resultType="com.hcm.common.core.entity.SysResource">
+        select
+        <include refid="menuItem"/>
+        from sys_resource
+    </select>
+
+    <insert id="addApiList">
+        insert into sys_resource (resource_name, path, description, resource_type, request_method, status, perms,
+        controller_class, controller_name, create_time) values
+        <foreach collection="resourceList" item="resource" separator=",">
+            (#{resource.resourceName}, #{resource.path}, #{resource.description},'F',
+            #{resource.requestMethod},'1',#{resource.perms},#{resource.controllerClass},#{resource.controllerName},now())
+        </foreach>
+        on duplicate key update
+        description = values(description), request_method=
+        values(request_method),perms=values(perms),controller_class=values(controller_class),
+        controller_name = values(controller_name),update_time = now()
+    </insert>
+</mapper>

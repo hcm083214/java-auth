@@ -45,8 +45,8 @@
     </select>
 
     <select id="getPermIdListByFunId" resultType="Long">
-        select menu_id menuId
-        from sys_function_menu
+        select resource_id resourceId
+        from sys_function_resource
         where function_id = #{functionId}
     </select>
 
@@ -104,7 +104,7 @@
     </insert>
 
     <insert id="insertFunctionPermInfo">
-        insert into sys_function_menu (function_id,menu_id,create_time) values
+        insert into sys_function_resource (function_id,resource_id,create_time) values
         <trim prefix="" suffixOverrides=",">
             <foreach collection="perms" item="menuId">
                 (#{functionId},#{menuId},now()),
@@ -113,7 +113,7 @@
     </insert>
 
     <delete id="deleteFunctionPermInfo">
-        delete from sys_function_menu where (function_id,menu_id) in
+        delete from sys_function_resource where (function_id,resource_id) in
         <trim prefix="(" suffixOverrides="," suffix=")">
             <foreach collection="perms" item="menuId">
                 (#{functionId},#{menuId}),

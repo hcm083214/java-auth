@@ -1,7 +1,7 @@
 package com.hcm.common.core.entity;
 
 import com.hcm.common.core.domain.BaseEntity;
-import com.hcm.common.vo.MenuVo;
+import com.hcm.common.vo.ResourceVo;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -14,23 +14,18 @@ import java.util.List;
  * @author pc
  */
 @Data
-public class SysMenu extends BaseEntity {
+public class SysResource extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 菜单ID
      */
-    private Long menuId;
+    private Long resourceId;
 
     /**
      * 菜单名称
      */
-    private String menuName;
-
-    /**
-     * 父菜单名称
-     */
-    private String parentName;
+    private String resourceName;
 
     /**
      * 父菜单ID
@@ -43,31 +38,39 @@ public class SysMenu extends BaseEntity {
     private String orderNum;
 
     /**
-     * 菜单URL
+     * 特指前端组件路径
      */
     private String component;
 
+    /**
+     * 前端为路由地址，后端为url
+     */
     private String path;
 
     /**
-     * 打开方式（menuItem页签 menuBlank新窗口）
+     * 请求方法
      */
-    private String target;
+    private String requestMethod;
 
     /**
-     * 类型（M目录 C菜单 F按钮）
+     * 控制器类
      */
-    private String menuType;
+    private String controllerClass;
 
     /**
-     * 菜单状态（0显示 1隐藏）
+     * 控制器名称
      */
-    private String visible;
+    private String controllerName;
 
     /**
-     * 是否刷新（0刷新 1不刷新）
+     * 资源描述
      */
-    private String isRefresh;
+    private String description;
+
+    /**
+     * 资源类型（M目录 C菜单 F按钮）
+     */
+    private String resourceType;
 
     /**
      * 权限字符串
@@ -82,13 +85,13 @@ public class SysMenu extends BaseEntity {
     /**
      * 子菜单
      */
-    private List<SysMenu> children;
+    private List<SysResource> children;
 
-    public static void pos2vos(List<SysMenu> pos,List<MenuVo> vos){
+    public static void pos2vos(List<SysResource> pos, List<ResourceVo> vos){
         pos.forEach(sysMenu -> {
-            MenuVo menu = new MenuVo();
+            ResourceVo menu = new ResourceVo();
             BeanUtils.copyProperties(sysMenu, menu);
-            List<MenuVo> childrens = new ArrayList<>();
+            List<ResourceVo> childrens = new ArrayList<>();
             if (sysMenu.getChildren() != null) {
                 pos2vos(sysMenu.getChildren(),childrens);
             }

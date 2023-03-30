@@ -2,8 +2,6 @@ package com.hcm.system.mapper;
 
 import com.hcm.common.core.entity.SysFunction;
 import com.hcm.common.vo.FunctionVo;
-import com.hcm.common.vo.MenuVo;
-import com.hcm.common.vo.RoleVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

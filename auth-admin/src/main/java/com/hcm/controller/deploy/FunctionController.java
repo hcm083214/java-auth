@@ -117,7 +117,7 @@ public class FunctionController {
      */
     @GetMapping("/params")
     @PreAuthorize("@ss.hasPermission('permission:function:query')")
-    @ApiOperation(value = "得到参数列表", notes = "得到参数列表,供功能权限查询项目的联想搜索")
+    @ApiOperation(value = "参数列表", notes = "得到参数列表,供功能权限查询项目的联想搜索")
     public ResultVO<List<String>> getParamsList(@Validated FunctionVo functionVo) {
         List<String> paramsList = functionService.getParamsList(functionVo);
         return ResultVO.success(paramsList);
