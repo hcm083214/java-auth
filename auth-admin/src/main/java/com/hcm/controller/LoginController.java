@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,7 +78,8 @@ public class LoginController {
      * @throws BadRequestException 错误请求异常
      */
     @GetMapping("/user")
-    @ApiOperation(value = "用户信息",notes = "获取用户信息")
+    @ApiOperation(value = "用户信息查询",notes = "获取用户信息")
+    @PreAuthorize("@ss.hasPermission('user:info:query')")
     public ResultVO<UserVo> getUserInfo() throws BadRequestException {
         UserDetail user;
         try {

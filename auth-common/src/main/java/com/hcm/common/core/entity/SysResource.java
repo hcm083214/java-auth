@@ -50,7 +50,7 @@ public class SysResource extends BaseEntity {
     /**
      * 请求方法
      */
-    private String requestMethod;
+    private String requestType;
 
     /**
      * 控制器类
@@ -61,6 +61,11 @@ public class SysResource extends BaseEntity {
      * 控制器名称
      */
     private String controllerName;
+
+    /**
+     * api的方法名称
+     */
+    private String methodName;
 
     /**
      * 资源描述

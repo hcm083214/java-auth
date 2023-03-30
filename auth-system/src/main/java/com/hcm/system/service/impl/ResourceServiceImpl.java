@@ -121,12 +121,12 @@ public class ResourceServiceImpl implements ResourceService {
                         Method method = handlerMethods.getMethod();
                         // 获取请求方式
                         RequestMethodsRequestCondition requestMethodsRequestCondition = requestMappingInfo.getMethodsCondition();
-                        sysResource.setRequestMethod(set2String(requestMethodsRequestCondition.getMethods()));
+                        sysResource.setRequestType(set2String(requestMethodsRequestCondition.getMethods()));
                         // 获取请求地址
                         PatternsRequestCondition patternsCondition = requestMappingInfo.getPatternsCondition();
                         sysResource.setPath(set2String(patternsCondition.getPatterns()));
                         // 获取方法名
-                        sysResource.setResourceName(method.getName());
+                        sysResource.setMethodName(method.getName());
                         // 获取类名
                         String className = handlerMethodsBeanType.toString().replace("class", "")
                                 .replace(" ", "");
@@ -144,10 +144,13 @@ public class ResourceServiceImpl implements ResourceService {
                         if (method.isAnnotationPresent(ApiOperation.class)) {
                             ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
                             String value = apiOperation.value();
+                            sysResource.setResourceName(value);
                             String notes = apiOperation.notes();
                             sysResource.setDescription(StringUtils.isNull(notes) ? value : notes);
                         }
-                        sysApiList.add(sysResource);
+                        if(StringUtils.isNotNull(sysResource.getResourceName())){
+                            sysApiList.add(sysResource);
+                        }
                     });
                     log.info("sysApiList:{}", sysApiList);
                 }

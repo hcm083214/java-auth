@@ -50,7 +50,7 @@ public class CaptchaController {
      * @param type    验证码的类型，string 和 math 两种
      */
     @GetMapping("/image")
-    @ApiOperation(value = "二维码",notes = "获取二维码")
+    @ApiOperation(value = "二维码查询",notes = "获取二维码")
     public ResultVO<CaptchaVo> getCaptchaImg(@RequestParam("type") String type) {
         if (BaseUtils.isEmptyString(type)) {
             throw new BadRequestException("type 未传");

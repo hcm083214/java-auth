@@ -35,7 +35,7 @@ public class ResourceController {
      * @return {@link List}<{@link ResourceVo}>
      */
     @GetMapping("/menu")
-    @ApiOperation(value = "获取菜单列表",notes = "获取菜单列表")
+    @ApiOperation(value = "菜单资源查询",notes = "获取菜单列表")
     public ResultVO<List<ResourceVo>> getMenuList() {
         List<SysResource> sysResourceList = resourceService.getMenuList();
         List<ResourceVo> resourceVoList = new ArrayList<>();
@@ -49,7 +49,7 @@ public class ResourceController {
      * @return {@link ResultVO}<{@link List}<{@link ResourceVo}>>
      */
     @GetMapping("/all")
-    @ApiOperation(value = "获得功能权限列表",notes = "获得功能权限列表,包括页面，菜单，按钮权限")
+    @ApiOperation(value = "资源列表查询",notes = "获得功能权限列表,包括页面，菜单，按钮权限")
     public ResultVO<List<ResourceVo>> getPermissionList(){
         List<SysResource> sysResourceList = resourceService.getMenuListAll();
         List<ResourceVo> resourceVoList = new ArrayList<>();
@@ -58,11 +58,14 @@ public class ResourceController {
     }
 
     /**
-     * 得到api信息
+     * 同步api信息
+     *
+     * @param request 请求
+     * @return {@link ResultVO}<{@link String}>
      */
     @GetMapping("/api/sync")
     @PreAuthorize("@ss.hasPermission('resource:api:sync')")
-    @ApiOperation(value = "同步api", notes = "得到api信息")
+    @ApiOperation(value = "Api资源同步", notes = "同步api信息")
     public ResultVO<String> syncApiInfo(HttpServletRequest request){
        List<SysResource> sysResourceList = resourceService.syncApiInfo(request);
        resourceService.addApiList(sysResourceList);

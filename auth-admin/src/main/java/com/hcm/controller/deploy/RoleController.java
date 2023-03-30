@@ -9,7 +9,6 @@ import com.hcm.common.vo.PageVo;
 import com.hcm.common.vo.RoleVo;
 import com.hcm.system.service.RoleService;
 import com.hcm.validation.PageValidation;
-import com.hcm.validation.RoleValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +49,7 @@ public class RoleController {
      */
     @GetMapping
     @PreAuthorize("@ss.hasPermission('permission:role:query')")
-    @ApiOperation(value = "分页获取角色列表",notes = "分页获取角色列表")
+    @ApiOperation(value = "角色查询",notes = "分页获取角色列表")
     public ResultVO<PageVo<RoleVo>> getRoleList(@Validated RoleVo roleVo,@Validated PageVo page) {
         PageValidation.isPassPageSizeOrNum(page);
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
@@ -79,7 +78,7 @@ public class RoleController {
      */
     @GetMapping("/params")
     @PreAuthorize("@ss.hasPermission('permission:role:query')")
-    @ApiOperation(value = "分页获取搜索栏联想结果",notes = "分页获取搜索栏联想结果")
+    @ApiOperation(value = "角色搜索参数查询",notes = "获取搜索栏联想结果")
     public ResultVO<List<String>> getParamsList(@Validated RoleVo roleVo){
         List<String> result = roleService.getParamsList(roleVo);
         return ResultVO.success(result);
@@ -94,7 +93,7 @@ public class RoleController {
      */
     @GetMapping("/export")
     @PreAuthorize("@ss.hasPermission('permission:role:export')")
-    @ApiOperation(value = "角色列表导出",notes = "角色列表导出")
+    @ApiOperation(value = "角色导出",notes = "角色列表导出")
     public void export(HttpServletResponse response,@Validated RoleVo roleVo,@Validated PageVo pageVo) throws IOException {
         // 入参校验
         PageValidation.isPassPageSizeOrNum(pageVo);
@@ -122,7 +121,7 @@ public class RoleController {
      */
     @GetMapping("/import-template")
     @PreAuthorize("@ss.hasPermission('permission:role:export')")
-    @ApiOperation(value = "角色列表导出模板",notes = "角色列表导出模板")
+    @ApiOperation(value = "角色导入模板导出",notes = "角色列表导出模板")
     public void exportTemplate(HttpServletResponse response) throws IOException {
         List<RoleVo> roleVos = Arrays.asList(
                 RoleVo.builder().roleId(1L).roleNameCn("管理员").roleNameEn("admin").functionKey("admin").roleSort(1).build(),
@@ -139,7 +138,7 @@ public class RoleController {
      */
     @PostMapping("/import")
     @PreAuthorize("@ss.hasPermission('permission:role:import')")
-    @ApiOperation(value = "角色列表excel导入",notes = "角色列表excel导入")
+    @ApiOperation(value = "角色导入",notes = "角色列表excel导入")
     public ResultVO<?> importExcel(@RequestBody MultipartFile file)throws IOException{
         List<RoleVo> list = ExcelUtils.excel2List(file, RoleVo.class);
         roleService.insertRole(list);

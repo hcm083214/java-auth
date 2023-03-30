@@ -42,6 +42,11 @@ public class ResourceVo {
     private String path;
 
     /**
+     * 请求方法 get/post
+     */
+    private String requestType;
+
+    /**
      * 控制器类
      */
     private String controllerClass;

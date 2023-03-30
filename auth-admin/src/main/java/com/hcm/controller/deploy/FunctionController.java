@@ -54,7 +54,7 @@ public class FunctionController {
      */
     @GetMapping
     @PreAuthorize("@ss.hasPermission('permission:function:query')")
-    @ApiOperation(value = "得到功能权限列表", notes = "得到功能权限列表的详情")
+    @ApiOperation(value = "功能权限查询", notes = "得到功能权限列表的详情")
     public ResultVO<PageVo<FunctionVo>> getFunctionList(FunctionVo functionVo, @Validated PageVo page) throws BadRequestException {
         PageValidation.isPassPageSizeOrNum(page);
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
@@ -83,7 +83,7 @@ public class FunctionController {
      */
     @PostMapping
     @PreAuthorize("@ss.hasPermission('permission:function:query')")
-    @ApiOperation(value = "新增功能权限", notes = "新增功能权限")
+    @ApiOperation(value = "功能权限新增", notes = "新增功能权限")
     public ResultVO<String> addFunction(@Validated @RequestBody FunctionVo functionVo) throws BadRequestException {
         FunctionValidation.editValidation(functionVo);
         boolean isNameExist = functionService.isInsertExist(functionVo);
@@ -102,7 +102,7 @@ public class FunctionController {
      */
     @GetMapping("/function_id/{functionId}")
     @PreAuthorize("@ss.hasPermission('permission:function:query')")
-    @ApiOperation(value = "根据 functionId 得到 menuId list", notes = "根据 functionId 得到功能权限（菜单和按钮）的id列表")
+    @ApiOperation(value = "功能权限下的菜单列表查询", notes = "根据 functionId 得到功能权限（菜单和按钮）的id列表")
     public ResultVO<List<Long>> getPermIdListByFunId(@PathVariable("functionId") Long functionId) throws BadRequestException {
         FunctionValidation.isPassFunctionId(functionId);
         List<Long> permissionId = functionService.getPermIdListByFunId(functionId);
@@ -117,7 +117,7 @@ public class FunctionController {
      */
     @GetMapping("/params")
     @PreAuthorize("@ss.hasPermission('permission:function:query')")
-    @ApiOperation(value = "参数列表", notes = "得到参数列表,供功能权限查询项目的联想搜索")
+    @ApiOperation(value = "功能权限搜索参数查询", notes = "得到参数列表,供功能权限查询项目的联想搜索")
     public ResultVO<List<String>> getParamsList(@Validated FunctionVo functionVo) {
         List<String> paramsList = functionService.getParamsList(functionVo);
         return ResultVO.success(paramsList);
@@ -133,7 +133,7 @@ public class FunctionController {
      */
     @PostMapping("/function_id/{functionId}")
     @PreAuthorize("@ss.hasPermission('permission:function:edit')")
-    @ApiOperation(value = "编辑功能权限信息", notes = "编辑指定的 functionId 的信息和相关联的 menuId List")
+    @ApiOperation(value = "功能权限编辑", notes = "编辑指定的 functionId 的信息和相关联的 menuId List")
     public ResultVO<String> editFunctionInfo(@Validated @RequestBody FunctionVo functionVo, @PathVariable("functionId") Long functionId) throws BadRequestException {
         // 如果一张表里面有多个数据范围的权限信息，需要验证id的有效性：即当前数据范围下的id是否存在
         FunctionValidation.isPassFunctionId(functionId);
@@ -152,7 +152,7 @@ public class FunctionController {
      */
     @GetMapping("/export")
     @PreAuthorize("@ss.hasPermission('permission:function:export')")
-    @ApiOperation(value = "权限详情导出", notes = "权限详情导出到excel")
+    @ApiOperation(value = "功能权限导出", notes = "权限详情导出到excel")
     public void export(HttpServletResponse response, @Validated FunctionVo functionVo, @Validated PageVo pageVo) throws IOException {
         PageValidation.isPassPageSizeOrNum(pageVo);
         PageHelper.startPage(pageVo.getPageNum(), pageVo.getPageSize());
@@ -176,7 +176,7 @@ public class FunctionController {
      */
     @GetMapping("/export-template")
     @PreAuthorize("@ss.hasPermission('permission:function:export')")
-    @ApiOperation(value = "导出模板",notes = "导出模板")
+    @ApiOperation(value = "功能权限导入模板导出",notes = "导出模板")
     public void exportTemplate(HttpServletResponse response) throws IOException {
         List<FunctionVo> functionVos = Arrays.asList(FunctionVo.builder().functionId(1001L).functionNameCn("管理员权限").
                         functionDescriptionCn("系统的所有权限").functionKey("admin").status("1").build(),
@@ -192,7 +192,7 @@ public class FunctionController {
      */
     @PostMapping("/import")
     @PreAuthorize("@ss.hasPermission('permission:function:import')")
-    @ApiOperation(value = "功能权限列表导入",notes = "功能权限列表导入")
+    @ApiOperation(value = "功能权限导入",notes = "功能权限列表导入")
     public ResultVO<String> importFunctionList(@RequestBody MultipartFile file)throws IOException{
         List<FunctionVo> functionVos = ExcelUtils.excel2List(file,FunctionVo.class);
         functionService.insertFunctionList(functionVos);
