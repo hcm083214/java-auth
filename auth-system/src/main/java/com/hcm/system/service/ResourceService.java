@@ -1,6 +1,7 @@
 package com.hcm.system.service;
 
 import com.hcm.common.core.entity.SysResource;
+import com.hcm.common.vo.ResourceVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,6 +23,27 @@ public interface ResourceService {
      * @return {@link List}<{@link SysResource}>
      */
     List<SysResource> getMenuListAll();
+
+    /**
+     * 编辑菜单
+     *
+     * @param resourceVo resourceVo
+     */
+    void editMenu(ResourceVo resourceVo);
+
+    /**
+     * 添加菜单
+     *
+     * @param resourceVo resourceVo
+     */
+    void addMenu(ResourceVo resourceVo);
+
+    /**
+     * 编辑资源父id
+     *
+     * @param resourceVoList resourceVo
+     */
+    void editResourceParentId(List<ResourceVo> resourceVoList);
 
     /**
      * 同步api信息

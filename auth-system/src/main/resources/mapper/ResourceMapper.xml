@@ -7,7 +7,7 @@
         resource_type resourceType,
         component component,
         path path,
-        resource_name menuName,
+        resource_name resourceName,
         parent_id parentId,
         perms perms,
         icon icon,
@@ -21,22 +21,61 @@
         from sys_resource where resource_type in ("M","C")
     </select>
 
+    <select id="getApiList" resultType="com.hcm.common.core.entity.SysResource">
+        select
+        <include refid="menuItem"/>
+        from sys_resource where resource_type = "F"
+    </select>
+
     <select id="geResourceList" resultType="com.hcm.common.core.entity.SysResource">
         select
         <include refid="menuItem"/>
         from sys_resource
     </select>
 
+    <update id="editMenu">
+        update sys_resource
+        set resource_name = #{resource.resourceName},
+            parent_id     = #{resource.parentId},
+            path          = #{resource.path},
+            component     = #{resource.component},
+            resource_type = #{resource.resourceType},
+            icon          = #{resource.icon},
+            update_time   = now(),
+            status        = '1'
+        where resource_id = #{resource.resourceId}
+    </update>
+
+    <update id="updateParentId">
+        update sys_resource set parent_id = case resource_id
+        <foreach collection="resourceList" item="resource">
+            when #{resource.resourceId} then #{resource.parentId}
+        </foreach>
+        end
+        where resource_id in
+        <foreach collection="resourceList" item="resource" open="(" close=")" separator=",">
+            #{resource.resourceId}
+        </foreach>
+    </update>
+
+    <insert id="addMenu">
+        insert into sys_resource (resource_name, parent_id, path, component, resource_type, icon, status,
+                                  create_time)
+        values (#{resource.resourceName}, #{resource.parentId}, #{resource.path}, #{resource.component},
+                #{resource.resourceType}, #{resource.icon}, '1', now())
+    </insert>
+
     <insert id="addApiList">
-        insert into sys_resource (resource_name, path, description, resource_type, request_type, status, perms,
+        insert into sys_resource (resource_name, path, description, resource_type, request_type,method_name, status,
+        perms,
         controller_class, controller_name, create_time) values
         <foreach collection="resourceList" item="resource" separator=",">
             (#{resource.resourceName}, #{resource.path}, #{resource.description},'F',
-            #{resource.requestType},'1',#{resource.perms},#{resource.controllerClass},#{resource.controllerName},now())
+            #{resource.requestType},#{resource.methodName},'1',#{resource.perms},#{resource.controllerClass},#{resource.controllerName},now())
         </foreach>
         on duplicate key update
-        description = values(description), request_type=
-        values(request_type),perms=values(perms),controller_class=values(controller_class),
+        description = values(description), request_type=values(request_type),method_name = values(method_name),
+        perms = values(perms),controller_class = values(controller_class),
         controller_name = values(controller_name),update_time = now()
     </insert>
 </mapper>

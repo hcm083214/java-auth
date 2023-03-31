@@ -2,6 +2,7 @@ package com.hcm.system.service.impl;
 
 import com.hcm.common.core.entity.SysResource;
 import com.hcm.common.utils.StringUtils;
+import com.hcm.common.vo.ResourceVo;
 import com.hcm.system.mapper.ResourceMapper;
 import com.hcm.system.service.ResourceService;
 import io.swagger.annotations.Api;
@@ -47,7 +48,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<SysResource> getMenuList() {
         List<SysResource> sysResourceList = resourceMapper.getMenuList();
-        return getMenuTreeList(sysResourceList);
+        return list2Tree(sysResourceList);
     }
 
     /**
@@ -58,7 +59,63 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<SysResource> getMenuListAll() {
         List<SysResource> sysResourceList = resourceMapper.geResourceList();
-        return getMenuTreeList(sysResourceList);
+        return list2Tree(sysResourceList);
+    }
+
+    /**
+     * 编辑菜单
+     *
+     * @param resourceVo resourceVo
+     */
+    @Override
+    public void editMenu(ResourceVo resourceVo) {
+        resourceMapper.editMenu(resourceVo);
+    }
+
+    /**
+     * 添加菜单
+     *
+     * @param resourceVo resourceVo
+     */
+    @Override
+    public void addMenu(ResourceVo resourceVo) {
+        resourceMapper.addMenu(resourceVo);
+    }
+
+    /**
+     * 编辑资源父id
+     *
+     * @param resourceVoList resourceVo
+     */
+    @Override
+    public void editResourceParentId(List<ResourceVo> resourceVoList) {
+        List<ResourceVo> updateList = new ArrayList<>();
+        setParentIdAndFlat(resourceVoList, updateList);
+        if (updateList.size() > 0) {
+            resourceMapper.updateParentId(updateList);
+        }
+    }
+
+    /**
+     * 设置父id和设置更新列表
+     *
+     * @param resourceVoList 资源vo列表
+     * @param updateList     更新列表
+     */
+    private void setParentIdAndFlat(List<ResourceVo> resourceVoList, List<ResourceVo> updateList) {
+        for (ResourceVo resourceVo : resourceVoList) {
+            Long parentId = resourceVo.getResourceId();
+            List<ResourceVo> children = resourceVo.getChildren();
+            children.forEach(resource -> {
+                if (!resource.getParentId().equals(parentId)) {
+                    resource.setParentId(parentId);
+                    updateList.add(resource);
+                }
+            });
+            if (children.size() > 0) {
+                setParentIdAndFlat(children, updateList);
+            }
+        }
     }
 
     /**
@@ -67,29 +124,30 @@ public class ResourceServiceImpl implements ResourceService {
      * @param sysResourceList 系统菜单列表
      * @return {@link List}<{@link SysResource}>
      */
-    private List<SysResource> getMenuTreeList(List<SysResource> sysResourceList){
+    private List<SysResource> list2Tree(List<SysResource> sysResourceList) {
         List<SysResource> sysResourceResult = new ArrayList<>();
         if (sysResourceList != null) {
             // 获取 parentId = 0的根节点
-            sysResourceResult = sysResourceList.stream().filter(sysMenu->sysMenu.getParentId().equals(0L)).collect(Collectors.toList());
+            sysResourceResult = sysResourceList.stream().filter(sysMenu -> sysMenu.getParentId().equals(0L)).collect(Collectors.toList());
             // 根据 parentId 进行分组
             Map<Long, List<SysResource>> map = sysResourceList.stream().collect(Collectors.groupingBy(SysResource::getParentId));
-            recursionTree(sysResourceResult,map);
+            recursionTree(sysResourceResult, map);
         }
         return sysResourceResult;
     }
+
     /**
      * 生成递归树
      *
      * @param menuList 树列表
      * @param map      目标
      */
-    private void recursionTree(List<SysResource> menuList, Map<Long, List<SysResource>> map){
-        menuList.forEach(tree->{
+    private void recursionTree(List<SysResource> menuList, Map<Long, List<SysResource>> map) {
+        menuList.forEach(tree -> {
             List<SysResource> childList = map.get(tree.getResourceId());
             tree.setChildren(childList);
-            if(tree.getChildren() != null && tree.getChildren().size()>0){
-                recursionTree(childList,map);
+            if (tree.getChildren() != null && tree.getChildren().size() > 0) {
+                recursionTree(childList, map);
             }
         });
     }
@@ -148,7 +206,7 @@ public class ResourceServiceImpl implements ResourceService {
                             String notes = apiOperation.notes();
                             sysResource.setDescription(StringUtils.isNull(notes) ? value : notes);
                         }
-                        if(StringUtils.isNotNull(sysResource.getResourceName())){
+                        if (StringUtils.isNotNull(sysResource.getResourceName())) {
                             sysApiList.add(sysResource);
                         }
                     });
@@ -191,7 +249,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     public List<SysResource> getApiList() {
-        return null;
+        return resourceMapper.getApiList();
     }
 
     /**
