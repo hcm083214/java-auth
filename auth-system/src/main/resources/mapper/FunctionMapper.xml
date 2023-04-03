@@ -36,6 +36,13 @@
         <include refid="searchOption"></include>
     </select>
 
+    <select id="getFunctionListByIds" resultType="com.hcm.common.core.entity.SysFunction">
+        select <include refid="functionInfo"></include> from sys_function where function_id in
+        <foreach collection="functionIds" separator="," item="functionId" open="(" close=")">
+            #{functionId}
+        </foreach>
+    </select>
+
     <select id="getFunctionByNameOrKey" resultType="string">
         select function_name_cn
         from sys_function
@@ -73,7 +80,7 @@
         function_description_cn = #{function.functionDescriptionCn},
         function_description_en = #{function.functionDescriptionEn},
         <if test="function.status != null and function.status != ''">
-           status = #{function.status},
+            status = #{function.status},
         </if>
         update_time = now()
         where function_id = #{function.functionId}

@@ -90,10 +90,26 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public void editResourceParentId(List<ResourceVo> resourceVoList) {
         List<ResourceVo> updateList = new ArrayList<>();
+        resourceVoList.forEach(resourceVo -> {
+            if(!resourceVo.getParentId().equals(0L)){
+                resourceVo.setParentId(0L);
+                updateList.add(resourceVo);
+            }
+        });
         setParentIdAndFlat(resourceVoList, updateList);
         if (updateList.size() > 0) {
             resourceMapper.updateParentId(updateList);
         }
+    }
+
+    /**
+     * 删除资源
+     *
+     * @param resourceId 资源id
+     */
+    @Override
+    public void deleteResource(Long resourceId) {
+        resourceMapper.deleteResource(resourceId);
     }
 
     /**

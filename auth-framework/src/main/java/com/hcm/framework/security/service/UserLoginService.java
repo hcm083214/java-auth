@@ -3,6 +3,7 @@ package com.hcm.framework.security.service;
 import com.hcm.common.constants.CacheConstants;
 import com.hcm.common.core.entity.UserDetail;
 import com.hcm.common.core.redis.RedisCache;
+import com.hcm.common.enums.ResultCodeEnum;
 import com.hcm.common.exception.AuthException;
 import com.hcm.common.exception.BadRequestException;
 import com.hcm.common.utils.ConvertUtils;
@@ -50,7 +51,7 @@ public class UserLoginService {
         } catch (Exception e) {
             log.error("UserLoginService ---> login:{}",e.getMessage());
             if (e instanceof BadCredentialsException) {
-                throw new AuthException("用户名或者账号错误");
+                throw new AuthException(ResultCodeEnum.FAILED.getCode(),"用户名或者账号错误");
             } else {
                 throw new BadRequestException(e.getMessage());
             }

@@ -44,6 +44,7 @@ public class ResultVO<T> implements Serializable {
     public static <T> ResultVO<T> success() {
         return new ResultVO<T>(ResultCodeEnum.SUCCESS.getCode(), ResultCodeEnum.SUCCESS.getMessage());
     }
+
     public static <T> ResultVO<T> success(String msg) {
         return new ResultVO<T>(ResultCodeEnum.SUCCESS.getCode(), msg);
     }
@@ -64,11 +65,13 @@ public class ResultVO<T> implements Serializable {
         return new ResultVO<T>(ResultCodeEnum.FAILED.getCode(), ResultCodeEnum.FAILED.getMessage(), data);
     }
 
+    public static <T> ResultVO<T> fail( String msg,int code) {
+        return new ResultVO<T>(code, msg);
+    }
+
     public static <T> ResultVO<T> fail(T data, String msg) {
         return new ResultVO<T>(ResultCodeEnum.FAILED.getCode(), msg, data);
     }
 
-    public static <T> ResultVO<T> fail(int code, String msg) {
-        return new ResultVO<T>(code, msg);
-    }
+
 }

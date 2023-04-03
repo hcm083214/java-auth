@@ -1,13 +1,13 @@
 package com.hcm.common.core.entity;
 
 import com.hcm.common.core.domain.BaseEntity;
+import com.hcm.common.vo.FunctionVo;
+import com.hcm.common.vo.RoleVo;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 角色表 sys_role
@@ -44,9 +44,14 @@ public class SysRole extends BaseEntity {
     private String roleDescriptionEn;
 
     /**
-     * 权限字符串
+     * 权限字符列表字符串
      */
-    private String functionKey;
+    private String functionJson;
+
+    /**
+     * 功能权限列表
+     */
+    private List<SysFunction> functionList;
 
     /**
      * 角色排序
@@ -99,4 +104,38 @@ public class SysRole extends BaseEntity {
     private List<Long> permissions;
 
 
+    /**
+     * po2vo
+     *
+     * @param sysRole 角色
+     */
+    public static RoleVo po2vo(SysRole sysRole){
+        RoleVo roleVo = new RoleVo();
+        BeanUtils.copyProperties(sysRole,roleVo);
+        if(sysRole.getFunctionList() !=null && sysRole.getFunctionList().size()>0){
+            List<FunctionVo> functionVoList = new ArrayList<>(sysRole.getFunctionList().size());
+            sysRole.getFunctionList().forEach(sysFunction -> {
+                FunctionVo functionVo = new FunctionVo();
+                BeanUtils.copyProperties(sysFunction,functionVo);
+                functionVoList.add(functionVo);
+            });
+            roleVo.setFunctionList(functionVoList);
+        }
+        return roleVo;
+    }
+
+    /**
+     * pos2vos
+     *
+     * @param sysRoleList 角色列表
+     * @return {@link List}<{@link RoleVo}>
+     */
+    public static List<RoleVo> pos2vos(List<SysRole> sysRoleList){
+        List<RoleVo> roleVoList = new ArrayList<>(sysRoleList.size());
+        sysRoleList.forEach(sysRole -> {
+            RoleVo roleVo = po2vo(sysRole);
+            roleVoList.add(roleVo);
+        });
+        return roleVoList;
+    }
 }

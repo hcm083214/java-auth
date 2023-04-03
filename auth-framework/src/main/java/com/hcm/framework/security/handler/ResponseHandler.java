@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 响应处理程序
+ *
  * @author pc
+ * @date 2023/03/31
  */
 public class ResponseHandler {
     public static void handler(HttpServletResponse response,ResultCodeEnum resultCode) throws IOException {

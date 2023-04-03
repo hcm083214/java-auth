@@ -25,6 +25,14 @@ public interface FunctionMapper {
     List<SysFunction> getFunctionList(@Param("function") FunctionVo functionVo);
 
     /**
+     * 根据id列表查询功能权限列表
+     *
+     * @param ids id
+     * @return {@link List}<{@link SysFunction}>
+     */
+    List<SysFunction> getFunctionListByIds(@Param("functionIds") List<Long> ids);
+
+    /**
      * 确认是否存在同名
      *
      * @param functionVo 函数签证官
@@ -43,7 +51,7 @@ public interface FunctionMapper {
     /**
      * 得到参数列表
      *
-     * @param searchType   类型
+     * @param searchType 类型
      * @param functionVo roleVo
      * @return {@link List}<{@link String}>
      */
@@ -61,7 +69,7 @@ public interface FunctionMapper {
      *
      * @param functionVo functionVo
      */
-    void insertFunction(@Param("function")FunctionVo functionVo);
+    void insertFunction(@Param("function") FunctionVo functionVo);
 
     /**
      * 批量插入功能权限信息
@@ -69,13 +77,14 @@ public interface FunctionMapper {
      * @param functionList functionList
      */
     void insertFunctionList(@Param("functionList") List<FunctionVo> functionList);
+
     /**
      * 插入功能权限相关连的菜单和按钮权限
      *
      * @param perms      perms
      * @param functionId functionId
      */
-    void insertFunctionPermInfo(@Param("functionId")Long functionId,@Param("perms") List<Long> perms);
+    void insertFunctionPermInfo(@Param("functionId") Long functionId, @Param("perms") List<Long> perms);
 
     /**
      * 删除函数烫信息
@@ -84,5 +93,5 @@ public interface FunctionMapper {
      * @param perms      perms
      * @param functionId functionId
      */
-    void deleteFunctionPermInfo(@Param("functionId")Long functionId,@Param("perms") List<Long> perms);
+    void deleteFunctionPermInfo(@Param("functionId") Long functionId, @Param("perms") List<Long> perms);
 }

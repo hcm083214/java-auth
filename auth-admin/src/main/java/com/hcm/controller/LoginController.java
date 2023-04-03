@@ -90,13 +90,8 @@ public class LoginController {
         }
         UserVo userVo = new UserVo();
         List<Long> roles = userService.getUserRolesById(user.getSysUser().getUserId());
-        List<Long> permissions = null;
-        if (roles.size() > 0) {
-            permissions = roleService.getPermissionsByRoleIds(roles);
-        }
         BeanUtils.copyProperties(user.getSysUser(), userVo);
         userVo.setRoles(roles);
-        userVo.setPermissions(permissions);
         return ResultVO.success(userVo);
     }
 

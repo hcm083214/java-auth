@@ -29,8 +29,8 @@
     <select id="getUserPermissionById" resultType="String">
         select perms from sys_user u
             left join  sys_user_role s on u.user_id = s.user_id
-            left join sys_role_menu ss on s.role_id = ss.role_id
-            left join sys_menu m on ss.menu_id = m.menu_id
+            left join sys_role_resource ss on s.role_id = ss.role_id
+            left join sys_resource m on ss.resource_id = m.resource_id
         where u.user_id = #{userId}
     </select>
 

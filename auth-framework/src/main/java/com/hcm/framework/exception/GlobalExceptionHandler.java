@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResultVO<?> handleBadRequestException(BadRequestException e) {
-        return ResultVO.fail(ResultCodeEnum.FAILED.getCode(), e.getMessage());
+        return ResultVO.fail(e.getMessage(), ResultCodeEnum.FAILED.getCode());
     }
 
     /**
@@ -35,7 +35,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(AuthException.class)
     public ResultVO<?> handleAuthException(AuthException e) {
-        return ResultVO.fail(ResultCodeEnum.UNAUTHORIZED.getCode(), e.getMessage());
+        int code = e.getCode() == null ? ResultCodeEnum.FAILED.getCode() : e.getCode();
+        return ResultVO.fail(e.getMessage(), code);
     }
 
     /**
@@ -60,6 +61,6 @@ public class GlobalExceptionHandler {
                     .map(ObjectError::getDefaultMessage)
                     .collect(Collectors.joining("; "));
         }
-        return ResultVO.fail(ResultCodeEnum.FAILED.getCode(), msg);
+        return ResultVO.fail(msg, ResultCodeEnum.FAILED.getCode());
     }
 }

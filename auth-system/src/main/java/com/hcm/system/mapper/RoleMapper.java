@@ -24,6 +24,14 @@ public interface RoleMapper {
     List<Long> getPermissionsByRoleIds(@Param("roleIds") List<Long> roleId);
 
     /**
+     * 通过id获取权限列表
+     *
+     * @param roleId 角色id
+     * @return {@link List}<{@link Long}>
+     */
+    List<Long> getFunctionListById(@Param("roleId") Long roleId);
+
+    /**
      * 得到所有权限
      *
      * @return {@link List}<{@link Long}>
@@ -31,7 +39,7 @@ public interface RoleMapper {
     List<Long> getAllPermissions();
 
     /**
-     * 得到角色
+     * 得到角色列表
      *
      * @param roleVo 角色入参
      * @return {@link List}<{@link SysRole}>
@@ -52,5 +60,36 @@ public interface RoleMapper {
      *
      * @param roleVos 角色vos
      */
-    void insertRole(@Param("roles") List<RoleVo> roleVos);
+    void insertRoleList(@Param("roles") List<RoleVo> roleVos);
+
+    /**
+     * 插入角色
+     *
+     * @param roleVo roleVo
+     */
+    void insertRole(@Param("role") RoleVo roleVo);
+
+    /**
+     * 插入角色功能权限列表
+     *
+     * @param roleId       角色id
+     * @param functionIds 函数列表
+     */
+    void insertRoleFunctionList(@Param("roleId") Long roleId,@Param("functionIds") List<Long> functionIds);
+
+    /**
+     * 编辑角色
+     *
+     * @param roleVo roleVo
+     */
+    void editRole(@Param("role") RoleVo roleVo);
+
+
+    /**
+     * 删除角色功能列表
+     *
+     * @param roleId            角色id
+     * @param deleteFunctionIds 删除功能id
+     */
+    void deleteRoleFunctionList(@Param("roleId") Long roleId,@Param("functionIds") List<Long> deleteFunctionIds);
 }

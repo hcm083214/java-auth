@@ -74,8 +74,13 @@
             #{resource.requestType},#{resource.methodName},'1',#{resource.perms},#{resource.controllerClass},#{resource.controllerName},now())
         </foreach>
         on duplicate key update
+        resource_name = values(resource_name),
         description = values(description), request_type=values(request_type),method_name = values(method_name),
         perms = values(perms),controller_class = values(controller_class),
         controller_name = values(controller_name),update_time = now()
     </insert>
+
+    <delete id="deleteResource">
+        delete from sys_resource where resource_id = #{resourceId}
+    </delete>
 </mapper>

@@ -35,6 +35,13 @@ public interface ResourceMapper {
     void editMenu(@Param("resource") ResourceVo resourceVo);
 
     /**
+     * 删除资源
+     *
+     * @param resourceId 资源id
+     */
+    void deleteResource(@Param("resourceId")Long resourceId);
+
+    /**
      * 添加菜单
      *
      * @param resourceVo resourceVo

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author pc
@@ -57,8 +58,13 @@ public class RoleVo {
      * 角色权限
      */
     @Length(max = 20,message = "角色权限长度必须位于20以内")
-    @ExcelProperty("权限字符串")
-    private String functionKey;
+    @ExcelProperty("权限字符列表字符串")
+    private String functionJson;
+
+    /**
+     * 功能权限列表
+     */
+    private List<FunctionVo> functionList;
 
     /**
      * 角色排序

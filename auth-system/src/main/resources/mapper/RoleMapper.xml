@@ -3,7 +3,7 @@
 <mapper namespace="com.hcm.system.mapper.RoleMapper">
 
     <select id="getPermissionsByRoleIds" resultType="Long">
-        select menu_id from sys_role_menu where role_id in
+        select resource_id from sys_role_resource where role_id in
         <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
             #{roleId}
         </foreach>
@@ -21,7 +21,7 @@
         role_name_en roleNameEn,
         role_description_cn roleDescriptionCn,
         role_description_en roleDescriptionEn,
-        function_key functionKey,
+        function_json functionJson,
         role_sort roleSort,
         create_time createTime,
         status
@@ -32,9 +32,6 @@
         </if>
         <if test="role.roleNameEn!= null and role.roleNameEn != ''">
             and role_name_en like concat('%', #{role.roleNameEn}, '%')
-        </if>
-        <if test="role.functionKey != null and role.functionKey != ''">
-            and function_key like concat('%', #{role.functionKey}, '%')
         </if>
         <if test="role.status != null and role.status != ''">
             and status = #{role.status}
@@ -53,20 +50,57 @@
         <if test="type!= null and type == 'role_name_en'">
             select distinct role_name_en from sys_role
         </if>
-        <if test="type!= null and type == 'function_key'">
-            select distinct function_key from sys_role
-        </if>
         where 1=1
         <include refid="searchOption"></include>
         limit 400
     </select>
 
-    <insert id="insertRole">
-        insert into sys_role (role_name_cn,role_name_en,function_key,role_sort,status,create_time,update_time) values
+    <select id="getFunctionListById" resultType="java.lang.Long">
+        select function_id from sys_role_function where role_id = #{roleId}
+    </select>
+
+    <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">
+        insert into sys_role (role_name_cn,role_name_en,role_description_cn,role_description_en,function_json ,status,create_time,update_time) values
+            (#{role.roleNameCn},#{role.roleNameEn},#{role.roleDescriptionCn},#{role.roleDescriptionEn},#{role.functionJson},'1',now(),now())
+    </insert>
+
+    <insert id="insertRoleList">
+        insert into sys_role (role_name_cn,role_name_en,role_sort,status,create_time,update_time) values
         <foreach collection="roles" item="role" separator=",">
-            (#{role.roleNameCn},#{role.roleNameEn},#{role.functionKey},#{role.roleSort},#{role.status},now(),now())
+            (#{role.roleNameCn},#{role.roleNameEn},#{role.roleSort},#{role.status},now(),now())
         </foreach>
         on duplicate key update
-        function_key =values(function_key),status = values(status),update_time = now()
+        status = values(status),update_time = now()
     </insert>
+
+    <insert id="insertRoleFunctionList">
+        insert into sys_role_function (role_id,function_id) values
+        <foreach collection="functionIds" item="functionId" separator=",">
+            (${roleId},#{functionId})
+        </foreach>
+    </insert>
+
+    <update id="editRole">
+        update sys_role
+        set role_name_cn = #{role.roleNameCn},
+            role_name_en = #{role.roleNameEn},
+            role_description_cn = #{role.roleDescriptionCn},
+            role_description_en = #{role.roleDescriptionEn},
+            function_json = #{role.functionJson},
+            <if test="role.status != null and role.status != ''">
+                status = #{role.status},
+            </if>
+            update_time = now()
+        where role_id = #{role.roleId}
+    </update>
+
+    <delete id="deleteRoleFunctionList">
+        delete from sys_role_function  where (role_id,function_id) in
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <foreach collection="functionIds" item="functionId">
+                (#{roleId},#{functionId}),
+            </foreach>
+        </trim>
+    </delete>
+
 </mapper>

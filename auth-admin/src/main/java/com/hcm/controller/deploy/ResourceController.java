@@ -9,6 +9,7 @@ import com.hcm.validation.ResourceValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -104,6 +105,20 @@ public class ResourceController {
     public ResultVO<String> editResourceParentId(@RequestBody List<ResourceVo> resourceVoList){
         resourceService.editResourceParentId(resourceVoList);
         return ResultVO.success("修改成功");
+    }
+
+    /**
+     * 删除资源
+     *
+     * @param resourceId 资源id
+     * @return {@link ResultVO}<{@link String}>
+     */
+    @PostMapping("/all/resource_id/{resource_id}")
+    @ApiOperation(value = "删除资源",notes = "删除资源")
+    @PreAuthorize("@ss.hasPermission('resource:permission:delete')")
+    public ResultVO<String> deleteResource(@PathVariable("resource_id") Long resourceId){
+        resourceService.deleteResource(resourceId);
+        return ResultVO.success("删除成功");
     }
 
     /**

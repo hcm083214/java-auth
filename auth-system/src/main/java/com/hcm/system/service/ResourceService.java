@@ -46,6 +46,13 @@ public interface ResourceService {
     void editResourceParentId(List<ResourceVo> resourceVoList);
 
     /**
+     * 删除资源
+     *
+     * @param resourceId 资源id
+     */
+    void deleteResource(Long resourceId);
+
+    /**
      * 同步api信息
      *
      * @param request 请求

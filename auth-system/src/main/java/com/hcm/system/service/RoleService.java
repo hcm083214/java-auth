@@ -37,9 +37,23 @@ public interface RoleService {
      */
     List<String> getParamsList(RoleVo roleVo);
     /**
-     * 插入角色
+     * 插入角色列表
      *
      * @param roleVos 角色vos
      */
-    void insertRole(List<RoleVo> roleVos);
+    void insertRoleList(List<RoleVo> roleVos);
+
+    /**
+     * 插入角色
+     *
+     * @param roleVo roleVo
+     */
+    void insertRole(RoleVo roleVo);
+
+    /**
+     * 编辑角色
+     *
+     * @param roleVo roleVo
+     */
+    void editRole(RoleVo roleVo);
 }
