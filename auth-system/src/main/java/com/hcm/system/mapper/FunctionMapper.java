@@ -5,6 +5,7 @@ import com.hcm.common.vo.FunctionVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +48,14 @@ public interface FunctionMapper {
      * @return {@link List}<{@link Long}>
      */
     List<Long> getPermIdListByFunId(@Param("functionId") Long functionId);
+
+    /**
+     * 通过权限id获取资源的权限字符perms
+     *
+     * @param functionIds 函数id
+     * @return {@link List}<{@link String}>
+     */
+    List<String> getPermsListByFunIds(@Param("functionIds") List<Long> functionIds);
 
     /**
      * 得到参数列表
@@ -94,4 +103,6 @@ public interface FunctionMapper {
      * @param functionId functionId
      */
     void deleteFunctionPermInfo(@Param("functionId") Long functionId, @Param("perms") List<Long> perms);
+
+
 }

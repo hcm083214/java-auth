@@ -15,13 +15,14 @@ import java.util.List;
  */
 @Mapper
 public interface RoleMapper {
+
     /**
-     * 通过id获取权限
+     * 获取角色的权限
      *
-     * @param roleId 角色id
+     * @param roleIds 角色id
      * @return {@link List}<{@link Long}>
      */
-    List<Long> getPermissionsByRoleIds(@Param("roleIds") List<Long> roleId);
+    List<Long> getPermissionsByRoleIds(List<Long> roleIds);
 
     /**
      * 通过id获取权限列表

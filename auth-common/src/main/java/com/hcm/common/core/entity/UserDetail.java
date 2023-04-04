@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,14 +38,14 @@ public class UserDetail implements UserDetails {
     /**
      * 权限列表
      */
-    private Set<String> permissions;
+    private List<String> permissions;
 
     /**
      * 用户信息
      */
     private SysUser sysUser;
 
-    public UserDetail(SysUser sysUser, Set<String> permissions) {
+    public UserDetail(SysUser sysUser, List<String> permissions) {
         this.sysUser = sysUser;
         this.permissions = permissions;
     }
@@ -121,11 +122,11 @@ public class UserDetail implements UserDetails {
         this.token = token;
     }
 
-    public Set<String> getPermissions() {
+    public List<String> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<String> permissions) {
+    public void setPermissions(List<String> permissions) {
         this.permissions = permissions;
     }
 

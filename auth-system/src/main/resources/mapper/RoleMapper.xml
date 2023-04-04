@@ -2,12 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hcm.system.mapper.RoleMapper">
 
-    <select id="getPermissionsByRoleIds" resultType="Long">
-        select resource_id from sys_role_resource where role_id in
-        <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
-            #{roleId}
-        </foreach>
-    </select>
 
     <select id="getAllPermissions" resultType="Long">
         select distinct menu_id
@@ -57,6 +51,10 @@
 
     <select id="getFunctionListById" resultType="java.lang.Long">
         select function_id from sys_role_function where role_id = #{roleId}
+    </select>
+
+    <select id="getPermissionsByRoleIds" resultType="java.lang.Long">
+        
     </select>
 
     <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">

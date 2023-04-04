@@ -23,11 +23,6 @@ public class UserVo {
 
 
     /**
-     * 角色ID
-     */
-    private Long roleId;
-
-    /**
      * 登录名称
      */
     private String nickName;
@@ -67,12 +62,12 @@ public class UserVo {
     /**
      * 用户拥有的角色集合
      */
-    private List<Long> roles;
+    private List<Long> roleIds;
 
     /**
      * 用户拥有的权限集合
      */
-    private List<Long> permissions;
+    private List<String> permissions;
 
     /**
      * 岗位组

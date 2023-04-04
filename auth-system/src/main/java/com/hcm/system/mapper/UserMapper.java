@@ -1,5 +1,6 @@
 package com.hcm.system.mapper;
 
+import com.hcm.common.core.entity.SysRole;
 import com.hcm.common.core.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -45,10 +46,10 @@ public interface UserMapper {
     void insertUser(@Param("sysUser")SysUser sysUser);
 
     /**
-     * 获取用户权限id
+     * 通过id获取用户角色信息
      *
      * @param userId 用户id
-     * @return {@link Set}<{@link String}>
+     * @return {@link List}<{@link SysRole}>
      */
-    Set<String> getUserPermissionById(@Param("userId") Long userId);
+    List<SysRole> getUserRoleInfoById(@Param("userId") Long userId);
 }

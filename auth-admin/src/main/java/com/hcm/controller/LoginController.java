@@ -43,9 +43,6 @@ public class LoginController {
     private UserService userService;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -89,9 +86,11 @@ public class LoginController {
             throw new BadRequestException("获取用户信息异常");
         }
         UserVo userVo = new UserVo();
+        List<String> perms = user.getPermissions();
         List<Long> roles = userService.getUserRolesById(user.getSysUser().getUserId());
         BeanUtils.copyProperties(user.getSysUser(), userVo);
-        userVo.setRoles(roles);
+        userVo.setRoleIds(roles);
+        userVo.setPermissions(perms);
         return ResultVO.success(userVo);
     }
 

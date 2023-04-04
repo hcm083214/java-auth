@@ -33,7 +33,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (StringUtils.isNull(user)) {
             throw new UsernameNotFoundException("没有找到该用户");
         }
-
         // 走到这代表查询到了实体对象，返回我们自定义的UserDetail对象
         return new UserDetail(user, permissionService.getUserPermissionById(user.getUserId()));
     }

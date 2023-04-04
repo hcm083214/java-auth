@@ -103,20 +103,11 @@ public class SysUser extends BaseEntity {
     /**
      * 角色对象
      */
-    private List<Long> roles;
-
-    /**
-     * 角色组
-     */
-    private Long[] roleIds;
+    private List<Long> roleIds;
 
     /**
      * 岗位组
      */
     private Long[] postIds;
 
-    /**
-     * 角色ID
-     */
-    private Long roleId;
 }

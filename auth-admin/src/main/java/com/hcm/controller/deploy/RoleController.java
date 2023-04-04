@@ -1,6 +1,5 @@
 package com.hcm.controller.deploy;
 
-import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hcm.common.core.domain.ResultVO;
@@ -81,6 +80,13 @@ public class RoleController {
         return ResultVO.success("新增成功");
     }
 
+    /**
+     * 编辑角色
+     *
+     * @param roleId 角色id
+     * @param roleVo 签证官角色
+     * @return {@link ResultVO}<{@link String}>
+     */
     @PostMapping("role_id/{roleId}")
     @PreAuthorize("@ss.hasPermission('permission:role:edit')")
     @ApiOperation(value = "角色编辑", notes = "编辑角色和相关联的功能权限")
