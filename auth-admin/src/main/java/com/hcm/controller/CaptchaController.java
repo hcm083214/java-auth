@@ -80,7 +80,7 @@ public class CaptchaController {
             log.error("CaptchaController ---> getCaptchaImg,验证码获取失败:" + e.getMessage());
         }
         // 将验证码信息保存到缓存中
-        String uuid = IdUtils.simpleUUID().toString();
+        String uuid = IdUtils.simpleUUID();
         redisCache.setCacheObject(CacheConstants.CACHE_CAPTCHA_CODE + uuid, code, CacheConstants.CACHE_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
         log.info("CaptchaController ---> getCaptchaImg,captchaCode:" + code);
         captchaVo.setUuid(uuid);

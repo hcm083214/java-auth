@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hcm.system.mapper.ResourceMapper">
-    <sql id="menuItem">
-        resource_id
+    <sql id="resourceType">
+        r.resource_id
         resourceId,
-        resource_type resourceType,
-        component component,
-        path path,
-        resource_name resourceName,
-        parent_id parentId,
-        perms perms,
-        icon icon,
-        order_num orderNum,
-        description
+        r.resource_type resourceType,
+        r.component component,
+        r.path path,
+        r.resource_name resourceName,
+        r.parent_id parentId,
+        r.perms perms,
+        r.icon icon,
+        r.order_num orderNum,
+        r.description description
     </sql>
 
     <select id="getMenuList" resultType="com.hcm.common.core.entity.SysResource">
         select
-        <include refid="menuItem"/>
-        from sys_resource where resource_type in ("M","C")
+        <include refid="resourceType"/>
+        from sys_resource r where r.resource_type in ("M","C")
     </select>
 
     <select id="getApiList" resultType="com.hcm.common.core.entity.SysResource">
         select
-        <include refid="menuItem"/>
-        from sys_resource where resource_type = "F"
+        <include refid="resourceType"/>
+        from sys_resource r where r.resource_type = "F"
     </select>
 
     <select id="geResourceList" resultType="com.hcm.common.core.entity.SysResource">
         select
-        <include refid="menuItem"/>
-        from sys_resource
+        <include refid="resourceType"/>
+        from sys_resource r
+    </select>
+
+    <select id="getResourceListByFunctions" resultType="com.hcm.common.core.entity.SysResource">
+        select
+        <include refid="resourceType"/>
+        from sys_function_resource f left join sys_resource r on f.resource_id = r.resource_id
+        where f.function_id in
+        <foreach collection="functionIds" item="functionId" separator="," open="(" close=")">
+            #{functionId}
+        </foreach>
     </select>
 
     <update id="editMenu">

@@ -39,7 +39,7 @@ public interface ResourceMapper {
      *
      * @param resourceId 资源id
      */
-    void deleteResource(@Param("resourceId")Long resourceId);
+    void deleteResource(@Param("resourceId") Long resourceId);
 
     /**
      * 添加菜单
@@ -64,6 +64,16 @@ public interface ResourceMapper {
 
     /**
      * 更新父id
+     *
+     * @param resourceVoList resourceVoList
      */
     void updateParentId(@Param("resourceList") List<ResourceVo> resourceVoList);
+
+    /**
+     * 得到资源列表
+     *
+     * @param functionIds functionIds
+     * @return {@link List}<{@link SysResource}>
+     */
+    List<SysResource> getResourceListByFunctions(@Param("functionIds") List<Long> functionIds);
 }

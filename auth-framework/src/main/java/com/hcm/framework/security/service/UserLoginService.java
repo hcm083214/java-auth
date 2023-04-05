@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,17 +46,17 @@ public class UserLoginService {
             // AuthenticationManager校验这个认证信息，返回一个已认证的Authentication,该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager.authenticate(authenticationToken);
             // 将返回的Authentication存到上下文中。ruoyi 是将其存入到自定义的上下文中 Authentication
-            // SecurityContextHolder.getContext().setAuthentication(authentication);
+            AuthenticationContextHolder.setSecurityContext(authentication);
             // 放入到自定义的上下文的作用是为了限制同一账号多次登陆
             AuthenticationContextHolder.setContext(authentication);
         } catch (Exception e) {
-            log.error("UserLoginService ---> login:{}",e.getMessage());
+            log.error("UserLoginService ---> login:{}", e.getMessage());
             if (e instanceof BadCredentialsException) {
-                throw new AuthException(ResultCodeEnum.FAILED.getCode(),"用户名或者账号错误");
+                throw new AuthException(ResultCodeEnum.FAILED.getCode(), "用户名或者账号错误");
             } else {
                 throw new BadRequestException(e.getMessage());
             }
-        }finally {
+        } finally {
             AuthenticationContextHolder.removeContext();
         }
         return (UserDetail) authentication.getPrincipal();

@@ -1,7 +1,12 @@
 package com.hcm.framework.security.context;
 
 
+import com.hcm.common.core.entity.UserDetail;
+import com.hcm.common.exception.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 /**
  * 身份验证上下文
@@ -9,6 +14,8 @@ import org.springframework.security.core.Authentication;
  * @author pc
  * @date 2023/02/24
  */
+@Slf4j
+@Component
 public class AuthenticationContextHolder {
     private static final ThreadLocal<Authentication> CONTEXT_HOLDER = new ThreadLocal<>();
 
@@ -22,12 +29,37 @@ public class AuthenticationContextHolder {
     }
 
     /**
+     * 设置安全上下文
+     *
+     * @param authentication 身份验证
+     */
+    public static void setSecurityContext(Authentication authentication) {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    /**
      * 获得上下文
      *
      * @return {@link Authentication}
      */
     public static Authentication getContext() {
         return CONTEXT_HOLDER.get();
+    }
+
+    /**
+     * 获取当前用户
+     *
+     * @return {@link UserDetail}
+     */
+    public static UserDetail getCurrentUser() {
+        UserDetail user;
+        try {
+            user = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            log.error("AuthenticationContextHolder ---> getCurrentUser,获取用户信息异常:${}", e.getMessage());
+            throw new BadRequestException("获取用户信息异常");
+        }
+        return user;
     }
 
     /**

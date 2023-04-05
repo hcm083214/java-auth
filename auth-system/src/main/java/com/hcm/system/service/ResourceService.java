@@ -1,6 +1,7 @@
 package com.hcm.system.service;
 
 import com.hcm.common.core.entity.SysResource;
+import com.hcm.common.core.entity.SysUser;
 import com.hcm.common.vo.ResourceVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +14,11 @@ import java.util.List;
 public interface ResourceService {
     /**
      * 获得菜单列表
-     * * @return {@link List}<{@link SysResource}>
+     *
+     * @return {@link List}<{@link SysResource}>
+     * @param sysUser sysUser
      */
-    List<SysResource> getMenuList();
+    List<SysResource> getMenuList(SysUser sysUser);
 
     /**
      * 得到所有菜单列表
@@ -73,4 +76,13 @@ public interface ResourceService {
      * @param sysResourceList 系统资源列表
      */
     void addApiList(List<SysResource> sysResourceList);
+
+    /**
+     * 得到资源列表功能
+     * 通过functionId列表得到资源列表
+     *
+     * @param sysUser 系统用户
+     * @return {@link List}<{@link SysResource}>
+     */
+    List<SysResource> getUserResource(SysUser sysUser);
 }

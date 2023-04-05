@@ -1,6 +1,7 @@
 package com.hcm.system.service.impl;
 
 import com.hcm.common.core.entity.SysUser;
+import com.hcm.system.mapper.ResourceMapper;
 import com.hcm.system.mapper.UserMapper;
 import com.hcm.system.service.UserService;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private ResourceMapper resourceMapper;
 
     /**
      * @param name userName or loginName
@@ -42,6 +46,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserRolesById(userId);
     }
 
+    /**
+     * 插入用户
+     *
+     * @param sysUser 系统用户
+     */
     @Override
     public void insertUser(SysUser sysUser) {
         userMapper.insertUser(sysUser);

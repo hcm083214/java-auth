@@ -1,6 +1,9 @@
 package com.hcm.system.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.hcm.common.core.entity.SysResource;
+import com.hcm.common.core.entity.SysRole;
+import com.hcm.common.core.entity.SysUser;
 import com.hcm.common.utils.StringUtils;
 import com.hcm.common.vo.ResourceVo;
 import com.hcm.system.mapper.ResourceMapper;
@@ -25,6 +28,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,10 +48,11 @@ public class ResourceServiceImpl implements ResourceService {
 
     /**
      * 获得菜单列表
+     * @param sysUser sysUser
      */
     @Override
-    public List<SysResource> getMenuList() {
-        List<SysResource> sysResourceList = resourceMapper.getMenuList();
+    public List<SysResource> getMenuList(SysUser sysUser) {
+        List<SysResource> sysResourceList = getUserResource(sysUser);
         return list2Tree(sysResourceList);
     }
 
@@ -276,5 +281,26 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public void addApiList(List<SysResource> sysResourceList) {
         resourceMapper.addApiList(sysResourceList);
+    }
+
+    /**
+     * 通过functionId列表得到资源列表
+     *
+     *
+     * @param sysUser@return {@link List}<{@link SysResource}>
+     */
+    @Override
+    public List<SysResource> getUserResource(SysUser sysUser) {
+        List<SysRole> roleList = sysUser.getRoleList();
+        Set<Long> functionIds = new HashSet<>();
+        roleList.forEach(sysRole -> {
+            List<Long> functionIdList = JSONArray.parseArray(sysRole.getFunctionJson(), Long.class);
+            functionIds.addAll(functionIdList);
+        });
+        List<SysResource> resourceList = new ArrayList<>();
+        if (functionIds.size() > 0) {
+            resourceList = resourceMapper.getResourceListByFunctions(new ArrayList<>(functionIds));
+        }
+        return resourceList;
     }
 }

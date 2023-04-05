@@ -10,6 +10,7 @@ import com.hcm.common.vo.LoginVo;
 
 import com.hcm.common.vo.UserVo;
 import com.hcm.framework.security.JwtManager;
+import com.hcm.framework.security.context.AuthenticationContextHolder;
 import com.hcm.framework.security.service.UserLoginService;
 import com.hcm.system.service.RoleService;
 import com.hcm.system.service.UserService;
@@ -78,13 +79,7 @@ public class LoginController {
     @ApiOperation(value = "用户信息查询",notes = "获取用户信息")
     @PreAuthorize("@ss.hasPermission('user:info:query')")
     public ResultVO<UserVo> getUserInfo() throws BadRequestException {
-        UserDetail user;
-        try {
-            user = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        } catch (Exception e) {
-            log.error("LoginController ---> getUserInfo,获取用户信息异常:${}",e.getMessage());
-            throw new BadRequestException("获取用户信息异常");
-        }
+        UserDetail user = AuthenticationContextHolder.getCurrentUser();
         UserVo userVo = new UserVo();
         List<String> perms = user.getPermissions();
         List<Long> roles = userService.getUserRolesById(user.getSysUser().getUserId());

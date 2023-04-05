@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 注意这里，是允许前端跨域联调的一个必要配置
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 // 指定某些接口不需要通过验证即可访问,但是会走过滤器链。像登陆、注册接口肯定是不需要认证的
-                .antMatchers("/login","/register","/captcha/image","/swagger-ui.html",
+                .antMatchers("/login", "/register", "/captcha/image", "/swagger-ui.html",
                         "/swagger-ui/*",
                         "/swagger-resources/**",
                         "/v2/api-docs",
@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling()
                 // 认证错误处理器
                 .authenticationEntryPoint(authErrorHandler)
-                // 授权错误处理器
+                // 授权错误处理器（权限认证未使用）
                 .accessDeniedHandler(accessErrorHandler);
 
         // 禁用session
@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 使用自定义的权限授权过滤器代替默认的
-//        http.addFilterBefore(new AccessFilter(), FilterSecurityInterceptor.class);
+        // http.addFilterBefore(new AccessFilter(), FilterSecurityInterceptor.class);
     }
 
 

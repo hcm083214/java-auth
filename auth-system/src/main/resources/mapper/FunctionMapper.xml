@@ -72,15 +72,6 @@
         limit 400
     </select>
 
-    <select id="getPermsListByFunIds" resultType="java.lang.String">
-        select distinct r.perms perms
-        from sys_function_resource f left join sys_resource r on f.resource_id = r.resource_id
-        where f.function_id in
-        <foreach collection="functionIds" item="functionId" separator="," open="(" close=")">
-            #{functionId}
-        </foreach>
-    </select>
-
     <update id="editFunctionInfo">
         update sys_function
         set function_name_cn = #{function.functionNameCn},

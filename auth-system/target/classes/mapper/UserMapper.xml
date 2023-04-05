@@ -34,7 +34,6 @@
         where u.user_id = #{userId}
     </select>
 
-
     <insert id="insertUser">
         insert into sys_user (user_name, password, nick_name)
         values (#{sysUser.userName}, #{sysUser.password}, #{sysUser.userName})

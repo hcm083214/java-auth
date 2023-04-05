@@ -2,14 +2,14 @@ package com.hcm.controller.deploy;
 
 import com.hcm.common.core.domain.ResultVO;
 import com.hcm.common.core.entity.SysResource;
-import com.hcm.common.exception.BadRequestException;
+import com.hcm.common.core.entity.UserDetail;
 import com.hcm.common.vo.ResourceVo;
+import com.hcm.framework.security.context.AuthenticationContextHolder;
 import com.hcm.system.service.ResourceService;
 import com.hcm.validation.ResourceValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +43,8 @@ public class ResourceController {
     @GetMapping("/menu")
     @ApiOperation(value = "菜单资源查询",notes = "获取菜单列表")
     public ResultVO<List<ResourceVo>> getMenuList() {
-        List<SysResource> sysResourceList = resourceService.getMenuList();
+        UserDetail user = AuthenticationContextHolder.getCurrentUser();
+        List<SysResource> sysResourceList = resourceService.getMenuList(user.getSysUser());
         List<ResourceVo> resourceVoList = new ArrayList<>();
         SysResource.pos2vos(sysResourceList, resourceVoList);
         return ResultVO.success(resourceVoList);

@@ -1,11 +1,9 @@
 package com.hcm.system.service;
 
-import com.hcm.common.core.entity.SysApi;
 import com.hcm.common.core.entity.SysFunction;
 import com.hcm.common.core.entity.SysResource;
 import com.hcm.common.vo.FunctionVo;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -68,7 +66,5 @@ public interface FunctionService {
      * @param functionVo functionVo
      */
     void editFunctionInfo(FunctionVo functionVo);
-
-
 
 }

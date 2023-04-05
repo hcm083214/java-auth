@@ -1,5 +1,6 @@
 package com.hcm.framework.security.service;
 
+import com.hcm.common.core.entity.SysRole;
 import com.hcm.common.core.entity.SysUser;
 import com.hcm.common.core.entity.UserDetail;
 import com.hcm.common.utils.StringUtils;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author pc
@@ -33,7 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (StringUtils.isNull(user)) {
             throw new UsernameNotFoundException("没有找到该用户");
         }
+        List<SysRole> roleList = userMapper.getUserRoleInfoById(user.getUserId());
+        user.setRoleList(roleList);
         // 走到这代表查询到了实体对象，返回我们自定义的UserDetail对象
-        return new UserDetail(user, permissionService.getUserPermissionById(user.getUserId()));
+        return new UserDetail(user, permissionService.getUserPermissionById(user));
     }
 }
