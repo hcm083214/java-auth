@@ -4,6 +4,7 @@ package com.hcm.framework.config;
 import com.hcm.framework.security.filter.AuthFilter;
 import com.hcm.framework.security.handler.AuthErrorHandler;
 import com.hcm.framework.security.handler.AccessErrorHandler;
+import com.hcm.framework.security.service.LogoutSuccessHandlerImpl;
 import com.hcm.framework.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userService;
 
     /**
+     * 退出处理类
+     */
+    @Autowired
+    private LogoutSuccessHandlerImpl logoutSuccessHandler;
+
+    /**
      * @description 决定了Spring Security对哪些接口进行保护、什么组件生效、某些功能是否启用等等都需要在配置类中进行配置
      */
     @Override
@@ -76,6 +83,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 禁用session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        // 添加Logout filter
+        http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
 
         // 在UsernamePasswordAuthenticationFilter 前添加自定义的登录认证过滤器
         http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);

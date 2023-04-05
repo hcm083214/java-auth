@@ -21,8 +21,8 @@ import java.io.IOException;
 @Component
 public class AuthErrorHandler implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws AuthException, ServletException, IOException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws AuthException, IOException {
         log.error("AuthErrorHandler ---> commence,验证失败:{}", authException.getMessage());
-        ResponseHandler.handler(response,ResultCodeEnum.UNAUTHORIZED);
+        ResponseHandler.handler(response,ResultCodeEnum.UNAUTHORIZED.getCode(),ResultCodeEnum.UNAUTHORIZED.getMessage());
     }
 }

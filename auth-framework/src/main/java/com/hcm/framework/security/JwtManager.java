@@ -162,6 +162,18 @@ public class JwtManager {
     }
 
     /**
+     * 删除用户令牌
+     *
+     * @param userDetail 用户详细信息
+     */
+    public void deleteUserTokenOnRedis(UserDetail userDetail) {
+        String uuid = userDetail.getToken();
+        if (StringUtils.isNotEmpty(uuid)) {
+            redisCache.deleteObject(getTokenCacheKey(uuid));
+        }
+    }
+
+    /**
      * 快要过期则刷新缓存
      *
      * @param userDetail 用户详细信息

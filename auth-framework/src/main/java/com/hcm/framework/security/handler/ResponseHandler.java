@@ -15,10 +15,10 @@ import java.io.PrintWriter;
  * @date 2023/03/31
  */
 public class ResponseHandler {
-    public static void handler(HttpServletResponse response,ResultCodeEnum resultCode) throws IOException {
+    public static void handler(HttpServletResponse response,Integer code,String message) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
-        ResultVO<String> resultVO = new ResultVO<>(resultCode.getCode(), resultCode.getMessage());
+        ResultVO<String> resultVO = new ResultVO<>(code, message);
         JSONObject jsonObject = (JSONObject) JSONObject.toJSON(resultVO);
         out.write(jsonObject.toJSONString());
         out.flush();
