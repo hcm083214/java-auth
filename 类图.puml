@@ -1,0 +1,47 @@
+@startuml
+class Resource {
+    resource_id:资源id
+    resource_name:资源名称
+    resource_type:菜单类型
+    （M目录 C菜单 F按钮）
+    path:前端为路由地址，后端为url
+    ..
+    component:前端组件路径
+    ..
+    perms:后端权限标识
+}
+class Function {
+    function_id:功能权限id
+    function_name:权限名称
+    function_key:权限字符串
+}
+class Function_Resource_relation {
+    function_id:功能权限id
+    resource_id:资源id
+}
+Resource --> Function_Resource_relation
+Function_Resource_relation --> Function
+class Role {
+    role_id:角色ID
+    role_name:角色名称
+    function_json:权限列表JSON
+}
+class Role_Function_relation {
+    role_id:角色ID
+    function_id:功能权限id
+}
+Role_Function_relation --> Role
+Function --> Role
+Function --> Role_Function_relation
+
+class User {
+    user_id:用户ID
+    user_name:用户姓名
+}
+class User_Role_relation {
+    user_id:用户ID
+    role_id:角色ID
+}
+Role --> User_Role_relation
+User_Role_relation --> User
+@enduml

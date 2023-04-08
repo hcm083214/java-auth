@@ -35,6 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (StringUtils.isNull(user)) {
             throw new UsernameNotFoundException("没有找到该用户");
         }
+        // 此处为后续添加，可以在查询用户信息时连表直接返回用户的角色数据
         List<SysRole> roleList = userMapper.getUserRoleInfoById(user.getUserId());
         user.setRoleList(roleList);
         // 走到这代表查询到了实体对象，返回我们自定义的UserDetail对象

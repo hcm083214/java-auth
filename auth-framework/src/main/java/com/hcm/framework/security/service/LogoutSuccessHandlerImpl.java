@@ -26,6 +26,14 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
     @Autowired
     private JwtManager jwtManager;
 
+    /**
+     * 用户注销
+     *
+     * @param request        请求
+     * @param response       响应
+     * @param authentication 身份验证
+     * @throws IOException ioexception
+     */
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String token = request.getHeader("Authorization");

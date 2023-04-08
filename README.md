@@ -1,3 +1,5 @@
+https://github.com/hcm083214/java-auth
+
 相关教程：
 
 [工具Kaptcha（验证码图片）](https://juejin.cn/post/7074852077180026916)
@@ -11,6 +13,4 @@
 [Spring Security 两种资源放行策略，千万别用错了！](https://www.imooc.com/article/305184)
 
 访问swagger页面：http://localhost:60000/swagger-ui/index.html
-
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODAyMzA2MjUsImlhdCI6MTY4MDIyMzQyNSwianRpIjoiMjA4ZThjNDItYjBiNy00YTM2LWE4OTgtNTk5YWQ3MjZkNGZkIiwic3ViIjoiaGNtIn0.dlqP6FTzg_vvAiyFZX43yuN2C2uAqAgJFVg4kuz9JLg
 
