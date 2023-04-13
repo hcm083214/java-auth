@@ -45,8 +45,6 @@
             </exclusions>
         </dependency>
 
-
-
         <dependency>
             <groupId>com.hcm</groupId>
             <artifactId>auth-common</artifactId>

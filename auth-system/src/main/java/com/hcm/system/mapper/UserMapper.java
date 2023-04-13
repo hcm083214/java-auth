@@ -46,10 +46,11 @@ public interface UserMapper {
     void insertUser(@Param("sysUser")SysUser sysUser);
 
     /**
-     * 通过id获取用户角色信息
+     * 插入用户角色
      *
-     * @param userId 用户id
-     * @return {@link List}<{@link SysRole}>
+     * @param sysUser 系统用户
      */
-    List<SysRole> getUserRoleInfoById(@Param("userId") Long userId);
+    void insertUserRole(@Param("user") SysUser sysUser);
+
+
 }

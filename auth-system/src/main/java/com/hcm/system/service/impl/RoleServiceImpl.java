@@ -33,6 +33,16 @@ public class RoleServiceImpl implements RoleService {
     private FunctionMapper functionMapper;
 
     /**
+     * 获取默认角色
+     *
+     * @return {@link SysRole}
+     */
+    @Override
+    public SysRole getDefaultRole(){
+        return roleMapper.getRole(2L);
+    }
+
+    /**
      * 得到角色及相关信息，包括功能权限和数据权限
      *
      * @return {@link List}<{@link SysRole}>
@@ -150,6 +160,17 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void insertRoleList(List<RoleVo> roleVos) {
         roleMapper.insertRoleList(roleVos);
+    }
+
+    /**
+     * 通过id获取用户角色信息
+     *
+     * @param userId 用户id
+     * @return {@link List}<{@link SysRole}>
+     */
+    @Override
+    public List<SysRole> getUserRoleInfoById(Long userId) {
+        return roleMapper.getUserRoleInfoById(userId);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.hcm.system.service;
 
 import com.hcm.common.core.entity.SysUser;
+import me.zhyd.oauth.model.AuthUser;
 
 import java.util.List;
 
@@ -40,4 +41,12 @@ public interface UserService {
      * @param sysUser 用户信息
      */
     void insertUser(SysUser sysUser);
+
+    /**
+     * gitee user 转用户
+     *
+     * @param authUser 身份验证用户
+     * @return {@link SysUser}
+     */
+    SysUser giteeUser2User(AuthUser authUser);
 }

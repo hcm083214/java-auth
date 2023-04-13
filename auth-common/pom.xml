@@ -106,6 +106,12 @@
             <artifactId>springfox-boot-starter</artifactId>
         </dependency>
 
+        <!-- 第三方登录 -->
+        <dependency>
+            <groupId>me.zhyd.oauth</groupId>
+            <artifactId>JustAuth</artifactId>
+        </dependency>
+
     </dependencies>
 
 

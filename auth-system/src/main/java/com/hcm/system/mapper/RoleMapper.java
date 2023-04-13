@@ -48,6 +48,22 @@ public interface RoleMapper {
     List<SysRole> getRoles(@Param("role") RoleVo roleVo);
 
     /**
+     * 通过id获取用户角色信息
+     *
+     * @param userId 用户id
+     * @return {@link List}<{@link SysRole}>
+     */
+    List<SysRole> getUserRoleInfoById(@Param("userId") Long userId);
+
+    /**
+     * 得到角色
+     *
+     * @param roleId 角色id
+     * @return {@link SysRole}
+     */
+    SysRole getRole(@Param("roleId")Long roleId);
+
+    /**
      * 得到参数列表
      *
      * @param type   类型

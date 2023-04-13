@@ -2,6 +2,7 @@ package com.hcm.system.service;
 
 import com.hcm.common.core.entity.SysRole;
 import com.hcm.common.vo.RoleVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,12 +23,27 @@ public interface RoleService {
     List<Long> getPermissionsByRoleIds(List<Long> roleIds);
 
     /**
+     * 获取默认角色
+     *
+     * @return {@link SysRole}
+     */
+    SysRole getDefaultRole();
+
+    /**
      * 得到角色列表
      *
      * @param roleVo roleVo
      * @return {@link List}<{@link SysRole}>
      */
     List<SysRole> getRoles(RoleVo roleVo);
+
+    /**
+     * 通过id获取用户角色信息
+     *
+     * @param userId 用户id
+     * @return {@link List}<{@link SysRole}>
+     */
+    List<SysRole> getUserRoleInfoById(@Param("userId") Long userId);
 
     /**
      * 得到参数列表

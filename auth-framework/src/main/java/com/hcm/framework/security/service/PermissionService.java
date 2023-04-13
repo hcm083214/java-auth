@@ -59,7 +59,7 @@ public class PermissionService {
      * @param sysUser 系统用户
      * @return {@link List}<{@link String}>
      */
-    public List<String> getUserPermissionById(SysUser sysUser) {
+    public List<String> getUserPermissionByUser(SysUser sysUser) {
         Set<String> userPermission = new HashSet<>();
         if (sysUser.getUserId().equals(1L)) {
             userPermission.add(ALL_PERMISSION);

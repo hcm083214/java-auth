@@ -28,14 +28,17 @@
         where user_id = #{userId}
     </select>
 
-    <select id="getUserRoleInfoById" resultType="com.hcm.common.core.entity.SysRole">
-        select r.role_id roleId, r.function_json functionJson
-        from sys_user_role u left join sys_role r on u.role_id = r.role_id
-        where u.user_id = #{userId}
-    </select>
 
-    <insert id="insertUser">
-        insert into sys_user (user_name, password, nick_name)
-        values (#{sysUser.userName}, #{sysUser.password}, #{sysUser.userName})
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into sys_user (user_name, password, nick_name, status, user_type)
+        values (#{sysUser.userName}, #{sysUser.password}, #{sysUser.nickName}, 1, #{sysUser.userType})
+    </insert>
+
+    <insert id="insertUserRole">
+        insert into sys_user_role (user_id,role_id) values
+        <foreach collection="user.roleList" item="role" separator=",">
+            (#{user.userId},#{role.roleId})
+        </foreach>
     </insert>
 </mapper>

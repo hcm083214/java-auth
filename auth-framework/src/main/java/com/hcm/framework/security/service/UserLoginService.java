@@ -6,7 +6,6 @@ import com.hcm.common.core.redis.RedisCache;
 import com.hcm.common.enums.ResultCodeEnum;
 import com.hcm.common.exception.AuthException;
 import com.hcm.common.exception.BadRequestException;
-import com.hcm.common.utils.ConvertUtils;
 import com.hcm.common.vo.LoginVo;
 import com.hcm.framework.security.context.AuthenticationContextHolder;
 import com.hcm.system.service.ConfigService;
@@ -16,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**

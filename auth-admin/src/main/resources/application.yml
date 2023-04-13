@@ -53,3 +53,9 @@ swagger:
   application-version: 1.0
   application-description: springfox swagger 3.0
   try-host: http://localhost:${server.port}
+
+# 第三方登录的配置信息
+tripartite:
+  giteeClientId: a6efdf63c39541b156350abb70cca3a4e93be45e26cebfbffea1e76f431a1723
+  giteeClientSecret: 458e7ce6bc11546b0bf0fed1a768a1403284f16d7e58bddb2bbebe955375a645
+  giteeRedirectUri: http://127.0.0.1:5173/3th-auth

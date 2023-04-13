@@ -126,7 +126,12 @@
                 <artifactId>springfox-boot-starter</artifactId>
                 <version>${swagger.version}</version>
             </dependency>
-
+            <!-- 第三方登录 -->
+            <dependency>
+                <groupId>me.zhyd.oauth</groupId>
+                <artifactId>JustAuth</artifactId>
+                <version>1.16.5</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

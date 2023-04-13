@@ -28,4 +28,15 @@ public class LoginValidation {
             throw new BadRequestException("uuid 未传");
         }
     }
+    public static void loginByThirdPartyParamsValid(LoginVo loginVo) {
+        if (StringUtils.isEmpty(loginVo.getSource())) {
+            throw new BadRequestException("source 未传");
+        }
+        if(StringUtils.isEmpty(loginVo.getUuid())){
+            throw new BadRequestException("uuid 未传");
+        }
+        if (BaseUtils.isEmptyString(loginVo.getCode())) {
+            throw new BadRequestException("code 未传");
+        }
+    }
 }

@@ -35,6 +35,11 @@ public class SysUser extends BaseEntity {
     private Long deptId;
 
     /**
+     * 用户类型 0 系统用户，1： gitee
+     */
+    private Long userType;
+
+    /**
      * 用户账号
      */
     @NotBlank(message = "用户账号不能为空")

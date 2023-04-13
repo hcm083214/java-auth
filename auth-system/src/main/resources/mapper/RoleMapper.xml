@@ -32,6 +32,10 @@
         </if>
     </sql>
 
+    <select id="getRole" resultType="com.hcm.common.core.entity.SysRole">
+        select <include refid="roleInfo"></include> from sys_role where role_id = #{roleId}
+    </select>
+
     <select id="getRoles" resultType="com.hcm.common.core.entity.SysRole">
         select <include refid="roleInfo"></include> from sys_role where 1=1
         <include refid="searchOption"></include>
@@ -50,16 +54,27 @@
     </select>
 
     <select id="getFunctionListById" resultType="java.lang.Long">
-        select function_id from sys_role_function where role_id = #{roleId}
+        select function_id
+        from sys_role_function
+        where role_id = #{roleId}
+    </select>
+
+    <select id="getUserRoleInfoById" resultType="com.hcm.common.core.entity.SysRole">
+        select r.role_id roleId, r.function_json functionJson
+        from sys_user_role u
+                 left join sys_role r on u.role_id = r.role_id
+        where u.user_id = #{userId}
     </select>
 
     <select id="getPermissionsByRoleIds" resultType="java.lang.Long">
-        
+
     </select>
 
     <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">
-        insert into sys_role (role_name_cn,role_name_en,role_description_cn,role_description_en,function_json ,status,create_time,update_time) values
-            (#{role.roleNameCn},#{role.roleNameEn},#{role.roleDescriptionCn},#{role.roleDescriptionEn},#{role.functionJson},'1',now(),now())
+        insert into sys_role (role_name_cn, role_name_en, role_description_cn, role_description_en, function_json,
+                              status, create_time, update_time)
+        values (#{role.roleNameCn}, #{role.roleNameEn}, #{role.roleDescriptionCn}, #{role.roleDescriptionEn},
+                #{role.functionJson}, '1', now(), now())
     </insert>
 
     <insert id="insertRoleList">
@@ -81,19 +96,19 @@
     <update id="editRole">
         update sys_role
         set role_name_cn = #{role.roleNameCn},
-            role_name_en = #{role.roleNameEn},
-            role_description_cn = #{role.roleDescriptionCn},
-            role_description_en = #{role.roleDescriptionEn},
-            function_json = #{role.functionJson},
-            <if test="role.status != null and role.status != ''">
-                status = #{role.status},
-            </if>
-            update_time = now()
+        role_name_en = #{role.roleNameEn},
+        role_description_cn = #{role.roleDescriptionCn},
+        role_description_en = #{role.roleDescriptionEn},
+        function_json = #{role.functionJson},
+        <if test="role.status != null and role.status != ''">
+            status = #{role.status},
+        </if>
+        update_time = now()
         where role_id = #{role.roleId}
     </update>
 
     <delete id="deleteRoleFunctionList">
-        delete from sys_role_function  where (role_id,function_id) in
+        delete from sys_role_function where (role_id,function_id) in
         <trim prefix="(" suffixOverrides="," suffix=")">
             <foreach collection="functionIds" item="functionId">
                 (#{roleId},#{functionId}),
