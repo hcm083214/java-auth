@@ -67,6 +67,11 @@ public class RoleVo {
     private List<FunctionVo> functionList;
 
     /**
+     * 权限字符
+     */
+    private String functionKey;
+
+    /**
      * 角色排序
      */
     @ExcelProperty("角色排序")

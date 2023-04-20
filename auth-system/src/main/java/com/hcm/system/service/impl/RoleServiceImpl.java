@@ -3,6 +3,7 @@ package com.hcm.system.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.hcm.common.core.entity.SysFunction;
 import com.hcm.common.core.entity.SysRole;
+import com.hcm.common.utils.StringUtils;
 import com.hcm.common.vo.RoleVo;
 import com.hcm.system.mapper.FunctionMapper;
 import com.hcm.system.mapper.RoleMapper;
@@ -49,7 +50,13 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public List<SysRole> getRoles(RoleVo roleVo) {
-        List<SysRole> roleList = roleMapper.getRoles(roleVo);
+        List<SysRole> roleList = new ArrayList<>();
+        if(StringUtils.isNotEmpty(roleVo.getFunctionKey())){
+            roleList = roleMapper.getRolesByFunKey(roleVo);
+        }else{
+             roleList = roleMapper.getRoles(roleVo);
+        }
+
         setRoleFunctionList(roleList);
         return roleList;
     }

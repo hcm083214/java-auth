@@ -182,6 +182,9 @@ public class LoginController {
                 .build());
         AuthResponse<AuthUser> login = authRequest.login(AuthCallback.builder().state(loginVo.getUuid()).code(loginVo.getCode()).build());
         AuthUser authUser = login.getData();
+        if(authUser == null ){
+            throw new BadRequestException("认证超时");
+        }
         SysUser sysUser = userService.giteeUser2User(authUser);
         SysUser oriUser = userService.getUserInfoByName(sysUser.getUserName());
         if (oriUser == null) {

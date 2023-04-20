@@ -4,9 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hcm.common.core.domain.ResultVO;
 import com.hcm.common.core.entity.SysRole;
+import com.hcm.common.enums.RoleSearchTypeEnum;
 import com.hcm.common.utils.ExcelUtils;
+import com.hcm.common.vo.FunctionVo;
 import com.hcm.common.vo.PageVo;
 import com.hcm.common.vo.RoleVo;
+import com.hcm.system.service.FunctionService;
 import com.hcm.system.service.RoleService;
 import com.hcm.validation.PageValidation;
 import com.hcm.validation.RoleValidation;
@@ -42,6 +45,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private FunctionService functionService;
 
     /**
      * 获取角色列表
@@ -107,7 +113,15 @@ public class RoleController {
     @PreAuthorize("@ss.hasPermission('permission:role:query')")
     @ApiOperation(value = "角色搜索参数查询", notes = "获取搜索栏联想结果")
     public ResultVO<List<String>> getParamsList(@Validated RoleVo roleVo) {
-        List<String> result = roleService.getParamsList(roleVo);
+        List<String> result = new ArrayList<>();
+        if(roleVo.getSearchParams().equals(RoleSearchTypeEnum.FUNCTION_KEY.name().toLowerCase())){
+            FunctionVo functionVo = new FunctionVo();
+            functionVo.setSearchParams(roleVo.getSearchParams());
+            functionVo.setFunctionKey(roleVo.getFunctionKey());
+            result = functionService.getParamsList(functionVo);
+        }else{
+            result = roleService.getParamsList(roleVo);
+        }
         return ResultVO.success(result);
     }
 

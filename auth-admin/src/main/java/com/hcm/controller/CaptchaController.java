@@ -47,10 +47,10 @@ public class CaptchaController {
     private RedisCache redisCache;
 
     /**
-     * @param type    验证码的类型，string 和 math 两种
+     * @param type 验证码的类型，string 和 math 两种
      */
     @GetMapping("/image")
-    @ApiOperation(value = "验证码查询",notes = "获取验证码")
+    @ApiOperation(value = "验证码查询", notes = "获取验证码")
     public ResultVO<CaptchaVo> getCaptchaImg(@RequestParam("type") String type) {
         if (BaseUtils.isEmptyString(type)) {
             throw new BadRequestException("type 未传");
@@ -65,6 +65,11 @@ public class CaptchaController {
             image = captchaProducer.createImage(code);
         } else if (CommonConstants.CAPTCHA_TYPE_MATH.equals(type)) {
             String codeMath = captchaProducerMath.createText();
+            int index = codeMath.indexOf("@");
+            code = codeMath.substring(index + 1);
+            String prefix = codeMath.substring(0, index);
+            log.info("codeMath:{},prefix:{},code:{}", codeMath, prefix, code);
+            image = captchaProducer.createImage(prefix);
         }
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -72,7 +77,6 @@ public class CaptchaController {
             byte[] bytes = out.toByteArray();
             final Base64.Encoder encoder = Base64.getEncoder();
             base64ImgUrl = encoder.encodeToString(bytes);
-
             captchaVo.setBase64Url(base64ImgUrl);
             captchaVo.setCaptchaEnabled(true);
 

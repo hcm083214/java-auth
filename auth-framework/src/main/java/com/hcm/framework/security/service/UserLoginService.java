@@ -72,6 +72,7 @@ public class UserLoginService {
         if (captchaEnabled) {
             String captchaCode = redisCache.getCacheObject(CacheConstants.CACHE_CAPTCHA_CODE + uuid);
             if (!code.equalsIgnoreCase(captchaCode)) {
+                redisCache.deleteObject(CacheConstants.CACHE_CAPTCHA_CODE + uuid);
                 throw new BadRequestException("验证码错误");
             }
         }

@@ -9,44 +9,51 @@
     </select>
 
     <sql id="roleInfo">
-        role_id
+        r.role_id
         roleId,
-        role_name_cn roleNameCn,
-        role_name_en roleNameEn,
-        role_description_cn roleDescriptionCn,
-        role_description_en roleDescriptionEn,
-        function_json functionJson,
-        role_sort roleSort,
-        create_time createTime,
-        status
+        r.role_name_cn roleNameCn,
+        r.role_name_en roleNameEn,
+        r.role_description_cn roleDescriptionCn,
+        r.role_description_en roleDescriptionEn,
+        r.function_json functionJson,
+        r.role_sort roleSort,
+        r.create_time createTime,
+        r.status status
     </sql>
     <sql id="searchOption">
         <if test="role.roleNameCn!= null and role.roleNameCn != ''">
-            and role_name_cn like concat('%', #{role.roleNameCn}, '%')
+            and r.role_name_cn like concat('%', #{role.roleNameCn}, '%')
         </if>
         <if test="role.roleNameEn!= null and role.roleNameEn != ''">
-            and role_name_en like concat('%', #{role.roleNameEn}, '%')
+            and r.role_name_en like concat('%', #{role.roleNameEn}, '%')
         </if>
         <if test="role.status != null and role.status != ''">
-            and status = #{role.status}
+            and r.status = #{role.status}
         </if>
     </sql>
 
     <select id="getRole" resultType="com.hcm.common.core.entity.SysRole">
-        select <include refid="roleInfo"></include> from sys_role where role_id = #{roleId}
+        select <include refid="roleInfo"></include> from sys_role r where role_id = #{roleId}
     </select>
 
     <select id="getRoles" resultType="com.hcm.common.core.entity.SysRole">
-        select <include refid="roleInfo"></include> from sys_role where 1=1
+        select <include refid="roleInfo"></include> from sys_role r where 1=1
         <include refid="searchOption"></include>
+    </select>
+
+    <select id="getRolesByFunKey" resultType="com.hcm.common.core.entity.SysRole">
+        select <include refid="roleInfo"></include> from sys_role r
+        left join sys_role_function rf on rf.role_id = r.role_id
+        left join sys_function f on rf.function_id = f.function_id
+        where f.function_key = #{role.functionKey}
     </select>
 
     <select id="getParamsList" resultType="string">
         <if test="type!= null and type == 'role_name_cn'">
-            select distinct role_name_cn from sys_role
+            select distinct r.role_name_cn from r.sys_role
         </if>
         <if test="type!= null and type == 'role_name_en'">
-            select distinct role_name_en from sys_role
+            select distinct r.role_name_en from r.sys_role
         </if>
         where 1=1
         <include refid="searchOption"></include>

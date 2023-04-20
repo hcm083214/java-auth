@@ -109,4 +109,12 @@ public interface RoleMapper {
      * @param deleteFunctionIds 删除功能id
      */
     void deleteRoleFunctionList(@Param("roleId") Long roleId,@Param("functionIds") List<Long> deleteFunctionIds);
+
+    /**
+     * 根据 functionKey 查询 角色
+     *
+     * @param roleVo 签证官角色
+     * @return {@link List}<{@link SysRole}>
+     */
+    List<SysRole> getRolesByFunKey(@Param("role") RoleVo roleVo);
 }
