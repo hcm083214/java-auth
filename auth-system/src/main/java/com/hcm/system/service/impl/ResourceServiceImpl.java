@@ -284,7 +284,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     /**
-     * 通过functionId列表得到资源列表
+     * 通过当前用户的functionId列表得到资源列表
      *
      *
      * @param sysUser@return {@link List}<{@link SysResource}>

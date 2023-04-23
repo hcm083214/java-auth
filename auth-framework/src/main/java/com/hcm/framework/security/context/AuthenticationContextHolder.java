@@ -1,6 +1,7 @@
 package com.hcm.framework.security.context;
 
 
+import com.hcm.common.core.entity.SysUser;
 import com.hcm.common.core.entity.UserDetail;
 import com.hcm.common.exception.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,22 @@ public class AuthenticationContextHolder {
             throw new BadRequestException("获取用户信息异常");
         }
         return user;
+    }
+
+    /**
+     * 得到当前用户信息
+     *
+     * @return {@link UserDetail}
+     */
+    public static SysUser getCurrentUserInfo() {
+        UserDetail user;
+        try {
+            user = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            log.error("AuthenticationContextHolder ---> getCurrentUser,获取用户信息异常:${}", e.getMessage());
+            throw new BadRequestException("获取用户信息异常");
+        }
+        return user.getSysUser();
     }
 
     /**
