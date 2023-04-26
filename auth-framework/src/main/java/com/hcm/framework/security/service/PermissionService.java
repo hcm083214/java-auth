@@ -43,7 +43,6 @@ public class PermissionService {
             throw new AuthException(ResultCodeEnum.UNACCESS.getCode(), ResultCodeEnum.UNACCESS.getMessage());
         }
         UserDetail user = AuthenticationContextHolder.getCurrentUser();
-        log.info("PermissionService ---> hasPermission:{}", user);
         if (user.getPermissions().contains(ALL_PERMISSION)) {
             return true;
         }

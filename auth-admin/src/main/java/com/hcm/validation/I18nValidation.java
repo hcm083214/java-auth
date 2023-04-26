@@ -15,13 +15,13 @@ public class I18nValidation {
         if (StringUtils.isEmpty(i18nVo.getLocale())) {
             throw new BadRequestException("locale 未传");
         }
-        if (StringUtils.isEmpty(i18nVo.getKey())) {
+        if (StringUtils.isEmpty(i18nVo.getI18nKey())) {
             throw new BadRequestException("key 未传");
         }
-        if (StringUtils.isEmpty(i18nVo.getValue())) {
+        if (StringUtils.isEmpty(i18nVo.getI18nValue())) {
             throw new BadRequestException("value 未传");
         }
-        if (StringUtils.isEmpty(i18nVo.getModule())) {
+        if (StringUtils.isEmpty(i18nVo.getI18nModule())) {
             throw new BadRequestException("module 未传");
         }
     }

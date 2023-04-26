@@ -27,6 +27,13 @@ public interface I18nMapper {
     /**
      * 添加i18n
      *
+     * @param i18nVos i18n vos
+     */
+    void addI18ns(@Param("i18ns") List<I18nVo> i18nVos);
+
+    /**
+     * 添加i18n
+     *
      * @param i18nVo i18n签证官
      */
     void addI18n(@Param("i18n") I18nVo i18nVo);
@@ -37,4 +44,12 @@ public interface I18nMapper {
      * @param i18nVo i18n签证官
      */
     void editI18n(@Param("i18n") I18nVo i18nVo);
+
+    /**
+     * 语言环境和key值计数器
+     *
+     * @param i18nVos i18n vos
+     * @return
+     */
+    Integer localeAndKeyCounter(@Param("i18ns") List<I18nVo> i18nVos);
 }

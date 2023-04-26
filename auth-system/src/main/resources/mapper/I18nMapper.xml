@@ -7,21 +7,24 @@
         i18n_id
         i18nId,
         i.locale locale,
-        i.module module,
-        i.key key,
-        i.value value,
-        i.create_time createTime,
+        i.i18n_module i18nModule,
+        i.i18n_key i18nKey,
+        i.i18n_value i18nValue,
+        i.create_time createTime
     </sql>
 
     <sql id="condition">
-        <if test="i18n.key != null and i18n.key != ''">
-            and i.key like concat('%', #{i18n.key}, '%')
+        <if test="i18n.i18nKey != null and i18n.i18nKey != ''">
+            and i.i18n_key like concat('%', #{i18n.i18nKey}, '%')
         </if>
-        <if test="i18n.value != null and i18n.value != ''">
-            and i.value like concat('%', #{i18n.value}, '%')
+        <if test="i18n.i18nValue != null and i18n.i18nValue != ''">
+            and i.i18n_value like concat('%', #{i18n.i18nValue}, '%')
         </if>
         <if test="i18n.locale != null and i18n.locale != ''">
             and i.locale like concat('%', #{i18n.locale}, '%')
+        </if>
+        <if test="i18n.i18nModule != null and i18n.i18nModule != ''">
+            and i.i18n_module like concat('%', #{i18n.i18nModule}, '%')
         </if>
     </sql>
 
@@ -32,19 +35,33 @@
         <include refid="condition"/>
     </select>
 
+    <select id="localeAndKeyCounter" resultType="integer">
+        select count(*) from sys_i18n i where (i.locale,i.i18n_key) in
+        <foreach collection="i18ns" item="i18n" open="(" close=")" separator=",">
+            (#{i18n.locale}, #{i18n.i18nKey})
+        </foreach>
+    </select>
+
+    <insert id="addI18ns">
+        insert into sys_i18n (locale, i18n_module, i18n_key, i18n_value, create_time, create_by) values
+        <foreach collection="i18ns" item="i18n" separator=",">
+            (#{i18n.locale}, #{i18n.i18nModule}, #{i18n.i18nKey}, #{i18n.i18nValue}, now(), #{i18n.createBy})
+        </foreach>
+    </insert>
+
     <insert id="addI18n">
-        insert into sys_i18n (locale, module, key, value, create_time, create_by)
-        values (#{i18n.locale}, #{i18n.module}, #{i18n.key}, #{i18n.value}, now(), #{i18n.createBy})
+        insert into sys_i18n (locale, i18n_module, i18n_key, i18n_value, create_time, create_by)
+        values (#{i18n.locale}, #{i18n.i18nModule}, #{i18n.i18nKey}, #{i18n.i18nValue}, now(), #{i18n.createBy})
     </insert>
 
     <update id="editI18n">
         update sys_i18n i
         set i.locale      = #{i18n.locale},
-            i.module      = #{i18n.module},
-            i.key         = #{i18n.key},
-            i.value       = #{i18n.value},
+            i.i18n_module = #{i18n.i18nModule},
+            i.i18n_key    = #{i18n.i18nKey},
+            i.i18n_value  = #{i18n.i18nValue},
             i.update_by   = #{i18n.updateBy},
             i.update_time = now()
-        where i.i18n_id   = #{i18n.i18nId}
+        where i.i18n_id = #{i18n.i18nId}
     </update>
 </mapper>

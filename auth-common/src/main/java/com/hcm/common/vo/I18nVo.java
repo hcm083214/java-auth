@@ -25,15 +25,15 @@ public class I18nVo extends BaseEntity {
     /**
      * 模块
      */
-    private String module;
+    private String i18nModule;
 
     /**
      * 键值
      */
-    private String key;
+    private String i18nKey;
 
     /**
      * 值
      */
-    private String value;
+    private String i18nValue;
 }

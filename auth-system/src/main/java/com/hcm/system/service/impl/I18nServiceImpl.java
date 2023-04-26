@@ -2,7 +2,6 @@ package com.hcm.system.service.impl;
 
 import com.hcm.common.core.entity.SysI18n;
 import com.hcm.common.exception.BadRequestException;
-import com.hcm.common.utils.StringUtils;
 import com.hcm.common.vo.I18nVo;
 import com.hcm.system.mapper.I18nMapper;
 import com.hcm.system.service.I18nService;
@@ -10,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,15 +39,16 @@ public class I18nServiceImpl implements I18nService {
     /**
      * 添加i18n
      *
-     * @param i18nVo i18n签证官
+     * @param i18nVos i18n vos
      */
     @Override
-    public void addI18n(I18nVo i18nVo) {
-        List<SysI18n> sysI18nList = i18nMapper.getI18nList(i18nVo);
-        if(sysI18nList.size()>0){
+    public void addI18ns(List<I18nVo> i18nVos) {
+        if (!isExistInDB(i18nVos)) {
+            i18nMapper.addI18ns(i18nVos);
+        } else {
             throw new BadRequestException("插入的数据重复");
         }
-        i18nMapper.addI18n(i18nVo);
+
     }
 
     /**
@@ -57,10 +58,25 @@ public class I18nServiceImpl implements I18nService {
      */
     @Override
     public void editI18n(I18nVo i18nVo) {
-        List<SysI18n> sysI18nList = i18nMapper.getI18nList(i18nVo);
-        if(sysI18nList.size() != 1){
-            throw new BadRequestException("传入的id错误");
-        }
         i18nMapper.editI18n(i18nVo);
+    }
+
+    /**
+     * 是存在于数据库
+     * 数据是否存在于数据库
+     *
+     * @param i18nVos i18n vos
+     * @return {@link Boolean}
+     */
+    private Boolean isExistInDB(List<I18nVo> i18nVos) {
+        Integer counter = i18nMapper.localeAndKeyCounter(i18nVos);
+        return counter > 0;
+    }
+
+    private Boolean isExistInDB(I18nVo i18nVo) {
+        List<I18nVo> i18nVos = new ArrayList<>(1);
+        i18nVos.add(i18nVo);
+        Integer counter = i18nMapper.localeAndKeyCounter(i18nVos);
+        return counter > 0;
     }
 }

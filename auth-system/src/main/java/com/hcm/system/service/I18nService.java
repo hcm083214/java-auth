@@ -24,9 +24,9 @@ public interface I18nService {
     /**
      * 添加i18n
      *
-     * @param i18nVo i18n签证官
+     * @param i18nVos i18n vos
      */
-    void addI18n(I18nVo i18nVo);
+    void addI18ns(List<I18nVo> i18nVos);
 
     /**
      * 编辑i18n
