@@ -3,7 +3,7 @@ package com.hcm.framework.security;
 import com.alibaba.fastjson.JSON;
 import com.hcm.common.constants.CacheConstants;
 import com.hcm.common.core.entity.UserDetail;
-import com.hcm.common.core.redis.RedisCache;
+import com.hcm.common.core.redis.RedisStringCache;
 import com.hcm.common.exception.BadRequestException;
 import com.hcm.common.utils.BaseUtils;
 import com.hcm.common.core.entity.JwtPayload;
@@ -48,7 +48,7 @@ public class JwtManager {
     private Integer expiration;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisStringCache redisCache;
 
     /**
      * 设置有效载荷

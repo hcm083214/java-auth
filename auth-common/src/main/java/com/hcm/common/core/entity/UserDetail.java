@@ -1,6 +1,7 @@
 package com.hcm.common.core.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,8 +14,9 @@ import java.util.Set;
  * @description 自定义的用户对象
  */
 @Data
+@NoArgsConstructor
 public class UserDetail implements UserDetails {
-
+    private static final long serialVersionUID = 1L;
     /**
      * 用户id
      */

@@ -43,13 +43,11 @@ public class AuthFilter extends OncePerRequestFilter {
         if (StringUtils.isNotEmpty(token)) {
              userDetail = jwtManager.parse(token);
         }
-        log.info("AuthFilter--->Authentication:{},userDetail:{}", SecurityContextHolder.getContext().getAuthentication(),userDetail);
         //  SecurityContextHolder.getContext().getAuthentication() 每次请求都为 null ，只要缓存中
         if(StringUtils.isNotNull(userDetail) && StringUtils.isNull(SecurityContextHolder.getContext().getAuthentication())){
             jwtManager.verifyUserTokenOnRedis(userDetail);
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("AuthFilter--->token:{},payload:{}", token, userDetail);
         }
         chain.doFilter(request, response);
     }

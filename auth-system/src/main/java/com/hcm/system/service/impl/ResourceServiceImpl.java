@@ -1,10 +1,17 @@
 package com.hcm.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.hcm.common.constants.CacheConstants;
+import com.hcm.common.constants.CommonConstants;
 import com.hcm.common.core.entity.SysResource;
 import com.hcm.common.core.entity.SysRole;
 import com.hcm.common.core.entity.SysUser;
+import com.hcm.common.core.redis.RedisHPCache;
+import com.hcm.common.core.redis.RedisHashCache;
+import com.hcm.common.core.redis.RedisStringCache;
+import com.hcm.common.utils.ServletUtils;
 import com.hcm.common.utils.StringUtils;
+import com.hcm.common.utils.ip.IpUtils;
 import com.hcm.common.vo.ResourceVo;
 import com.hcm.system.mapper.ResourceMapper;
 import com.hcm.system.service.ResourceService;
@@ -12,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactoryUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
@@ -27,7 +35,9 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +56,18 @@ public class ResourceServiceImpl implements ResourceService {
     @Resource
     private ResourceMapper resourceMapper;
 
+    @Autowired
+    private RedisHashCache redisHashCache;
+
+    @Autowired
+    private RedisHPCache redisHPCache;
+
+    @Autowired
+    private RedisStringCache redisStringCache;
+
     /**
      * 获得菜单列表
+     *
      * @param sysUser sysUser
      */
     @Override
@@ -65,6 +85,52 @@ public class ResourceServiceImpl implements ResourceService {
     public List<SysResource> getMenuListAll() {
         List<SysResource> sysResourceList = resourceMapper.geResourceList();
         return list2Tree(sysResourceList);
+    }
+
+    /**
+     * resource 保存到 redis
+     *
+     * @param resourceList
+     */
+    @Override
+    public void syncResource2Redis(List<SysResource> resourceList) {
+        resourceList.forEach(sysResource -> {
+            String hashKey = sysResource.getControllerClass() + "." + sysResource.getMethodName();
+            redisHashCache.putIfAbsent(CacheConstants.CACHE_RESOURCE, hashKey, sysResource);
+        });
+    }
+
+    /**
+     * 统计资源uvpv
+     *
+     * @param sysResource 系统资源  controllerClass 和  methodName
+     */
+    @Override
+    public void countResourceUVAndPV(SysResource sysResource) {
+        String ipAddr = IpUtils.getIpAddr(ServletUtils.getRequest());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CommonConstants.TIME_FORMAT_MONTH_DAY);
+        String apiName = sysResource.getControllerClass() + "." + sysResource.getMethodName();
+
+        String pvKey = formatKeyName(apiName, simpleDateFormat.format(new Date()));
+        String uvKey = formatKeyName("unique_visitor", simpleDateFormat.format(new Date()));
+        redisHPCache.add(uvKey, ipAddr);
+
+
+        if (redisStringCache.isExists(pvKey)) {
+            redisStringCache.setCacheObject(pvKey, 1);
+        } else {
+            redisStringCache.increase(pvKey, 1);
+        }
+    }
+
+    /**
+     * 格式键名
+     *
+     * @param keyName 键名
+     * @return {@link String}
+     */
+    private String formatKeyName(String keyName, String timestamp) {
+        return CacheConstants.CACHE_VIEW_COUNTER_PREFIX + keyName + ":" + timestamp;
     }
 
     /**
@@ -96,7 +162,7 @@ public class ResourceServiceImpl implements ResourceService {
     public void editResourceParentId(List<ResourceVo> resourceVoList) {
         List<ResourceVo> updateList = new ArrayList<>();
         resourceVoList.forEach(resourceVo -> {
-            if(!resourceVo.getParentId().equals(0L)){
+            if (!resourceVo.getParentId().equals(0L)) {
                 resourceVo.setParentId(0L);
                 updateList.add(resourceVo);
             }
@@ -231,7 +297,6 @@ public class ResourceServiceImpl implements ResourceService {
                             sysApiList.add(sysResource);
                         }
                     });
-                    log.info("sysApiList:{}", sysApiList);
                 }
             });
         }
@@ -285,7 +350,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     /**
      * 通过当前用户的functionId列表得到资源列表
-     *
      *
      * @param sysUser@return {@link List}<{@link SysResource}>
      */

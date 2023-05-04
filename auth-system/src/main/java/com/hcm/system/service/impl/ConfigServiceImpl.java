@@ -3,7 +3,7 @@ package com.hcm.system.service.impl;
 import com.hcm.common.constants.CacheConstants;
 import com.hcm.common.constants.CommonConstants;
 import com.hcm.common.core.entity.SysConfig;
-import com.hcm.common.core.redis.RedisCache;
+import com.hcm.common.core.redis.RedisStringCache;
 import com.hcm.common.utils.ConvertUtils;
 import com.hcm.common.utils.StringUtils;
 import com.hcm.system.mapper.ConfigMapper;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class ConfigServiceImpl implements ConfigService {
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisStringCache redisCache;
 
     @Autowired
     private ConfigMapper configMapper;
@@ -54,7 +54,7 @@ public class ConfigServiceImpl implements ConfigService {
      */
     @Override
     public boolean getCaptchaEnabled() {
-        String captchaEnabled = getSysConfigValByKey(CommonConstants.CAPTCHA_SYS_CONFIG_KEY);
+        String captchaEnabled = getSysConfigValByKey(CacheConstants.CAPTCHA_SYS_CONFIG_KEY);
         if (StringUtils.isEmpty(captchaEnabled)) {
             return true;
         }

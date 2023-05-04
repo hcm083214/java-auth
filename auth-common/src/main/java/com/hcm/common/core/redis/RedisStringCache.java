@@ -1,10 +1,14 @@
 package com.hcm.common.core.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,9 +18,10 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/02/22
  */
 @Component
-public class RedisCache {
+public class RedisStringCache {
 
     @Autowired
+    @Qualifier("redisTemplate")
     private RedisTemplate redisTemplate;
 
 
@@ -38,7 +43,7 @@ public class RedisCache {
      * @param timeout  过期时间
      * @param timeUnit 时间单位
      */
-    public<T> void setCacheObject(String key, T value, Integer timeout, TimeUnit timeUnit) {
+    public <T> void setCacheObject(String key, T value, Integer timeout, TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
@@ -49,7 +54,7 @@ public class RedisCache {
      * @param key 缓存的键值
      * @return {@link Object}
      */
-    public<T> T getCacheObject(String key){
+    public <T> T getCacheObject(String key) {
         ValueOperations<String, T> operation = redisTemplate.opsForValue();
         return operation.get(key);
     }
@@ -59,8 +64,27 @@ public class RedisCache {
      *
      * @param key key
      */
-    public boolean deleteObject(String key)
-    {
+    public boolean deleteObject(String key) {
         return redisTemplate.delete(key);
+    }
+
+    /**
+     * 增加
+     *
+     * @param key   关键
+     * @param delta δ
+     */
+    public void increase(String key,Integer delta){
+        redisTemplate.opsForValue().increment(key,delta);
+    }
+
+    /**
+     * 是否存在
+     *
+     * @param key 关键
+     * @return boolean
+     */
+    public boolean isExists(String key){
+        return redisTemplate.opsForValue().get(key) == null;
     }
 }

@@ -1,4 +1,4 @@
-package com.hcm.tripartite;
+package com.hcm.framework.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

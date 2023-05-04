@@ -1,4 +1,4 @@
-package com.hcm.controller;
+package com.hcm.controller.common;
 
 import com.hcm.common.constants.CommonConstants;
 import com.hcm.common.exception.AuthException;

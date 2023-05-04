@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hcm.system.mapper.ResourceMapper">
     <sql id="resourceType">
-        r.resource_id
-        resourceId,
+        r.resource_id resourceId,
         r.resource_type resourceType,
         r.component component,
         r.path path,
@@ -23,7 +22,9 @@
 
     <select id="getApiList" resultType="com.hcm.common.core.entity.SysResource">
         select
-        <include refid="resourceType"/>
+        <include refid="resourceType"/>,
+        r.controller_class controllerClass,
+        r.method_name methodName
         from sys_resource r where r.resource_type = "F"
     </select>
 
@@ -91,6 +92,8 @@
     </insert>
 
     <delete id="deleteResource">
-        delete from sys_resource where resource_id = #{resourceId}
+        delete
+        from sys_resource
+        where resource_id = #{resourceId}
     </delete>
 </mapper>

@@ -1,4 +1,4 @@
-package com.hcm.tripartite;
+package com.hcm.framework.config;
 
 import com.hcm.common.enums.TripartiteSourceEnum;
 import org.springframework.beans.factory.annotation.Autowired;

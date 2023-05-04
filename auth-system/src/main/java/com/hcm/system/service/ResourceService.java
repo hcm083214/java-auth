@@ -28,6 +28,18 @@ public interface ResourceService {
     List<SysResource> getMenuListAll();
 
     /**
+     * resource 保存到 redis,
+     */
+    void syncResource2Redis(List<SysResource> resourceList);
+
+    /**
+     * 统计资源uvpv
+     *
+     * @param sysResource 系统资源  controllerClass 和  methodName
+     */
+    void countResourceUVAndPV(SysResource sysResource);
+
+    /**
      * 编辑菜单
      *
      * @param resourceVo resourceVo

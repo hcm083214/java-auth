@@ -8,6 +8,10 @@ package com.hcm.common.constants;
  */
 public class CacheConstants {
     /**
+     * 验证码 开关配置 key
+     */
+    public static final String CAPTCHA_SYS_CONFIG_KEY = "sys.account.captchaEnabled";
+    /**
      * 验证码 key
      */
     public static final String CACHE_CAPTCHA_CODE = "captchaCode:";
@@ -26,4 +30,14 @@ public class CacheConstants {
      * token key
      */
     public static final String CACHE_LOGIN_TOKEN_KEY = "login_token:";
+
+    /**
+     * uv pv 前缀
+     */
+    public static final String CACHE_VIEW_COUNTER_PREFIX = "views:";
+
+    /**
+     * 缓存接口资源
+     */
+    public static final String CACHE_RESOURCE = "sys_resource";
 }

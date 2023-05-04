@@ -1,11 +1,11 @@
-package com.hcm.controller;
+package com.hcm.controller.common;
 
 
 import com.google.code.kaptcha.Producer;
 import com.hcm.common.constants.CacheConstants;
 import com.hcm.common.constants.CommonConstants;
 import com.hcm.common.core.domain.ResultVO;
-import com.hcm.common.core.redis.RedisCache;
+import com.hcm.common.core.redis.RedisStringCache;
 import com.hcm.common.exception.BadRequestException;
 import com.hcm.common.utils.BaseUtils;
 import com.hcm.common.utils.uuid.IdUtils;
@@ -43,7 +43,7 @@ public class CaptchaController {
     private Producer captchaProducerMath;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisStringCache redisCache;
 
     /**
      * @param type 验证码的类型，string 和 math 两种

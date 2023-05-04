@@ -123,7 +123,7 @@ public class ResourceController {
     }
 
     /**
-     * 同步api信息
+     * 刷新系统 api 信息
      *
      * @param request 请求
      * @return {@link ResultVO}<{@link String}>
@@ -135,6 +135,20 @@ public class ResourceController {
        List<SysResource> sysResourceList = resourceService.syncApiInfo(request);
        resourceService.addApiList(sysResourceList);
        return ResultVO.success("同步成功");
+    }
+
+    /**
+     * 同步api信息到redis
+     *
+     * @return {@link ResultVO}<{@link String}>
+     */
+    @GetMapping("/api/sync/redis")
+    @PreAuthorize("@ss.hasPermission('resource:api:sync')")
+    @ApiOperation(value = "Api资源同步到 redis", notes = "同步api信息到redis")
+    public ResultVO<String> syncApi2Redis(){
+        List<SysResource> sysResourceList = resourceService.getApiList();
+        resourceService.syncResource2Redis(sysResourceList);
+        return ResultVO.success("同步成功");
     }
 
     /**
@@ -151,6 +165,5 @@ public class ResourceController {
         SysResource.pos2vos(sysResourceList, resourceVoList);
         return ResultVO.success(resourceVoList);
     }
-
 
 }

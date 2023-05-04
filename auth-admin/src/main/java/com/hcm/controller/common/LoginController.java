@@ -1,11 +1,10 @@
-package com.hcm.controller;
+package com.hcm.controller.common;
 
 import com.hcm.common.annotations.EnumValue;
 import com.hcm.common.core.domain.ResultVO;
 import com.hcm.common.core.entity.SysRole;
 import com.hcm.common.core.entity.SysUser;
 import com.hcm.common.core.entity.UserDetail;
-import com.hcm.common.enums.RoleSearchTypeEnum;
 import com.hcm.common.enums.TripartiteSourceEnum;
 import com.hcm.common.exception.BadRequestException;
 import com.hcm.common.utils.StringUtils;
@@ -20,7 +19,7 @@ import com.hcm.framework.security.service.PermissionService;
 import com.hcm.framework.security.service.UserLoginService;
 import com.hcm.system.service.RoleService;
 import com.hcm.system.service.UserService;
-import com.hcm.tripartite.TripartiteConfiguration;
+import com.hcm.framework.config.TripartiteConfiguration;
 import com.hcm.validation.LoginValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +41,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
