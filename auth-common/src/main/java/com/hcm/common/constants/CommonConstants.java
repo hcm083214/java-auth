@@ -38,18 +38,5 @@ public class CommonConstants {
      */
     public static final String HTTPS = "https://";
 
-    /**
-     * 时间格式：年月天
-     */
-    public static final String TIME_FORMAT_MONTH_DAY = "YYYYMMdd";
 
-    /**
-     * 时间格式：年月天小时分钟
-     */
-    public static final String TIME_FORMAT_DAY_MINUTES = "YYYYMMddHHmm";
-
-    /**
-     * 时间格式：年月天小时分钟秒
-     */
-    public static final String TIME_FORMAT_DAY_HOURS = "YYYYMMddHH";
 }

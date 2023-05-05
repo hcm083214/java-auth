@@ -53,8 +53,8 @@ public class HashTest {
 
     @GetMapping("/big-key")
     @ApiOperation(value = "获取key对应的HashMap", notes = "获取key对应的HashMap")
-    public Map<Object, Object> getBigkey() throws InterruptedException, ExecutionException {
-        FutureTask<Map<Object, Object>> futureTask = new FutureTask<Map<Object, Object>>(() -> redisHashCache.entries(key));
+    public Map<String, Object> getBigkey() throws InterruptedException, ExecutionException {
+        FutureTask<Map<String, Object>> futureTask = new FutureTask<>(() -> redisHashCache.entries(key));
         threadPoolExecutor.execute(futureTask);
         return futureTask.get();
     }

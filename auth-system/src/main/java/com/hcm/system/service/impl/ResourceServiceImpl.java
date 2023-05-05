@@ -38,6 +38,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +60,6 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     private RedisHashCache redisHashCache;
 
-    @Autowired
-    private RedisHPCache redisHPCache;
-
-    @Autowired
-    private RedisStringCache redisStringCache;
-
     /**
      * 获得菜单列表
      *
@@ -85,52 +80,6 @@ public class ResourceServiceImpl implements ResourceService {
     public List<SysResource> getMenuListAll() {
         List<SysResource> sysResourceList = resourceMapper.geResourceList();
         return list2Tree(sysResourceList);
-    }
-
-    /**
-     * resource 保存到 redis
-     *
-     * @param resourceList
-     */
-    @Override
-    public void syncResource2Redis(List<SysResource> resourceList) {
-        resourceList.forEach(sysResource -> {
-            String hashKey = sysResource.getControllerClass() + "." + sysResource.getMethodName();
-            redisHashCache.putIfAbsent(CacheConstants.CACHE_RESOURCE, hashKey, sysResource);
-        });
-    }
-
-    /**
-     * 统计资源uvpv
-     *
-     * @param sysResource 系统资源  controllerClass 和  methodName
-     */
-    @Override
-    public void countResourceUVAndPV(SysResource sysResource) {
-        String ipAddr = IpUtils.getIpAddr(ServletUtils.getRequest());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CommonConstants.TIME_FORMAT_MONTH_DAY);
-        String apiName = sysResource.getControllerClass() + "." + sysResource.getMethodName();
-
-        String pvKey = formatKeyName(apiName, simpleDateFormat.format(new Date()));
-        String uvKey = formatKeyName("unique_visitor", simpleDateFormat.format(new Date()));
-        redisHPCache.add(uvKey, ipAddr);
-
-
-        if (redisStringCache.isExists(pvKey)) {
-            redisStringCache.setCacheObject(pvKey, 1);
-        } else {
-            redisStringCache.increase(pvKey, 1);
-        }
-    }
-
-    /**
-     * 格式键名
-     *
-     * @param keyName 键名
-     * @return {@link String}
-     */
-    private String formatKeyName(String keyName, String timestamp) {
-        return CacheConstants.CACHE_VIEW_COUNTER_PREFIX + keyName + ":" + timestamp;
     }
 
     /**
@@ -335,7 +284,48 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     public List<SysResource> getApiList() {
-        return resourceMapper.getApiList();
+        List<SysResource> apiList = new ArrayList<>();
+        Map<String, Object> sysResourceMap = redisHashCache.entries(CacheConstants.CACHE_RESOURCE);
+        if (sysResourceMap.isEmpty()) {
+            apiList = resourceMapper.getApiList();
+            apiList.forEach(sysResource -> {
+                String hashKey = getApiName(sysResource);
+                redisHashCache.put(CacheConstants.CACHE_RESOURCE, sysResource.getResourceId().toString(), hashKey);
+                redisHashCache.put(CacheConstants.CACHE_RESOURCE, hashKey, sysResource);
+            });
+        } else {
+            for (Map.Entry<String, Object> entry : sysResourceMap.entrySet()) {
+                SysResource val = (SysResource) entry.getValue();
+                apiList.add(val);
+            }
+        }
+        return apiList;
+    }
+
+    /**
+     * 得到api信息
+     *
+     * @param resourceId 资源id
+     * @return {@link SysResource}
+     */
+    @Override
+    public SysResource getApiInfo(Long resourceId) {
+        SysResource sysResource = new SysResource();
+        String hashKey = (String) redisHashCache.get(CacheConstants.CACHE_RESOURCE, resourceId.toString());
+        if (StringUtils.isNull(hashKey)) {
+            sysResource = resourceMapper.getResourceById(resourceId);
+            String hashKeyNew = getApiName(sysResource);
+            redisHashCache.put(CacheConstants.CACHE_RESOURCE, sysResource.getResourceId().toString(), hashKeyNew);
+            redisHashCache.put(CacheConstants.CACHE_RESOURCE, hashKeyNew, sysResource);
+        } else {
+            sysResource = (SysResource) redisHashCache.get(CacheConstants.CACHE_RESOURCE, hashKey);
+        }
+        return sysResource;
+    }
+
+    @Override
+    public String getApiName(SysResource sysResource) {
+        return sysResource.getControllerClass() + "." + sysResource.getMethodName();
     }
 
     /**

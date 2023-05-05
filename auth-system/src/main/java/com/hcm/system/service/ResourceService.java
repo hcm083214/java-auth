@@ -28,18 +28,6 @@ public interface ResourceService {
     List<SysResource> getMenuListAll();
 
     /**
-     * resource 保存到 redis,
-     */
-    void syncResource2Redis(List<SysResource> resourceList);
-
-    /**
-     * 统计资源uvpv
-     *
-     * @param sysResource 系统资源  controllerClass 和  methodName
-     */
-    void countResourceUVAndPV(SysResource sysResource);
-
-    /**
      * 编辑菜单
      *
      * @param resourceVo resourceVo
@@ -83,6 +71,14 @@ public interface ResourceService {
     List<SysResource> getApiList();
 
     /**
+     * 得到api信息
+     *
+     * @param resourceId 资源id
+     * @return {@link SysResource}
+     */
+    SysResource getApiInfo(Long resourceId);
+
+    /**
      * 添加api列表
      *
      * @param sysResourceList 系统资源列表
@@ -97,4 +93,12 @@ public interface ResourceService {
      * @return {@link List}<{@link SysResource}>
      */
     List<SysResource> getUserResource(SysUser sysUser);
+
+    /**
+     * 获得api名称
+     *
+     * @param sysResource 系统资源
+     * @return {@link String}
+     */
+    String getApiName(SysResource sysResource);
 }

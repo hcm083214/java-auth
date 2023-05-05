@@ -6,10 +6,12 @@ import com.hcm.common.core.entity.UserDetail;
 import com.hcm.common.vo.ResourceVo;
 import com.hcm.framework.security.context.AuthenticationContextHolder;
 import com.hcm.system.service.ResourceService;
+import com.hcm.system.service.ViewCounterService;
 import com.hcm.validation.ResourceValidation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,9 @@ public class ResourceController {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    private ViewCounterService viewCounterService;
 
     /**
      * 获取菜单列表,type = "M"和 "C"
@@ -138,20 +143,6 @@ public class ResourceController {
     }
 
     /**
-     * 同步api信息到redis
-     *
-     * @return {@link ResultVO}<{@link String}>
-     */
-    @GetMapping("/api/sync/redis")
-    @PreAuthorize("@ss.hasPermission('resource:api:sync')")
-    @ApiOperation(value = "Api资源同步到 redis", notes = "同步api信息到redis")
-    public ResultVO<String> syncApi2Redis(){
-        List<SysResource> sysResourceList = resourceService.getApiList();
-        resourceService.syncResource2Redis(sysResourceList);
-        return ResultVO.success("同步成功");
-    }
-
-    /**
      * 获得api列表
      *
      * @return {@link ResultVO}<{@link List}<{@link ResourceVo}>>
@@ -166,4 +157,15 @@ public class ResourceController {
         return ResultVO.success(resourceVoList);
     }
 
+    @GetMapping("/api/{resource_id}/pv")
+    @PreAuthorize("@ss.hasPermission('resource:api:query')")
+    @ApiOperation(value = "Api访问量查询",notes = "获得api访问量")
+    public ResultVO<ResourceVo> getApiPV(@PathVariable("resource_id") Long resourceId,Integer during){
+        SysResource apiInfo = resourceService.getApiInfo(resourceId);
+        SysResource sysResource = viewCounterService.setResourcePVCount(apiInfo, during);
+
+        ResourceVo resourceVo = new ResourceVo();
+        BeanUtils.copyProperties(sysResource,resourceVo);
+        return ResultVO.success(resourceVo);
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单权限表 sys_menu
@@ -91,6 +92,11 @@ public class SysResource extends BaseEntity {
      * 子菜单
      */
     private List<SysResource> children;
+
+    /**
+     * 资源访问量，map 中 key 为日期和total，值为数量
+     */
+    private Map<String,Integer> pageCounter;
 
     public static void pos2vos(List<SysResource> pos, List<ResourceVo> vos){
         pos.forEach(sysMenu -> {

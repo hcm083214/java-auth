@@ -76,4 +76,12 @@ public interface ResourceMapper {
      * @return {@link List}<{@link SysResource}>
      */
     List<SysResource> getResourceListByFunctions(@Param("functionIds") List<Long> functionIds);
+
+    /**
+     * 通过id获取资源
+     *
+     * @param resourceId 资源id
+     * @return {@link SysResource}
+     */
+    SysResource getResourceById(@Param("resourceId") Long resourceId);
 }

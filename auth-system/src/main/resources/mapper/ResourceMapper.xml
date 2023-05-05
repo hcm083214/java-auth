@@ -43,6 +43,14 @@
             #{functionId}
         </foreach>
     </select>
+    <select id="getResourceById" resultType="com.hcm.common.core.entity.SysResource">
+        select
+        <include refid="resourceType"/>,
+        r.controller_class controllerClass,
+        r.method_name methodName
+        from sys_resource r
+        where r.resource_id = #{resourceId}
+    </select>
 
     <update id="editMenu">
         update sys_resource

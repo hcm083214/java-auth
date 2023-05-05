@@ -3,6 +3,7 @@ package com.hcm.common.vo;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author pc
@@ -80,4 +81,9 @@ public class ResourceVo {
      * 子菜单
      */
     private List<ResourceVo> children;
+
+    /**
+     * 资源访问量，map 中 key 为日期和total，值为数量
+     */
+    private Map<String,Integer> pageCounter;
 }
