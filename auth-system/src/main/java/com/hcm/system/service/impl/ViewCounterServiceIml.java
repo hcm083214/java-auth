@@ -95,9 +95,11 @@ public class ViewCounterServiceIml implements ViewCounterService {
         int total = 0;
         for (String day : lastDays) {
             Integer pageCounter = redisStringCache.getCacheObject(formatKeyName(resourceService.getApiName(sysResource), day));
-            if(StringUtils.isNotNull(pageCounter)){
+            if (StringUtils.isNotNull(pageCounter)) {
                 map.put(day, pageCounter);
                 total += pageCounter;
+            } else {
+                map.put(day, 0);
             }
         }
         map.put("total",total);

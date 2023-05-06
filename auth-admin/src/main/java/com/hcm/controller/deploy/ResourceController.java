@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author pc
@@ -167,5 +168,14 @@ public class ResourceController {
         ResourceVo resourceVo = new ResourceVo();
         BeanUtils.copyProperties(sysResource,resourceVo);
         return ResultVO.success(resourceVo);
+    }
+
+    @GetMapping("/api/uv")
+    @PreAuthorize("@ss.hasPermission('resource:api:query')")
+    @ApiOperation(value = "页面访问量查询",notes = "获得页面访问量")
+    public ResultVO<Map<String, Long>> getApiUV(Integer during){
+        Map<String, Long> uvCount = viewCounterService.getUVCount(during);
+
+        return ResultVO.success(uvCount);
     }
 }

@@ -15,6 +15,7 @@ import com.hcm.common.utils.ip.IpUtils;
 import com.hcm.common.vo.ResourceVo;
 import com.hcm.system.mapper.ResourceMapper;
 import com.hcm.system.service.ResourceService;
+import com.hcm.system.service.ViewCounterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +60,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     private RedisHashCache redisHashCache;
+
+    @Autowired
+    private ViewCounterService viewCounterService;
 
     /**
      * 获得菜单列表
@@ -292,11 +296,15 @@ public class ResourceServiceImpl implements ResourceService {
                 String hashKey = getApiName(sysResource);
                 redisHashCache.put(CacheConstants.CACHE_RESOURCE, sysResource.getResourceId().toString(), hashKey);
                 redisHashCache.put(CacheConstants.CACHE_RESOURCE, hashKey, sysResource);
+                viewCounterService.setResourcePVCount(sysResource, 1);
             });
         } else {
             for (Map.Entry<String, Object> entry : sysResourceMap.entrySet()) {
-                SysResource val = (SysResource) entry.getValue();
-                apiList.add(val);
+                Object val = entry.getValue();
+                if (val instanceof SysResource) {
+                    apiList.add((SysResource) val);
+                    viewCounterService.setResourcePVCount((SysResource) val, 1);
+                }
             }
         }
         return apiList;
