@@ -49,10 +49,10 @@
 
     <select id="getParamsList" resultType="string">
         <if test="type!= null and type == 'role_name_cn'">
-            select distinct r.role_name_cn from r.sys_role
+            select distinct r.role_name_cn from sys_role r
         </if>
         <if test="type!= null and type == 'role_name_en'">
-            select distinct r.role_name_en from r.sys_role
+            select distinct r.role_name_en from sys_role r
         </if>
         where 1=1
         <include refid="searchOption"></include>

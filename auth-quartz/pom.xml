@@ -8,26 +8,31 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <description>system系统模块:service和mapper</description>
-    <artifactId>auth-system</artifactId>
+    <description>定时任务</description>
+    <artifactId>auth-quartz</artifactId>
 
     <properties>
+        <quartz.version>2.3.2</quartz.version>
     </properties>
 
     <dependencies>
+        <!-- 定时任务 -->
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.mchange</groupId>
+                    <artifactId>c3p0</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.hcm</groupId>
             <artifactId>auth-common</artifactId>
             <version>${auth.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
     </dependencies>
-
 </project>

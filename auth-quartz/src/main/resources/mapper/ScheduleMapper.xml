@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hcm.quartz.mapper.ScheduleMapper">
+    <sql id="sysJobDetail">
+        j.job_id jobId,
+        j.job_name jobName,
+        j.job_group jobGroup,
+        j.cron_expression cronExpression,
+        j.invoke_target invokeTarget,
+        j.misfire_policy misfirePolicy,
+        j.concurrent concurrent,
+        j.status status
+    </sql>
+
+    <select id="getJobList" resultType="com.hcm.quartz.entity.SysJob">
+        select <include refid="sysJobDetail"></include> from sys_job j
+    </select>
+</mapper>

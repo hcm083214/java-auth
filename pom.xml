@@ -12,6 +12,7 @@
         <module>auth-framework</module>
         <module>auth-common</module>
         <module>auth-system</module>
+        <module>auth-quartz</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -30,6 +31,8 @@
         <easyexcel.version>3.1.0</easyexcel.version>
         <jwt.token.version>8.16</jwt.token.version>
         <swagger.version>3.0.0</swagger.version>
+        <guava.verdion>23.0</guava.verdion>
+        <justAuth.version>1.16.5</justAuth.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +63,14 @@
                 <artifactId>spring-boot-starter-aop</artifactId>
                 <version>2.5.14</version>
             </dependency>
+
+            <!--guava Google 开源的 Guava 中自带的布隆过滤器-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.verdion}</version>
+            </dependency>
+
             <!-- 阿里数据库连接池 -->
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -143,12 +154,14 @@
                 <artifactId>springfox-boot-starter</artifactId>
                 <version>${swagger.version}</version>
             </dependency>
+
             <!-- 第三方登录 -->
             <dependency>
                 <groupId>me.zhyd.oauth</groupId>
                 <artifactId>JustAuth</artifactId>
-                <version>1.16.5</version>
+                <version>${justAuth.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 散列缓存
@@ -41,6 +42,19 @@ public class RedisHashCache {
     public void put(String key, String hashKey, Object value) {
         // 对应 hset
         redisTemplate.opsForHash().put(key, hashKey, value);
+    }
+
+    /**
+     * Hash 添加map对象内的值
+     *
+     * @param key     关键
+     * @param hashKey 散列键
+     * @param value   价值
+     */
+    public void put(String key, String hashKey, Object value,Long timeout, TimeUnit timeUnit) {
+        // 对应 hset
+        redisTemplate.opsForHash().put(key, hashKey, value);
+        redisTemplate.expire(key,timeout,timeUnit);
     }
 
     /**
@@ -92,6 +106,11 @@ public class RedisHashCache {
         return redisTemplate.opsForHash().hasKey(key, hashKey);
     }
 
+    public Boolean isExists(String key) {
+        //        exists
+        return redisTemplate.hasKey(key);
+    }
+
     /**
      * 根据 key 得到所有的数据
      *
@@ -114,5 +133,14 @@ public class RedisHashCache {
         redisTemplate.opsForHash().delete(key, hashKeys);
     }
 
-
+    /**
+     * 增加
+     *
+     * @param key     关键
+     * @param hashKey 散列键
+     * @param delta   δ
+     */
+    public void increase(String key, String hashKey,Long delta){
+        redisTemplate.opsForHash().increment(key, hashKey, delta);
+    }
 }

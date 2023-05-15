@@ -1,10 +1,8 @@
 package com.hcm.system.service.impl;
 
 import com.hcm.common.constants.CacheConstants;
-import com.hcm.common.constants.CommonConstants;
 import com.hcm.common.core.entity.SysResource;
 import com.hcm.common.core.redis.RedisHPCache;
-import com.hcm.common.core.redis.RedisHashCache;
 import com.hcm.common.core.redis.RedisStringCache;
 import com.hcm.common.utils.DateUtils;
 import com.hcm.common.utils.ServletUtils;
@@ -114,7 +112,6 @@ public class ViewCounterServiceIml implements ViewCounterService {
      * @return {@link String}
      */
     private String formatKeyName(String keyName, String timestamp) {
-
         return CacheConstants.CACHE_VIEW_COUNTER_PREFIX + keyName + ":" + timestamp;
     }
 

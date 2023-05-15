@@ -296,14 +296,14 @@ public class ResourceServiceImpl implements ResourceService {
                 String hashKey = getApiName(sysResource);
                 redisHashCache.put(CacheConstants.CACHE_RESOURCE, sysResource.getResourceId().toString(), hashKey);
                 redisHashCache.put(CacheConstants.CACHE_RESOURCE, hashKey, sysResource);
-                viewCounterService.setResourcePVCount(sysResource, 1);
+                viewCounterService.setResourcePVCount(sysResource, 7);
             });
         } else {
             for (Map.Entry<String, Object> entry : sysResourceMap.entrySet()) {
                 Object val = entry.getValue();
                 if (val instanceof SysResource) {
                     apiList.add((SysResource) val);
-                    viewCounterService.setResourcePVCount((SysResource) val, 1);
+                    viewCounterService.setResourcePVCount((SysResource) val, 7);
                 }
             }
         }

@@ -32,6 +32,12 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <!--guava Google 开源的 Guava 中自带的布隆过滤器-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
         <!-- JSON工具类 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

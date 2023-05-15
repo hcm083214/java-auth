@@ -2,13 +2,10 @@ package com.hcm.common.core.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,7 +44,18 @@ public class RedisStringCache {
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
-
+    /**
+     * 如果没有设置
+     *
+     * @param key      关键
+     * @param value    价值
+     * @param timeout  超时
+     * @param timeUnit 时间单位
+     * @return {@link Boolean}
+     */
+    public  Boolean setIfAbsent(String key, Object value, Long timeout, TimeUnit timeUnit) {
+        return redisTemplate.opsForValue().setIfAbsent(key, value, timeout, timeUnit);
+    }
     /**
      * 获取缓存的对象
      *
@@ -79,12 +87,21 @@ public class RedisStringCache {
     }
 
     /**
+     * 减少
+     *
+     * @param key   关键
+     * @param delta δ
+     */
+    public void decrease(String key,Integer delta){
+        redisTemplate.opsForValue().decrement(key,delta);
+    }
+    /**
      * 是否存在
      *
      * @param key 关键
      * @return boolean
      */
     public boolean isExists(String key){
-        return redisTemplate.opsForValue().get(key) == null;
+        return redisTemplate.hasKey(key);
     }
 }
